@@ -1,5 +1,29 @@
 #include "include/desync_fix_global.h"
 
+float MinCHeight, MaxCHeight;
+
+void PatchHeightRangeRings(uintptr_t Sim)
+{
+	auto STIMap = *(uint32_t *)(Sim + 0x8CC);
+	auto MapData = *(uint32_t *)STIMap;
+	auto Heights = (uint16_t *)*(uint32_t *)MapData;
+	auto SizeX = *(int *)(MapData + 0x4);
+	auto SizeY = *(int *)(MapData + 0x8);
+	uint16_t MinH = -1, MaxH = 0;
+	for (auto I = 0; I < SizeX * SizeY; I++)
+	{
+		if (*Heights < MinH)
+			MinH = *Heights;
+		if (*Heights > MaxH)
+			MaxH = *Heights;
+		Heights++;
+	}
+	MinCHeight = MinH * 0.0078125 - 5;
+	MaxCHeight = MaxH * 0.0078125;
+	reinterpret_cast<void(__thiscall *)(uintptr_t)>(0x7EDFE0)(g_WRenViewport + 0x37C);
+	reinterpret_cast<void(__thiscall *)(uintptr_t)>(0x81C0C0)(g_WRenViewport + 0x410);
+}
+
 void GlobalRings()
 {
 	asm
