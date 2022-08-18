@@ -21,21 +21,24 @@ Get debugging info about a Lua call:
 [[[CallInfo]-4]+18] = Proto       //lua.org/source/5.0/lobject.h.html#Proto
 [[CallInfo+0C]-[Proto+0C]+[Proto+14]] = currentline
 */
+
 #define GDecl(addr, type) \
   ((type)*(int*)(addr))
 
 #define FDecl(addr, name, type) \
   inline const auto name = (type)addr;
 
-#define g_STIDriver			GDecl(0x10C4F50, void*)
-#define g_SWldSessionInfo		GDecl(0x10C4F58, void*)
-#define g_CWldSession			GDecl(0x10A6470, void*)
-#define g_Sim				GDecl(0x10A63F0, void*)
-#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, void*)
-#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, void*)
-#define g_CUIManager			GDecl(0x10A6450, void*)
-#define g_EngineStats			GDecl(0x10A67B8, void*)
-#define g_WRenViewport			GDecl(0x10C7C28, void*)
+#define VALIDATE_SIZE(struc, size) static_assert(sizeof(struc) == size, "Invalid structure size of " #struc)
+
+#define g_STIDriver			GDecl(0x10C4F50, uintptr_t)
+#define g_SWldSessionInfo		GDecl(0x10C4F58, uintptr_t)
+#define g_CWldSession			GDecl(0x10A6470, uintptr_t)
+#define g_Sim				GDecl(0x10A63F0, uintptr_t)
+#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, uintptr_t)
+#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, uintptr_t)
+#define g_CUIManager			GDecl(0x10A6450, uintptr_t)
+#define g_EngineStats			GDecl(0x10A67B8, uintptr_t)
+#define g_WRenViewport			GDecl(0x10C7C28, uintptr_t)
 #define g_ConsoleLuaState		GDecl(0x1104410, LuaState)
 
 #define ui_ProgressBarColor		GDecl(0x0F57BB8, int)
