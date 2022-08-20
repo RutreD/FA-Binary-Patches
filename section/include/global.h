@@ -23,52 +23,146 @@ Get debugging info about a Lua call:
 */
 
 #define GDecl(addr, type) \
-  ((type)*(int*)(addr))
+    ((type) * (uintptr_t *)(addr))
 
 #define FDecl(addr, name, type) \
-  inline const auto name = (type)addr;
+    inline const auto name = (type)addr
 
 #define VALIDATE_SIZE(struc, size) static_assert(sizeof(struc) == size, "Invalid structure size of " #struc)
 
-#define g_STIDriver			GDecl(0x10C4F50, uintptr_t)
-#define g_SWldSessionInfo		GDecl(0x10C4F58, uintptr_t)
-#define g_CWldSession			GDecl(0x10A6470, uintptr_t)
-#define g_Sim				GDecl(0x10A63F0, uintptr_t)
-#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, uintptr_t)
-#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, uintptr_t)
-#define g_CUIManager			GDecl(0x10A6450, uintptr_t)
-#define g_EngineStats			GDecl(0x10A67B8, uintptr_t)
-#define g_WRenViewport			GDecl(0x10C7C28, uintptr_t)
-#define g_ConsoleLuaState		GDecl(0x1104410, LuaState)
+#define g_STIDriver GDecl(0x10C4F50, uintptr_t)
+#define g_SWldSessionInfo GDecl(0x10C4F58, uintptr_t)
+#define g_CWldSession GDecl(0x10A6470, uintptr_t)
+#define g_Sim GDecl(0x10A63F0, uintptr_t)
+#define g_EntityCategoryTypeInfo GDecl(0x10C6E70, uintptr_t)
+#define g_CAiBrainTypeInfo GDecl(0x10C6FA0, uintptr_t)
+#define g_CUIManager GDecl(0x10A6450, uintptr_t)
+#define g_EngineStats GDecl(0x10A67B8, uintptr_t)
+#define g_WRenViewport GDecl(0x10C7C28, uintptr_t)
+#define g_ConsoleLuaState GDecl(0x1104410, LuaState)
 
-#define ui_ProgressBarColor		GDecl(0x0F57BB8, int)
-#define ui_SelectTolerance		GDecl(0x0F57A90, float)
-#define ui_ExtractSnapTolerance		GDecl(0x0F57A94, float)
-#define ui_DisableCursorFixing		GDecl(0x10A6464, bool)
-#define ui_RenderIcons			GDecl(0x0F57B27, bool)
-#define range_RenderSelected		GDecl(0x10A640A, bool)
-#define range_RenderHighlighted		GDecl(0x10A640B, bool)
-#define range_RenderBuild		GDecl(0x10A6414, bool)
-#define d3d_WindowsCursor		GDecl(0x10A636E, bool)
+#define ui_ProgressBarColor GDecl(0x0F57BB8, int)
+#define ui_SelectTolerance GDecl(0x0F57A90, float)
+#define ui_ExtractSnapTolerance GDecl(0x0F57A94, float)
+#define ui_DisableCursorFixing GDecl(0x10A6464, bool)
+#define ui_RenderIcons GDecl(0x0F57B27, bool)
+#define range_RenderSelected GDecl(0x10A640A, bool)
+#define range_RenderHighlighted GDecl(0x10A640B, bool)
+#define range_RenderBuild GDecl(0x10A6414, bool)
+#define d3d_WindowsCursor GDecl(0x10A636E, bool)
 
-#define s_FACTORY			GDecl(0xE19824, const char*)
-#define s_EXPERIMENTAL			GDecl(0xE204B8, const char*)
-#define s_global			GDecl(0xE00D90, const char*) // "<global>"
+#define s_FACTORY GDecl(0xE19824, const char *)
+#define s_EXPERIMENTAL GDecl(0xE204B8, const char *)
+#define s_global GDecl(0xE00D90, const char *) // "<global>"
 
-#define g_ExeVersion1			GDecl(0x876666, const int)
-#define g_ExeVersion2			GDecl(0x87612d, const int)
-#define g_ExeVersion3			GDecl(0x4d3d40, const int)
+#define g_ExeVersion1 GDecl(0x876666, const int)
+#define g_ExeVersion2 GDecl(0x87612d, const int)
+#define g_ExeVersion3 GDecl(0x4d3d40, const int)
 
-FDecl(0x937CB0, LogF,		int (*)(const char *fmt, ...))
-FDecl(0x937D30, WarningF,	int (*)(const char *fmt, ...))
-FDecl(0x937C30, SpewF,		int (*)(const char *fmt, ...))
-FDecl(0x41C990, ConsoleLogF,	int (*)(const char *fmt, ...))
-FDecl(0xA9B4E6, FileWrite,	int (*)(int fileIndex, const char *str, int strlen)) //index 3 is log.
-FDecl(0xA825B9, shi_new,	void* (*)(uint32_t size))
-FDecl(0x958C40, shi_delete,	void (*)(void* ptr))
+FDecl(0x937CB0, LogF, int (*)(const char *fmt, ...));
+FDecl(0x937D30, WarningF, int (*)(const char *fmt, ...));
+FDecl(0x937C30, SpewF, int (*)(const char *fmt, ...));
+FDecl(0x41C990, ConsoleLogF, int (*)(const char *fmt, ...));
+FDecl(0xA9B4E6, FileWrite, int (*)(int fileIndex, const char *str, int strlen)); // index 3 is log.
+FDecl(0xA825B9, shi_new, void *(*)(uint32_t size));
+FDecl(0x958C40, shi_delete, void (*)(void *ptr));
+FDecl(0xA82130, operator_new, void *(__cdecl *)(size_t));
+FDecl(0xA84A60, memcpy, void *(__cdecl *)(void *, const void *, size_t));
+FDecl(0xA94450, strlen, size_t(__cdecl *)(const char *Str));
+FDecl(0x405550, std_string_string, void(__thiscall *)(void *, char *));
 
-#define GetModuleHandle GDecl(0xC0F378, __stdcall void* (*)(const char* lpLibFileName))
-#define GetProcAddress  GDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char* lpProcName))
+#define GetModuleHandle GDecl(0xC0F378, __stdcall void *(*)(const char *lpLibFileName))
+#define GetProcAddress GDecl(0xC0F48C, __stdcall void *(*)(void *hModule, const char *lpProcName))
+
+struct stdstring
+{
+    void *unk;                 // 0
+    union
+    {
+        char *pszString;
+        char szString[0x10];
+    };                         // 4
+    size_t size;               // 20
+    size_t allocated;          // 24
+    stdstring()
+    {
+        allocated = 0xF;
+    }
+    stdstring(char *str)
+    {
+        std_string_string(this, str);
+    };
+    char *data()
+    {
+        return allocated > 0xF ? pszString : szString;
+    }
+};
+VALIDATE_SIZE(stdstring, 28);
+
+struct conDescReg
+{
+    uintptr_t vftable = 0x0E01700;
+    const char *name;
+    const char *description;
+    void *var;
+};
+
+inline void RegisterTConVarBool(conDescReg *descCon)
+{
+    reinterpret_cast<void(__thiscall *)(void *, conDescReg *)>(0x41E390)(reinterpret_cast<void *(__stdcall *)()>(0x41BEB0)(), descCon);
+    descCon->vftable = 0xE01790; // Moho::TConVar<bool>::`vftable'
+}
+inline void RegisterTConVarUChar(conDescReg *descCon)
+{
+    reinterpret_cast<void(__thiscall *)(void *, conDescReg *)>(0x41E390)(reinterpret_cast<void *(__stdcall *)()>(0x41BEB0)(), descCon);
+    descCon->vftable = 0xE017A0; // Moho::TConVar<unsigned char>::`vftable'
+}
+inline void RegisterTConVarInt(conDescReg *descCon)
+{
+    reinterpret_cast<void(__thiscall *)(void *, conDescReg *)>(0x41E390)(reinterpret_cast<void *(__stdcall *)()>(0x41BEB0)(), descCon);
+    descCon->vftable = 0xE01798; // Moho::TConVar<int>::`vftable'
+}
+inline void RegisterTConVarUInt(conDescReg *descCon)
+{
+    reinterpret_cast<void(__thiscall *)(void *, conDescReg *)>(0x41E390)(reinterpret_cast<void *(__stdcall *)()>(0x41BEB0)(), descCon);
+    descCon->vftable = 0xE40BB0; // Moho::TConVar<unsigned int>::`vftable'
+}
+inline void RegisterTConVarFloat(conDescReg *descCon)
+{
+    reinterpret_cast<void(__thiscall *)(void *, conDescReg *)>(0x41E390)(reinterpret_cast<void *(__stdcall *)()>(0x41BEB0)(), descCon);
+    descCon->vftable = 0xE017A8; // Moho::TConVar<float>::`vftable'
+}
+inline void RegisterTConVarStdString(conDescReg *descCon)
+{
+    reinterpret_cast<void(__thiscall *)(void *, conDescReg *)>(0x41E390)(reinterpret_cast<void *(__stdcall *)()>(0x41BEB0)(), descCon);
+    descCon->vftable = 0xE017B0; // Moho::TConVar<std::string>::`vftable'
+}
+
+/*
+example RegisterTConVar<Type>:
+
+int myVar = 0;
+conDescReg anyConDescReg{0x0E01700, "name", "description", &myVar};
+
+stdstring myStdStringVar;
+conDescReg stdConDescReg{0x0E01700, "str", "description", &myStdStringVar};
+
+void OnInitializeConsole()
+{
+  RegisterTConVarInt(&anyConDescReg);
+
+  myStdStringVar = "Hello World";
+  RegisterTConVarStdString(&stdConDescReg);
+}
+
+void doSomething()
+{
+  if(myVar == ...)
+    ...
+
+  printf("%s", myStdStringVar.data());
+}
+*/
 
 /*
 LuaPlus: See FALuaFuncs.txt
