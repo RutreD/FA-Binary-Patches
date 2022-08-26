@@ -16,8 +16,8 @@ void* _thiscall HeightCylinders(char* this_)
         if (*Heights > MaxH) MaxH = *Heights;
         Heights++;
     }
-    MinCHeight = MinH * 0.0078125 - 5;
-    MaxCHeight = MaxH * 0.0078125;
+    MinCHeight = MinH * 0.0078125f - 5.f;
+    MaxCHeight = MaxH * 0.0078125f;
     this_ = (char*)*(uint32_t*)(0x10C7C28);
     reinterpret_cast<void (_thiscall *)(void*)>(0x7EDFE0)(this_ + 0x37C);
     reinterpret_cast<void (_thiscall *)(void*)>(0x81C0C0)(this_ + 0x410);

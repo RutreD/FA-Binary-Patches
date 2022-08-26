@@ -1,3 +1,5 @@
+//LUA funcs map github.com/Eximius/forged_jit
+
 namespace gpg
 {
   class RRef {public: void* d; void* t;};

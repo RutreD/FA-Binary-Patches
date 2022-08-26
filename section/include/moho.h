@@ -1,8 +1,6 @@
-//MohoEngine Disassembling notes
-
-//LUA funcs map github.com/Eximius/forged_jit
-
 #pragma once
+
+#include "global.h"
 typedef unsigned int uint;
 typedef unsigned int bool32;
 typedef unsigned short uint16;
@@ -17,6 +15,7 @@ struct luaFuncDescReg
 	void* FuncPtr;        // code address
 	void* ClassPtr;       // C++ class type address. NULL if class none
 };
+VALIDATE_SIZE(luaFuncDescReg, 0x1C)
 
 struct vtable;
 struct typeInfo
@@ -54,16 +53,11 @@ struct string
 	uint strLen;
 	uint size; // 0f if SSO, 1f not SSO
 
-#ifdef CXX_BUILD
-	const char* data()
-	{
-		if(size < 0x10)
-			return (const char*)&m_data;
-		else
-			return (const char*)m_data;
+	const char* data() {
+		return size == 0xF ? &str : (const char*)str;
 	}
-#endif
 };
+VALIDATE_SIZE(string, 0x1C)
 
 struct vector
 {	// 0x10 bytes
@@ -71,29 +65,26 @@ struct vector
 	void* objects_begin;
 	void* objects_end;
 	void* objects_capacity_end;
-
-#ifdef CXX_BUILD
-	void* operator[](int index)
-	{
-		if(index >= size())
-			return 0;
+/*
+	void* operator[](int index) {
+		if(index >= size()) return 0;
 		return objects_begin[index];
 	}
 
-	int size()
-	{
+	int size() {
 		return objects_end - objects_begin;
-	}
-#endif
+	}*/
 };
+VALIDATE_SIZE(vector, 0x10)
 
 // probably not from visual c++ 9, but made by gpg
 struct list
-{       // 0x0C bytes
+{       // 0xC bytes
 	void* objects_begin; // 0 if empty
 	void* objects_end;
 	void* objects_capacity_end;
 };
+VALIDATE_SIZE(list, 0xC)
 
 typedef int SOCKET;
 // GPGCore
@@ -118,7 +109,7 @@ struct RObject
 	void* vtable;
 };
 
-struct CScriptObject // : RObject
+struct CScriptObject : RObject
 {	// ~0x34 bytes
 };
 
@@ -139,11 +130,11 @@ struct Stream
 	void* vtable;
 };
 
-struct PipeStream // : Stream
+struct PipeStream : Stream
 {	// 0x48 bytes
 };
 
-struct FileStream // : Stream
+struct FileStream : Stream
 {	// 0x34 bytes
 };
 
@@ -193,6 +184,7 @@ struct lua_var //lua.org/source/5.0/lobject.h.html#TObject
 	   9 - Thread
 	*/
 };
+VALIDATE_SIZE(lua_var, 8)
 
 struct lua_State //lua.org/source/5.0/lstate.h.html#lua_State
 {
@@ -242,16 +234,17 @@ struct Camera // : RCamCamera
 {	// 0x858 bytes
 };
 
-struct CMauiControl // : CScriptObject
+struct CMauiControl : CScriptObject
 {
 };
 
-struct CUIWorldView // : CMauiControl
+struct CUIWorldView : CMauiControl
 {	// 0x2A8 bytes
 	// at 0x120
 	Camera* Camera;
 	// at 0x208
 	void* CWldSession;
+	void* unk1; //if shift pressed
 };
 
 struct linked_list
@@ -269,7 +262,6 @@ struct moho_set
 	uint value; // Used as memory for 'Short Set Optimization'
 	void* unknown8;
 
-#ifdef CXX_BUILD
 	void add(int item)
 	{
 		uint* itemPtr = &items_begin[item >> 5];
@@ -287,8 +279,8 @@ struct moho_set
 	{
 		return items_begin[item>>5] & (1 << (item & 0x1f));
 	}
-#endif
 };
+VALIDATE_SIZE(moho_set, 0x20)
 
 struct RRuleGameRules
 {	// 0xD0 bytes
@@ -328,15 +320,15 @@ struct LaunchInfoNew
 	int unknown4;
 };
 
-struct REffectBlueprint // : RObject
+struct REffectBlueprint : RObject
 {
 };
 
-struct RBeamBlueprint // : REffectBlueprint
+struct RBeamBlueprint : REffectBlueprint
 {	// 0x140 bytes
 };
 
-struct RBlueprint // : RObject
+struct RBlueprint : RObject
 {	// ~0x60 bytes
 	// at 0x4
 	RRuleGameRules* owner;
@@ -347,13 +339,13 @@ struct RBlueprint // : RObject
 	uint BlueprintOrdinal;
 };
 
-struct RMeshBlueprint // : RBlueprint
+struct RMeshBlueprint : RBlueprint
 {	// 0x80 bytes
 	// at 0x70
 	float IconFadeInZoom;
 };
 
-struct REntityBlueprint // : RBlueprint
+struct REntityBlueprint : RBlueprint
 {	// ~0x17C bytes
 	// at 0x60
 	vector Categories; //vector<string>
@@ -370,15 +362,15 @@ struct REntityBlueprint // : RBlueprint
 	} Footprint, AltFootprint;
 };
 
-struct RPropBlueprint // : REntityBlueprint
+struct RPropBlueprint : REntityBlueprint
 {	// 0x1AC bytes
 };
 
-struct RProjectileBlueprint // : REntityBlueprint
+struct RProjectileBlueprint : REntityBlueprint
 {	// 0x268 bytes
 };
 
-struct RUnitBlueprint // : REntityBlueprint
+struct RUnitBlueprint : REntityBlueprint
 {	// 0x568 bytes
 	// at 0x17C
 	struct RUnitBlueprintGeneral {
@@ -569,28 +561,23 @@ struct UserArmy
 	uint maxMass;
 	int unknown4; // =0
 	bool isResourceSharing;
-#ifndef FORGED_ALLIANCE
-	char datas[0xba];
-#else
-	char datas[0xb2];
-#endif
-	// at 0x130 Moho | at 0x128 FA
+
+	// at 0x128
 	moho_set mValidCommandSources;
-	// at 0x148 FA
+	// at 0x148
 	uint color;
 	uint iconColor;
 	string mArmyType; // 'human' for players
-	// at 0x16C FA
+	// at 0x16C
 	int faction;
-	// at 0x188 FA
+	// at 0x188
 	bool showScore;
-	// at 0x1B8 FA
+	// at 0x1B8
 	bool outOfGame;
 };
 
 struct SimArmy // : IArmy
 {	// 0x288 bytes
-#ifdef FORGED_ALLIANCE
 	void* vtable;
 	// at 0xA4 in vtable
 	//void* GetUnitCap;
@@ -627,19 +614,20 @@ struct SimArmy // : IArmy
 	moho_set allies;
 	moho_set enemies;
 
-	char datas[0x4A];
-	// at 0x130 FA
+	// at 0x128
+	bool IsAlly;
+	// at 0x130
 	moho_set mValidCommandSources;
 
-	// at 0x150 FA
+	// at 0x150
 	uint color;
 	uint iconColor;
 	string mArmyType; // 'human' for players
-	// at 0x174 FA
+	// at 0x174
 	int faction;
-	// at 0x1C0 FA
+	// at 0x1C0
 	bool outOfGame;
-	// at 0x1C4 FA
+	// at 0x1C4
 	Vector2f StartPosition;
 	// at 0x1D0
 	float noRushRadius;
@@ -650,10 +638,10 @@ struct SimArmy // : IArmy
 	void* Sim;
 	void* CAiBrain;
 
-	// at 0x1F0 FA
+	// at 0x1F0
 	void* CAiReconDBImpl;
 	SimArmyEconomyInfo* EconomyInfo;
-	// at 0x1F8 FA
+	// at 0x1F8
 	string unknown5;
 	// at 0x270
 	float unitCap;
@@ -661,13 +649,9 @@ struct SimArmy // : IArmy
 	int pathCap_Land;
 	int pathCap_Sea;
 	int pathCap_Both;
-#else
-	// at 0x138 Moho
-	moho_set mValidCommandSources;
-#endif
 };
 
-struct CArmyImpl // : SimArmy
+struct CArmyImpl : SimArmy
 {
 };
 
@@ -684,21 +668,24 @@ struct EntityChain // [[Entities+4]+4]
 	void* Entity;
 };
 
-struct Entity // : CScriptObject
+struct Sim;
+struct Entity : CScriptObject
 {	// 0x270 bytes
 	// at 0x68
 	uint EntityID; //For units x|xx|xxxxxx Type,Army,Num. Uses for UserSync
 	REntityBlueprint* Blueprint;
 	uint CreationIndex; //?
+	// at 0x110
+	bool VisibleAndControl;
 };
 
-struct Projectile // : Entity
+struct Projectile : Entity
 {	// 0x380 bytes
 	// at 0x6C
 	RProjectileBlueprint* Blueprint;
 };
 
-struct Prop // : Entity
+struct Prop : Entity
 {	// 0x288 bytes
 	// at 0x6C
 	RPropBlueprint* Blueprint;
@@ -747,8 +734,53 @@ struct CommandQueue
 	bool Unk5;
 };
 
-struct Unit // : WeakObject
+struct UnitWeapon //: CScriptEvent
+{	// 0x188 bytes
+	void* vtable;
+	// at 0x10
+	void* vtable2;
+	// at 0x1C
+	LuaObject UserData;
+	LuaObject Table;
+	// at 0x5C
+	float RateOfFire;
+	float MinRadius;
+	float MaxRadius;
+	float SquaredMinRadius;
+	float SquaredMaxRadius;
+	// at 0xA0
+	Unit* Owner;
+};
+
+struct CAiAttackerImpl // : IAiAttacker
+{	// 0xA4 bytes
+	void* vtable;
+	// at 0x58
+	vector Weapons; //<UnitWeapon*>
+};
+
+struct UserUnitWeapon
+{	// 0x98 bytes
+	// at 0x54
+	float MinRadius;
+	float MaxRadius;
+};
+
+struct UnitIntel
+{	// 0x20 bytes, AND 7FFFFFFF
+	int VisionRadius;
+	int WaterVisionRadius;
+	int RadarRadius;
+	int SonarRadius;
+	int OmniRadius;
+	int RadarStealthFieldRadius;
+	int SonarStealthFieldRadius;
+	int CloakFieldRadius;
+};
+
+struct Unit : WeakObject
 {	// 0x6A8 bytes
+	//WeakObject WeakObject;
 	// at 0x8
 	//Entity Entity; to 0x278
 	// at 0x50
@@ -781,15 +813,15 @@ struct Unit // : WeakObject
 	void* Unk14;
 	void* Unk15;
 	void* Unk16;
-	bool Unk17;
+	bool VisibleAndControl; // at 0x118
 	char pad2[3];
 	void* Unk18;
 	void* Unk19;
 	bool Unk20;
 	char pad3[3];
 	void* Unk21;
-	void* Unk22; // at 0x130
-	// at 0x154
+	UnitIntel UnitIntel; // at 0x130
+	Sim* Sim; // at 0x150
 	SimArmy* Owner;
 	Vector4f Rot3;
 	Vector3f Pos3;
@@ -804,23 +836,32 @@ struct Unit // : WeakObject
 	float ShieldRatio; // Readonly
 	// at 0x2AC
 	float WorkProgress;
+	// at 0x380
+	UserUnitWeapon* Weapons;
+	list unk1; // Weapons?
+	void* unk2; // Weapons?
 	// at 0x4B0
 	void* MotionEngine; // +0xC FuelUseTime
 	void* CommandQueue;
+	int Enum; //0..4
 	// at 0x534
 	void* WorkValues; //+0x8
 	bool Flag;
 	// at 0x53C
 	float WorkRate;
+	// at 0x544
+	void* IAiAttacker;
 	// at 0x55C
 	void* IAiTransport;
 	// at 0x59C
 	Vector3f Pos6;
 	// at 0x668
 	int TickCount2; // Readonly
+	// at 0x68E
+	bool UpdWeaponRadius;
 };
 
-struct UserEntity // : WeakObject
+struct UserEntity : WeakObject
 {	// 0x148 bytes
 	// at 0x44
 	int EntityID;
@@ -838,19 +879,50 @@ struct UserEntity // : WeakObject
 	Vector4f Pos2;
 	// at 0xD0
 	//float x1,y1,x2,y2;
-	// at 0x120
-	UserArmy* Owner;
+	// at 0x100
+	UnitIntel UnitIntel;
+	UserArmy* Owner; // at 0x120
 	Vector4f Rot3;
 	Vector4f Pos3;
 };
 
-struct UserUnit // : UserEntity
+struct UserUnit : UserEntity
 {	// 0x3E8 bytes
 	// at 0x44
 	int UnitID;
 	RUnitBlueprint* Blueprint;
 	// at 0x1DC
 	string customUnitName;
+	// at 0x290
+	UserUnitWeapon* Weapons;
+};
+
+struct ReconBlip : Entity
+{	// 0x4D0 bytes
+	Entity Entity;
+	// at 0x270
+	void* OriginUnit; //-0x4
+	// at 0x28C
+	void* StatItem;
+	void* StatItem2;
+	// at 0x320
+	void* CAniPose;
+	// at 0x328
+	void* CAniPose2;
+	// at 0x330, size 0x30?
+	list unk1;
+	void* unk2;
+	// at 0x360, size 0x30?
+	list unk3;
+	void* unk4;
+	// at 0x390, size 0x30?
+	list unk5; // Weapons?
+	void* unk6; // Weapons?
+	// at 0x450, size 0x30?
+	list unk7;
+	void* unk8;
+	// at 0x4C4
+	void* ArmyesData[]; //size 0x34
 };
 
 struct Sim // : ICommandSink
@@ -880,7 +952,7 @@ struct Sim // : ICommandSink
 	vector armies;// <class Moho::SimArmy*>
 	// at 0x920
 	list SSTICommandSources;
-	// at 0x93C Moho | at 0x92C FA
+	// at 0x92C
 	int ourCmdSource; // possibly just current in simulation.
 	// at 0x97C
 	void** unknown4; // 0x30 bytes
@@ -936,13 +1008,24 @@ struct CWldSession
 	int focusArmyIndex; // focused army, -1 = observer
 
 	bool32 isGameOver;
-	// at 0x4B4
-	float mouseWorldPosX;
-	float mouseWorldPosY;
-	float mouseWorldPosZ;
-	// at 0x4CC
-	float mouseScreenPosX;
-	float mouseScreenPosY;
+	// at 0x4A0
+	struct {
+		int Unk1;
+		void** SelList; //+0x10
+		int SelCount;
+		int SelCount2;
+	} SelectedUnits;
+	struct  // at 0x4B0
+	{	// size 0x20
+		// at 0x4B4
+		float mouseWorldPosX;
+		float mouseWorldPosY;
+		float mouseWorldPosZ;
+		// at 0x4C8
+		int IsDragger;
+		float mouseScreenPosX;
+		float mouseScreenPosY;
+	} Unk1;
 	// at 0x4D4
 	bool cheatsEnabled; // copied from LaunchInfoNew + 0x88
 	// at 0x4E8
@@ -1051,7 +1134,6 @@ struct CLobby
 	} peer_list; // Probably singly-linked list
 };
 
-/// Tres Importante
 struct sub_10392B10_ret
 {	// 0x20 bytes
 
@@ -1064,6 +1146,7 @@ struct sub_10392B10_ret
 	char one1;
 	char zero4; // 1 in CLobbyPeer.unknown2
 };
+
 struct CLobbyPeer
 {	// 0x50 bytes
 
@@ -1163,11 +1246,11 @@ struct CClientBase // : IClient
 	int maxSimRate; // from CalcMaxSimRate
 };
 
-struct CLocalClient // : CClientBase
+struct CLocalClient : CClientBase
 {	// 0xD8 bytes
 };  // equal CClientBase
 
-struct CReplayClient // : CClientBase
+struct CReplayClient : CClientBase
 {	// 0x160 bytes
 	// before 0xD8 it CClientBase
 	// at 0xD8

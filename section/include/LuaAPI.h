@@ -114,6 +114,7 @@ typedef struct {
   int tt;
   Value value;
 } TObject;
+VALIDATE_SIZE(TObject, 8)
 
 //namespace gpg
   class RRef {public: void* d; void* t;};
@@ -127,6 +128,7 @@ typedef struct {
       LuaState* m_state;
       int m_stackIndex;
   };
+  VALIDATE_SIZE(LuaStackObject, 8)
 
   namespace CLuaStackObject
   {
@@ -142,6 +144,7 @@ typedef struct {
       LuaState* m_state;
       TObject m_object;
   };
+  VALIDATE_SIZE(LuaObject, 0x14)
 
   namespace CLuaObject
   {
@@ -242,6 +245,7 @@ typedef struct {
         LuaObject* m_prev;  // only valid when in used list
       } m_headObject,  m_tailObject;
   };
+  VALIDATE_SIZE(LuaState, 0x34)
 
   namespace CLuaState
   {

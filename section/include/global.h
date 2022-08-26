@@ -22,21 +22,27 @@ Get debugging info about a Lua call:
 [[CallInfo+0C]-[Proto+0C]+[Proto+14]] = currentline
 */
 #define GDecl(addr, type) \
-  ((type)*(int*)(addr))
+  (*(type*)addr)
+
+#define WDecl(addr, type) \
+  ((type)*(uintptr_t*)addr)
 
 #define FDecl(addr, name, type) \
   inline const auto name = (type)addr;
 
-#define g_STIDriver			GDecl(0x10C4F50, void*)
-#define g_SWldSessionInfo		GDecl(0x10C4F58, void*)
-#define g_CWldSession			GDecl(0x10A6470, void*)
-#define g_Sim				GDecl(0x10A63F0, void*)
-#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, void*)
-#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, void*)
-#define g_CUIManager			GDecl(0x10A6450, void*)
-#define g_EngineStats			GDecl(0x10A67B8, void*)
-#define g_WRenViewport			GDecl(0x10C7C28, void*)
-#define g_ConsoleLuaState		GDecl(0x1104410, LuaState)
+#define VALIDATE_SIZE(struc, size) \
+  static_assert(sizeof(struc) == size, "Invalid structure size of " #struc);
+
+#define g_STIDriver			GDecl(0x10C4F50, uintptr_t)
+#define g_SWldSessionInfo		GDecl(0x10C4F58, uintptr_t)
+#define g_CWldSession			GDecl(0x10A6470, uintptr_t)
+#define g_Sim				GDecl(0x10A63F0, uintptr_t)
+#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, uintptr_t)
+#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, uintptr_t)
+#define g_CUIManager			GDecl(0x10A6450, uintptr_t)
+#define g_EngineStats			GDecl(0x10A67B8, uintptr_t)
+#define g_WRenViewport			GDecl(0x10C7C28, uintptr_t)
+#define g_ConsoleLuaState		GDecl(0x10A6478, uintptr_t)
 
 #define ui_ProgressBarColor		GDecl(0x0F57BB8, int)
 #define ui_SelectTolerance		GDecl(0x0F57A90, float)
@@ -47,6 +53,7 @@ Get debugging info about a Lua call:
 #define range_RenderHighlighted		GDecl(0x10A640B, bool)
 #define range_RenderBuild		GDecl(0x10A6414, bool)
 #define d3d_WindowsCursor		GDecl(0x10A636E, bool)
+#define debugSelect			GDecl(0x10A645E, bool)
 
 #define s_FACTORY			GDecl(0xE19824, const char*)
 #define s_EXPERIMENTAL			GDecl(0xE204B8, const char*)
@@ -63,9 +70,11 @@ FDecl(0x41C990, ConsoleLogF,	int (*)(const char *fmt, ...))
 FDecl(0xA9B4E6, FileWrite,	int (*)(int fileIndex, const char *str, int strlen)) //index 3 is log.
 FDecl(0xA825B9, shi_new,	void* (*)(uint32_t size))
 FDecl(0x958C40, shi_delete,	void (*)(void* ptr))
+FDecl(0xA94450, strlen,		size_t (*)(const char *str))
+FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char* str))
 
-#define GetModuleHandle GDecl(0xC0F378, __stdcall void* (*)(const char* lpLibFileName))
-#define GetProcAddress  GDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char* lpProcName))
+#define GetModuleHandle WDecl(0xC0F378, __stdcall void* (*)(const char* lpLibFileName))
+#define GetProcAddress  WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char* lpProcName))
 
 /*
 LuaPlus: See FALuaFuncs.txt
@@ -84,6 +93,9 @@ LuaObjectFinalize
 
 //Lua internals. For debug only.
 
+009133A0 luaG_typeerror
+004154B0 LuaStackObjectTypeError
+009134B0 errorfb
 00457880 luaplus_assert
 009274D0 luaH_getstr
 0091A240 luaM_realloc
@@ -179,6 +191,11 @@ LuaObjectFinalize
 008F4260 D3DXEffect::EndPass ?
 00941D70 D3DXEffect::SetMatrix ?
 00941F60 D3DXEffect::SetTechnique
+008F5950 LockVertexBuffer
+008F5B40 UnlockVertexBuffer
+0081F7B0 GetLeftMouseButtonAction
+0081EC00 GetRightMouseButtonAction
+008B43F0 GetEntitiesUnderCursor ?
 00858D80 DisplayEconomyOverlay
 00430590 D3DGetDevice
 008D82F0 CreateBitArray2D
@@ -199,6 +216,10 @@ LuaObjectFinalize
 0040A0A0 CreateStatItemRoot(EngineStats*):eax
 00408730 InitStatItem(StatItem*, char* name):eax
 008E5050 CalcHash
+005D62B0 CreateCAiAttackerImpl
+005D6AA0 InitCAiAttackerImpl
+005D5D90 AiAttacker::GetWeaponCount
+005BE6E0 InitReconBlip
 00542870 CreateLaunchInfoNew
 00542790 InitLaunchInfoNew
 005427F0 DestroyLaunchInfoNew
@@ -297,4 +318,8 @@ const int _Moho_SSTICommandIssueData_Destructor = 0x0057ABB0;
 
 // MSVCR80.dll
 #define _memmove_s = 0x00A824E7;
+
+// New unit categories.
+//const char* sCQUEMOV = "CQUEMOV";
+//const char* sSTAYONWATSUR = "STAYONWATSUR";
 */

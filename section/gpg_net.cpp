@@ -7,6 +7,7 @@ uint32_t p_index = 0;
 uint32_t sender_sock = 1;
 uint32_t sync_buffer[17];
 uint32_t discard = 0;
+bool game_ended = false;
 
 __attribute__((noinline)) void p_SetEvent()
 {
@@ -846,5 +847,44 @@ void Gpg_Net_Entry()
 		"pop ebx;"
 		"add esp,0x64;"
 		"ret 0x8;"
+	);
+}
+
+void EndGame()
+{
+	game_ended = true;
+	asm("mov dword ptr [0x011FD23F], 0xB;"); //remove block when last player remains.
+	asm
+	(
+		"push esi;"
+		"mov esi,eax;"
+		"mov eax,dword ptr [esi];"
+		"push edi;"
+		"mov edi,dword ptr [0x10BA600];"
+		"push eax;"
+		"call 0x90C590;"
+		"add esp,0x4;"
+		"test eax,eax;"
+		"je L0xABEL_0x0074B8DB;"
+		"push eax;"
+		"push 0x0;"
+		"push edi;"
+		"push 0xE0A220;"
+		"push esi;"
+		"call 0x90C1D0;"
+		"add esp,0x14;"
+		"L0xABEL_0x0074B8DB:;"
+		"mov esi,dword ptr [esi];"
+		"push esi;"
+		"call 0x924050;"
+		"mov edx,dword ptr [eax];"
+		"mov ecx,eax;"
+		"mov eax,dword ptr [edx+0x5C];"
+		"add esp,0x4;"
+		"call eax;"
+		"pop edi;"
+		"xor eax,eax;"
+		"pop esi;"
+		"ret;"
 	);
 }
