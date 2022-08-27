@@ -1,5 +1,6 @@
 #include "include/LuaAPI.h"
 
+<<<<<<< HEAD
 int SimSessionIsReplay(lua_State* L)
 {
 <<<<<<< HEAD
@@ -18,3 +19,10 @@ int SimSessionIsReplay(lua_State* L)
     );
 >>>>>>> 881e8d998994b05075d2f655632980634a9bc499
 }
+=======
+int SimSessionIsReplay(lua_State *L)
+{
+    lua_pushboolean(L, *reinterpret_cast<bool *>(g_CWldSession + 0x484));
+    return 1;
+}
+>>>>>>> 4d1871f (lua_cfuncs asm to cpp)
