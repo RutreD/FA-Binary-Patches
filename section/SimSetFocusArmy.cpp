@@ -1,12 +1,8 @@
-int SimSetFocusArmy(void* L)
+#include "include/LuaAPI.h"
+
+int SimSetFocusArmy(lua_State* L)
 {
-    asm
-    (
-        "MOV EAX,[ESI+0xC];"
-        "CVTTSS2SI EAX,[EAX+0x4];" // ArmyIndex
-        "MOV ECX,[0x10C4F50];"     // g_STIDriver
-        "MOV [ECX+0x0B0],EAX;"
-        "XOR EAX,EAX;"             // Num return values
-        "RET;"
-    );
+    int armyIndex = lua_tonumber(L, 1);
+    *reinterpret_cast<int *>(g_STIDriver + 0xB0) = armyIndex;
+    return 0;
 }

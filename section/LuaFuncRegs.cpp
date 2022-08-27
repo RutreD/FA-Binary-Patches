@@ -1,6 +1,6 @@
 #include "include/moho.h"
 
-int SimSessionIsReplay(void *L); // End Sim chain
+int SimSessionIsReplay(lua_State *L); // End Sim chain
 luaFuncDescReg SSIRRegDesc =  {0x00E45E90,          // Std register func
                                0x00E4AFBC,          // "SessionIsReplay"
                                0x00E00D90,          // "<global>"
@@ -9,7 +9,7 @@ luaFuncDescReg SSIRRegDesc =  {0x00E45E90,          // Std register func
                                SimSessionIsReplay,  // Func ptr
                                0x00000000};         // C++ class vtable ptr
 
-int SimSetCommandSource(void *L);
+int SimSetCommandSource(lua_State *L);
 luaFuncDescReg SSCSRegDesc =  {0x00E45E90,
                                "SetCommandSource",
                                0x00E00D90,
@@ -48,7 +48,7 @@ luaFuncDescReg SGMWPRegDesc = {0x00E45E90,
                                0x00842BB0,
                                0x00000000};
 
-int SimSetFocusArmy(void *L); // Sim chain entry
+int SimSetFocusArmy(lua_State *L);                  // Sim chain entry
 luaFuncDescReg SSFARegDesc =  {0x00E45E90,          // Std register func
                                0x00E43408,          // "SetFocusArmy"
                                0x00E00D90,          // "<global>"
@@ -81,3 +81,4 @@ luaFuncDescReg UGDAPRegDesc = {0x00E45E90, // UI chain entry
                                &USIMMBRegDesc,       // Next reg desc
                                SimGetDepositsAroundPoint,
                                0x00000000};
+
