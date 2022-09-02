@@ -54,7 +54,7 @@ int SimGetDepositsAroundPoint(lua_State* L)
     {
         if(!PatchedDepositType || PatchedDepositType == Deposit->Type)
         {
-            float x1 = ((Deposit->X2 + Deposit->X1) * 0.5f) - X;
+            float x1 = ((Deposit->X2 + Deposit->X1) * 0.5f) - X; //какого хуя Deposit->X1 возвращает 0????
             float z1 = ((Deposit->Z2 + Deposit->Z1) * 0.5f) - Z;
             float distance = sqrt((x1 * x1) + (z1 * z1));
             if (distance <= Radius)
