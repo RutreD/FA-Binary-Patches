@@ -7,10 +7,10 @@
 // ---@return PatchedDepositResult[]
 struct stDeposits
 { // 0x14
-    float X1;   // 0x0
-    float Z1;   // 0x4
-    float X2;   // 0x8
-    float Z2;   // 0xC
+    int X1;     // 0x0
+    int Z1;     // 0x4
+    int X2;     // 0x8
+    int Z2;     // 0xC
     int Type;   // 0x10
 };
 VALIDATE_SIZE(stDeposits, 0x14)
@@ -54,7 +54,7 @@ int SimGetDepositsAroundPoint(lua_State* L)
     {
         if(!PatchedDepositType || PatchedDepositType == Deposit->Type)
         {
-            float x1 = ((Deposit->X2 + Deposit->X1) * 0.5f) - X; //какого хуя Deposit->X1 возвращает 0????
+            float x1 = ((Deposit->X2 + Deposit->X1) * 0.5f) - X;
             float z1 = ((Deposit->Z2 + Deposit->Z1) * 0.5f) - Z;
             float distance = sqrt((x1 * x1) + (z1 * z1));
             if (distance <= Radius)
