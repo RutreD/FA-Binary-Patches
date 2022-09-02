@@ -1,4 +1,5 @@
 #include "include/LuaAPI.h"
+#include "include/moho.h"
 
 <<<<<<< HEAD
 int SimSessionIsReplay(lua_State* L)
@@ -22,7 +23,7 @@ int SimSessionIsReplay(lua_State* L)
 =======
 int SimSessionIsReplay(lua_State *L)
 {
-    lua_pushboolean(L, *reinterpret_cast<bool *>(g_CWldSession + 0x484));
+    lua_pushboolean(L, g_CWldSession.isReplay);
     return 1;
 }
 >>>>>>> 4d1871f (lua_cfuncs asm to cpp)
