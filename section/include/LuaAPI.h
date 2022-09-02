@@ -279,6 +279,40 @@ VALIDATE_SIZE(TObject, 8)
     //private
       FDecl(0x90aad0, Init, __thiscall void (*)(LuaState* this_, enum StandardLibraries))
   }
+struct lua_var //lua.org/source/5.0/lobject.h.html#TObject
+{	// 0x8 bytes
+	int type;
+	void* value;
+	/* Types:
+	  -1 - None
+	   0 - Nil
+	   1 - Boolean
+	   2 - LightUserData
+	   3 - Number
+	   4 - String
+	   5 - Table
+	   6 - CFunction
+	   7 - Function
+	   8 - UserData
+	   9 - Thread
+	*/
+};
+VALIDATE_SIZE(lua_var, 8)
+struct lua_State // lua.org/source/5.0/lstate.h.html#lua_State
+{ // 0x48
+	void *nextGCObject;
+	uint16_t tt, marked;
+	lua_var *objects_end;
+	lua_var *objects_start; // 1 based index
+	void *global_State;
+	void *callInfo;
+	lua_var *stack_last;
+	lua_var *stack;
+	int stacksize; // numVars
+	uint8_t _pad1[0x20];
+	void *LuaState;
+};
+VALIDATE_SIZE(lua_State, 0x48);
 
 FDecl(0x90a6b0, LuaPlusH_next, bool __cdecl (*)(LuaState*, const LuaObject*, LuaObject*, LuaObject*))
 FDecl(0x90ca40, lua_toboolean, bool __cdecl (*)(lua_State*, int))

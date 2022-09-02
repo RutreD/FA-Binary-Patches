@@ -1,9 +1,8 @@
 #pragma once
-
+#include "LuaAPI.h"
 #include "global.h"
-typedef unsigned int uint;
-typedef unsigned int bool32;
-typedef unsigned short uint16;
+
+typedef int BOOL;
 
 struct luaFuncDescReg
 {	// 0x1C bytes
@@ -28,7 +27,7 @@ struct typeInfo
 struct classDesc
 {	// 0x30+ bytes
 	// at 0x4
-	uint trueDataOffset; // subtraction
+	uint32_t trueDataOffset; // subtraction
 	// at 0xC
 	void* typeInfo;
 	// at 0x20
@@ -50,8 +49,8 @@ struct string
 {       // 0x1c bytes
 	void* ptr1;
 	char str[0x10]; // DataPtr or used as memory for 'Short Set Optimization'
-	uint strLen;
-	uint size; // 0f if SSO, 1f not SSO
+	uint32_t strLen;
+	uint32_t size; // 0f if SSO, 1f not SSO
 
 	const char* data() {
 		return size == 0xF ? &str : (const char*)str;
@@ -158,72 +157,11 @@ struct EngineStats // : .?AV?$Stats@VStatItem@Moho@@@Moho@@
 	void* vtable;
 	StatItem* stat;
 	void* criticalSection; // result RtlInitializeCriticalSection
-	bool32 unknown1; // set 1 at 00AC1A69
+	BOOL unknown1; // set 1 at 00AC1A69
 	string str1; // written "stats.log"
 	string str2;
 	int unknown2;
-	bool32 unknown3;
-};
-
-struct lua_var //lua.org/source/5.0/lobject.h.html#TObject
-{	// 0x8 bytes
-	int type;
-	void* value;
-
-	/* Types:
-	  -1 - None
-	   0 - Nil
-	   1 - Boolean
-	   2 - LightUserData
-	   3 - Number
-	   4 - String
-	   5 - Table
-	   6 - CFunction
-	   7 - Function
-	   8 - UserData
-	   9 - Thread
-	*/
-};
-VALIDATE_SIZE(lua_var, 8)
-
-struct lua_State //lua.org/source/5.0/lstate.h.html#lua_State
-{
-	void* nextGCObject;
-	uint16 tt, marked;
-	lua_var* objects_end;
-	lua_var* objects_start; // 1 based index
-	void* global_State;
-	void* callInfo;
-	lua_var* stack_last;
-	lua_var* stack;
-	int stacksize;          // numVars
-	// at 0x44
-	void* LuaState;
-};
-struct LuaState;
-struct LuaObject
-{	// 0x14 bytes
-	LuaObject* m_next;
-	LuaObject* m_prev;
-	LuaState* m_state;
-	lua_var m_object;
-};
-struct LuaState
-{	// 0x34 bytes
-	lua_State* m_state;
-	void* ForMultipleThreads;
-	bool m_ownState;
-	LuaObject m_threadObj;
-	LuaState* m_rootState;
-	struct MiniLuaObject {
-		LuaObject* m_next;  // only valid when in free list
-		LuaObject* m_prev;  // only valid when in used list
-	} m_headObject, m_tailObject;
-};
-struct LuaStackObject
-{	// 0x8 bytes
-	LuaState* state;
-	int stack_index;
+	BOOL unknown3;
 };
 
 struct Moho__SSTICommandIssueData
@@ -255,16 +193,16 @@ struct moho_set
 {       // 0x20 bytes
 	int baseIndex; // integer_base >> 5 (bits in uint)
 	int unknown2;
-	uint* items_begin;
-	uint* items_end;
-	uint* items_capacity_end;
+	uint32_t* items_begin;
+	uint32_t* items_end;
+	uint32_t* items_capacity_end;
 	void* unknown6;
-	uint value; // Used as memory for 'Short Set Optimization'
+	uint32_t value; // Used as memory for 'Short Set Optimization'
 	void* unknown8;
 
 	void add(int item)
 	{
-		uint* itemPtr = &items_begin[item >> 5];
+		uint32_t* itemPtr = &items_begin[item >> 5];
 		if (itemPtr >= items_end)
 			items_end = itemPtr + 1;
 		*itemPtr |= 1 << (item & 0x1f);
@@ -336,7 +274,7 @@ struct RBlueprint : RObject
 	string desc;
 	// at 0x40
 	string source; // example: /units/uel0001/uel0001_unit.bp
-	uint BlueprintOrdinal;
+	uint32_t BlueprintOrdinal;
 };
 
 struct RMeshBlueprint : RBlueprint
@@ -525,13 +463,13 @@ struct SimArmyEconomyInfo
 	float expenseEnergy;    // div 10
 	float expenseMass;      // div 10
 
-	uint maxEnergy;
+	uint32_t maxEnergy;
 	int unknown3;
-	uint maxMass;
+	uint32_t maxMass;
 	int unknown4;
 
 	float unknown5;
-	uint isResourceSharing;
+	uint32_t isResourceSharing;
 	float unknown6;
 	float unknown7;
 };
@@ -556,17 +494,17 @@ struct UserArmy
 	float expenseEnergy;    // div 10
 	float expenseMass;      // div 10
 
-	uint maxEnergy;
+	uint32_t maxEnergy;
 	int unknown3; // =0
-	uint maxMass;
+	uint32_t maxMass;
 	int unknown4; // =0
 	bool isResourceSharing;
 
 	// at 0x128
 	moho_set mValidCommandSources;
 	// at 0x148
-	uint color;
-	uint iconColor;
+	uint32_t color;
+	uint32_t iconColor;
 	string mArmyType; // 'human' for players
 	// at 0x16C
 	int faction;
@@ -604,9 +542,9 @@ struct SimArmy // : IArmy
 	float expenseEnergy;    // div 10
 	float expenseMass;      // div 10
 
-	uint maxEnergy;
+	uint32_t maxEnergy;
 	int unknown3; // =0
-	uint maxMass;
+	uint32_t maxMass;
 	int unknown4; // =0
 	bool isResourceSharing;
 	// at 0xC8
@@ -620,8 +558,8 @@ struct SimArmy // : IArmy
 	moho_set mValidCommandSources;
 
 	// at 0x150
-	uint color;
-	uint iconColor;
+	uint32_t color;
+	uint32_t iconColor;
 	string mArmyType; // 'human' for players
 	// at 0x174
 	int faction;
@@ -672,9 +610,9 @@ struct Sim;
 struct Entity : CScriptObject
 {	// 0x270 bytes
 	// at 0x68
-	uint EntityID; //For units x|xx|xxxxxx Type,Army,Num. Uses for UserSync
+	uint32_t EntityID; //For units x|xx|xxxxxx Type,Army,Num. Uses for UserSync
 	REntityBlueprint* Blueprint;
-	uint CreationIndex; //?
+	uint32_t CreationIndex; //?
 	// at 0x110
 	bool VisibleAndControl;
 };
@@ -706,7 +644,7 @@ struct CUnitCommand
 	RUnitBlueprint* Build;
 	string Unk5;
 	// at 0x98
-	uint Order;
+	uint32_t Order;
 	// at 0xA4
 	Vector4f Pos1;
 	// at 0x128
@@ -788,7 +726,7 @@ struct Unit : WeakObject
 	// at 0x70
 	int UnitID;
 	RUnitBlueprint* Blueprint;
-	uint CreationIndex; //?
+	uint32_t CreationIndex; //?
 	void* Unk1;
 	void* Unk2;
 	void* RScmResource;
@@ -943,9 +881,9 @@ struct Sim // : ICommandSink
 	// at 0x8E6
 	bool cheatsEnabled;
 	// at 0x8F8
-	uint beatCounter1;
+	uint32_t beatCounter1;
 	void* unknown1; // self+0x900 or null
-	uint beatCounter2;
+	uint32_t beatCounter2;
 	// at 0x904
 	void* unknown2; // 0x9CC bytes
 	void* unknown3; // 0x68 bytes
@@ -967,71 +905,63 @@ struct Sim // : ICommandSink
 	// at 0xA88
 	int focusArmyIndex; // focused army, -1 = observer
 };
+
 struct CWldSession
-{	// 0x508 bytes
-	CWldSession* self1;
-	CWldSession* self2;
+{						   // 0x0089318A, 0x508 bytes
+	CWldSession *self[2]; // 0x0  WCnt: 2
+	void *f1[2];		   // 0x8  Self+0x8  WCnt: 2
+	LuaState *LPlus;	   // 0x10  WCnt: 1
+	LuaObject *LObject;	   // 0x14  WCnt: 2
 
-	void* self_weird1; // = this + 0x8
-	void* self_weird2; // = this + 0x8
-
-	// at 0x10
-	LuaState* state; // set from constructor argument
-	void* unknown1; // 0x14 bytes
-	RRuleGameRules* rules;
-	CWldMap* map;
-	void* LaunchInfoNew;
-	void* unknown2; // .?AV?$sp_counted_impl_p@ULaunchInfoNew@Moho@@@detail@boost@@
-	string map_name;
-	Entities entities;
-
-	char stuff[0x35c];
-
-	// at 0x3F0
-	list armies; // <UserArmy*>
-	// at 0x3FC
-	void* unknown3; // 0xCC0 bytes
-	void* unknown4; // 0x64 bytes
-	// at 0x424
-	CSimResources* Deposits;
-	// at 0x470
-	vector cmdSources; // <SSTICommandSource>
-
-	// at 0x480
-	int ourCmdSource;
-
+	RRuleGameRules *Rules;										   // 0x18  WCnt: 1
+	CWldMap *Map;												   // 0x1C  WCnt: 1
+	struct LaunchInfoNew *LaunchInfo;							   // 0x20  WCnt: 2
+	void * /* class sp_counted_impl_p<ULaunchInfoNew@Moho>* */ f7; // 0x24  WCnt: 2
+	string MapName;
+	Entities Entities_;
+	uint8_t _pad1[0x3A8];
+	list Armies; // 0x3F0  WCnt: 2
+	void *f42;	 // 0x3FC  WCnt: 1   *f42 size 0xCC0
+	void *f43;	 // 0x400  WCnt: 1   *f43 size 0x64
+	uint8_t _pad2[0x20];
+	CSimResources *Deposits; // 0x424
+	uint8_t _pad3[0x48];
+	vector cmdSources; // 0x470 <SSTICommandSource>
+	int ourCmdSource;  // 0x480
 	bool isReplay;
 	bool isBeingRecorded;
 	bool isMultiplayer;
 	bool allowObservers;
-
-	int focusArmyIndex; // focused army, -1 = observer
-
-	bool32 isGameOver;
-	// at 0x4A0
-	struct {
+	int focusArmyIndex;
+	int isGameOver;
+	uint8_t _pad4[0x10];
+	struct
+	{
 		int Unk1;
-		void** SelList; //+0x10
+		void **SelList; //+0x10
 		int SelCount;
 		int SelCount2;
-	} SelectedUnits;
-	struct  // at 0x4B0
-	{	// size 0x20
-		// at 0x4B4
-		float mouseWorldPosX;
-		float mouseWorldPosY;
-		float mouseWorldPosZ;
-		// at 0x4C8
-		int IsDragger;
-		float mouseScreenPosX;
-		float mouseScreenPosY;
-	} Unk1;
-	// at 0x4D4
-	bool cheatsEnabled; // copied from LaunchInfoNew + 0x88
-	// at 0x4E8
-	bool displayEconomyOverlay;
-	bool relationsArmyColors;
-};
+	} SelectedUnits; // 0x4A0
+
+	struct
+	{ // size 0x20
+		void *_unk1;
+		float mouseWorldPosX;  // 0x4B4
+		float mouseWorldPosY;  // 0x4B8
+		float mouseWorldPosZ;  // 0x4BC
+		void *_unk2;		   // 0x4B0
+		void *_unk3;		   // 0x4B4
+		int IsDragger;		   // 0x4C8
+		float mouseScreenPosX; // 0x4CC
+		float mouseScreenPosY; // 0x4D0
+	} Unk1;					   // 0x4B0
+	bool CheatsEnabled;		   // 0x4D4
+	uint8_t _pad5[0x13];
+	bool displayEconomyOverlay; // 0x4E8
+	bool relationsArmyColors;	// 0x4E9
+	uint8_t _pad6[0x1C];
+}; // 0x508
+VALIDATE_SIZE(CWldSession, 0x508)
 
 struct CSimDriver // : ISTIDriver
 {	// 0x230 bytes
@@ -1041,9 +971,9 @@ struct CSimDriver // : ISTIDriver
 	// at 0x10
 	void* LaunchInfoNew; // from g_SWldSessionInfo, only when loading game init
 	// at 0x1C
-	uint beatCounter1;
-	uint beatCounter2; // copied to address 0x1290710
-	uint beatCounter3;
+	uint32_t beatCounter1;
+	uint32_t beatCounter2; // copied to address 0x1290710
+	uint32_t beatCounter3;
 	// at 0xB0
 	int focusArmyIndex;
 	// at 0x120
@@ -1059,7 +989,7 @@ struct CHeightField // : .?AVsp_counted_base@detail@boost@@
 
 struct MapData
 {	// 0x1C bytes
-	uint* TerrainHeights; // Word(TerrainHeights+(Y*SizeX+X)*2)
+	uint32_t* TerrainHeights; // Word(TerrainHeights+(Y*SizeX+X)*2)
 	int SizeX; // +1
 	int SizeY; // +1
 };
@@ -1208,7 +1138,7 @@ struct CClientManagerImpl // : IClientManager
 	int gameSpeedRequested;     // mGameSpeed
 	bool speedControlEnabled;
 	// at 0x458
-	uint hEvent; // for KERNEL32.SetEvent
+	uint32_t hEvent; // for KERNEL32.SetEvent
 	// at 0x18470
 	PipeStream mPipe;
 	// at 0x184BC
@@ -1264,12 +1194,12 @@ struct CReplayClient : CClientBase
 	// at 0x130
 	void* unknown2;
 	// at 0x138
-	uint replayBeat;
+	uint32_t replayBeat;
 	char unknown3;
 	void* unknown4;
-	uint hSemaphore1;
-	uint hSemaphore2;
-	uint hMutex;
+	uint32_t hSemaphore1;
+	uint32_t hSemaphore2;
+	uint32_t hMutex;
 	// at 0x15C
 	char unknown5;
 	char unknown6;

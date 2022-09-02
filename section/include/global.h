@@ -35,7 +35,7 @@ Get debugging info about a Lua call:
 
 #define g_STIDriver			GDecl(0x10C4F50, uintptr_t)
 #define g_SWldSessionInfo		GDecl(0x10C4F58, uintptr_t)
-#define g_CWldSession			GDecl(0x10A6470, uintptr_t)
+#define g_CWldSession			GDecl(0x10A6470, CWldSession)
 #define g_Sim				GDecl(0x10A63F0, uintptr_t)
 #define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, uintptr_t)
 #define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, uintptr_t)
