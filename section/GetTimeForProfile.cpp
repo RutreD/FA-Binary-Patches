@@ -1,26 +1,28 @@
-int GetTimeForProfile(void* L)
+#include "include/LuaAPI.h"
+
+int GetTimeForProfile(lua_State *L)
 {
+<<<<<<< HEAD
     asm(
         "SUB ESP,0x8;"
         "PUSH ESP;"
         "CALL DWORD PTR [0xC0F470];" //QueryPerformanceCounter
         "FILD QWORD PTR [ESP];"
+=======
+    int64_t OriginTime = static_cast<int64_t>(lua_tonumber(L, 1));
+>>>>>>> a3cbe69 (GetTimeForProfile)
 
-        "PUSH ESP;"
-        "CALL DWORD PTR [0xC0F46C];" //QueryPerformanceFrequency
-        "FILD QWORD PTR [ESP];"
+    int64_t Counter;
+    int64_t Frequency;
 
-        "MOV ECX,[ESI+0xC];"
-        "FLD DWORD PTR [ECX+0x4];" //OriginTime
-        "FMUL ST(1);"
-        "FSUBP ST(2), ST;"
-        "FDIVP ST(1), ST;"
-        "FSTP DWORD PTR [ESP+0x4];"
+    auto QueryPerformanceCounter = *reinterpret_cast<int(__stdcall **)(int64_t *)>(0xC0F470);
+    QueryPerformanceCounter(&Counter);
 
-        "MOV [ESP], ESI;"
-        "CALL 0x0090CD40;" //PushNumber
-        "ADD ESP,0x8;"
-        "MOV EAX,0x1;"
-        "RET;"
-    );
+    auto QueryPerformanceFrequency = *reinterpret_cast<int(__stdcall **)(int64_t *)>(0xC0F46C);
+    QueryPerformanceFrequency(&Frequency);
+    
+    auto res = static_cast<float>((Counter - OriginTime * Frequency)) / static_cast<float>(Frequency);
+
+    lua_pushnumber(L, res);
+    return 1;
 }

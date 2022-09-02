@@ -51,7 +51,7 @@ luaFuncDescReg SGDAPRegDesc = {0x00E45E90,
 
 #define s_GTFPName "GetTimeForProfile"
 #define s_GTFPDesc "(OriginTime)"
-int GetTimeForProfile(void *L);
+int GetTimeForProfile(lua_State *L);
 luaFuncDescReg SGTFPRegDesc = {0x00E45E90,
                                s_GTFPName,
                                0x00E00D90,
