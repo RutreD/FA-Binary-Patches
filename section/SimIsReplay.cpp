@@ -23,7 +23,7 @@ int SimSessionIsReplay(lua_State* L)
 =======
 int SimSessionIsReplay(lua_State *L)
 {
-    lua_pushboolean(L, g_CWldSession.isReplay);
+    lua_pushboolean(L, g_CWldSession->isReplay);
     return 1;
 }
 >>>>>>> 4d1871f (lua_cfuncs asm to cpp)
