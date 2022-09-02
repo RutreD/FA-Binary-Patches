@@ -21,7 +21,7 @@ int GetTimeForProfile(lua_State *L)
     auto QueryPerformanceFrequency = *reinterpret_cast<int(__stdcall **)(int64_t *)>(0xC0F46C);
     QueryPerformanceFrequency(&Frequency);
     
-    auto res = static_cast<float>((Counter - OriginTime * Frequency)) / static_cast<float>(Frequency);
+    auto res = static_cast<float>(Counter - OriginTime * Frequency) / static_cast<float>(Frequency);
 
     lua_pushnumber(L, res);
     return 1;
