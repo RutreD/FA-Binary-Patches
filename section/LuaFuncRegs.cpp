@@ -40,7 +40,7 @@ luaFuncDescReg SSCSRegDesc = {0x00E45E90,
 
 #define s_GDAPName "GetDepositsAroundPoint"
 #define s_GDAPDesc "(X, Z, Radius, Type)"
-int SimGetDepositsAroundPoint(void *L);
+int SimGetDepositsAroundPoint(lua_State *L);
 luaFuncDescReg SGDAPRegDesc = {0x00E45E90,
                                s_GDAPName,
                                0x00E00D90,
