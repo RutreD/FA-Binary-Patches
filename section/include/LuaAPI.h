@@ -179,10 +179,14 @@ VALIDATE_SIZE(TObject, 8)
       FDecl(0x908ba0, GetMetaTable, __thiscall LuaObject (*)(LuaObject* this_))
       FDecl(0x9093b0, Lookup, __thiscall LuaObject (*)(LuaObject* this_, const char*))
 <<<<<<< HEAD
+<<<<<<< HEAD
       FDecl(0x907d80, PushStack, __thiscall void (*)(LuaObject* this_, LuaStackObject* out, LuaState*))
 =======
       FDecl(0x907d80, PushStack, __thiscall LuaStackObject (*)(LuaObject* this_, lua_State*, LuaState*))
 >>>>>>> f3c2e21 (simgetdeposits to cpp)
+=======
+      FDecl(0x907d80, PushStack, __thiscall LuaStackObject* (*)(LuaObject* this_, LuaStackObject*, LuaState*))
+>>>>>>> b86ce3b (fix 0.6)
       FDecl(0x907d10, PushStack2, __thiscall void (*)(LuaObject* this_, lua_State*))
       FDecl(0x9072b0, GetActiveState, __thiscall LuaState* (*)(LuaObject* this_))
       FDecl(0x907a90, GetString, __thiscall const char* (*)(LuaObject* this_))

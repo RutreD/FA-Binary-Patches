@@ -44,6 +44,7 @@ int SimGetDepositsAroundPoint(lua_State* L)
 
     LuaObject LObj{};
     LuaObject LObj2{};
+    LuaStackObject LStackObj{};
     CLuaObject::AssignNewTable(&LObj, LPlus, 0, 0);
 
     auto SimResources = *reinterpret_cast<uintptr_t*>(g_Sim + 0x8D0);
@@ -66,8 +67,8 @@ int SimGetDepositsAroundPoint(lua_State* L)
                 CLuaObject::SetInteger(&LObj2, "Z2", Deposit->Z2);
                 CLuaObject::SetInteger(&LObj2, "Type", Deposit->Type);
                 CLuaObject::SetNumber(&LObj2, "Dist", distance);
-                CLuaObject::PushStack(&LObj2, L, LPlus);
-                CLuaObject::SetObject3(&LObj2, i, LObj2);
+                CLuaObject::PushStack(&LObj2, &LStackObj, LPlus);
+                CLuaObject::SetObject3(&LObj, i, LObj2);
                 CLuaObject::DLuaObject(&LObj2);
                 i++;
             }
@@ -75,8 +76,8 @@ int SimGetDepositsAroundPoint(lua_State* L)
 
         Deposit++;
     }
-    
-    CLuaObject::PushStack(&LObj, L, LPlus);
+
+    CLuaObject::PushStack(&LObj, &LStackObj, LPlus);
     CLuaObject::DLuaObject(&LObj);
     return 1;
 }
