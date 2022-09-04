@@ -113,12 +113,16 @@ int SimSetCommandSource(lua_State *L)
 	bool set_or_unset = lua_toboolean(L, 3);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	uintptr_t army = (*reinterpret_cast<uintptr_t **>(g_Sim + 0x910))[armyId];
 	moho_set *armyset = reinterpret_cast<moho_set *>(army + 0x130);
 >>>>>>> 4d1871f (lua_cfuncs asm to cpp)
 =======
 	auto armyset = (reinterpret_cast<SimArmy *>(g_Sim->armies[armyId]))->mValidCommandSources;
 >>>>>>> aeab674 (1.5)
+=======
+	auto armyset = g_Sim->armies[armyId]->mValidCommandSources;
+>>>>>>> b164278 (1.55)
 	if (set_or_unset)
 		armyset.add(sourceId);
 	else

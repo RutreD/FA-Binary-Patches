@@ -58,6 +58,24 @@ struct string
 };
 VALIDATE_SIZE(string, 0x1C)
 
+template<typename T>
+struct std_vector
+{ // 0x10 bytes
+	uint8_t _pad1[4];
+	T *objects_begin;
+	T *objects_end;
+	T *objects_capacity_end;
+	T operator[](int index)
+	{
+		return objects_begin[index];
+	}
+	size_t size()
+	{
+		return objects_end - objects_begin;
+	}
+};
+VALIDATE_SIZE(std_vector<void>, 0x10)
+
 struct vector
 {	// 0x10 bytes
 	uint8_t _pad1[4];
@@ -68,7 +86,7 @@ struct vector
 	{
 		return objects_begin[index];
 	}
-	int size() {
+	size_t size() {
 		return objects_end - objects_begin;
 	}
 };
@@ -892,7 +910,8 @@ struct Sim // : ICommandSink
 	// at 0x904
 	void *unknown2; // 0x9CC bytes
 	void *unknown3; // 0x68 bytes
-	vector armies;	// <class Moho::SimArmy*>
+	// vector armies;
+	std_vector<SimArmy*> armies;	// <class Moho::SimArmy*>
 	uint8_t _pad6[4];
 	// at 0x920
 	list SSTICommandSources;

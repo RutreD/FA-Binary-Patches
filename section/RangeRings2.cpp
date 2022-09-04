@@ -2,9 +2,9 @@
 
 float MinCHeight, MaxCHeight;
 
-void* _thiscall HeightCylinders(char* this_)
+uintptr_t __thiscall HeightCylinders(uintptr_t this_)
 {
-    auto Sim = reinterpret_cast<char* (_thiscall *)(void*)>(0x7433B0)(this_);
+    auto Sim = reinterpret_cast<uintptr_t(__thiscall *)(uintptr_t)>(0x7433B0)(this_);
     auto STIMap = *(uint32_t*)(Sim + 0x8CC);
     auto MapData = *(uint32_t*)STIMap;
     auto Heights = (uint16_t*)*(uint32_t*)MapData;
@@ -18,8 +18,8 @@ void* _thiscall HeightCylinders(char* this_)
     }
     MinCHeight = MinH * 0.0078125f - 5.f;
     MaxCHeight = MaxH * 0.0078125f;
-    this_ = (char*)*(uint32_t*)(0x10C7C28);
-    reinterpret_cast<void (_thiscall *)(void*)>(0x7EDFE0)(this_ + 0x37C);
-    reinterpret_cast<void (_thiscall *)(void*)>(0x81C0C0)(this_ + 0x410);
+    this_ = *(uintptr_t *)(0x10C7C28);
+    reinterpret_cast<void (__thiscall *)(void*)>(0x7EDFE0)(this_ + 0x37C);
+    reinterpret_cast<void (__thiscall *)(void*)>(0x81C0C0)(this_ + 0x410);
     return Sim;
 }
