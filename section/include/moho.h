@@ -60,19 +60,17 @@ VALIDATE_SIZE(string, 0x1C)
 
 struct vector
 {	// 0x10 bytes
-	void* pad;
-	void* objects_begin;
-	void* objects_end;
-	void* objects_capacity_end;
-/*
-	void* operator[](int index) {
-		if(index >= size()) return 0;
+	uint8_t _pad1[4];
+	uintptr_t *objects_begin;
+	uintptr_t *objects_end;
+	uintptr_t *objects_capacity_end;
+	uintptr_t operator[](int index)
+	{
 		return objects_begin[index];
 	}
-
 	int size() {
 		return objects_end - objects_begin;
-	}*/
+	}
 };
 VALIDATE_SIZE(vector, 0x10)
 
@@ -408,18 +406,19 @@ struct Deposit
 	int X1,Z1,X2,Z2; // Rect
 	int Type; // 1 - Mass, 2 - Energy
 };
-
+VALIDATE_SIZE(Deposit, 0x14);
 struct CSimResources // : ISimResources // : IResources
-{	// 0x1C bytes
-	void* vtable;
+{					 // 0x1C bytes
+	void *vtable;
 	// at 0x8 in vtable
 	// ecx:CreateResourceDeposit(type, x, y, z, size)
 	// at 0x28 in vtable
 	// ecx:FindResourceDeposit(PtrPosXZ, PtrResultXZ, Radius, Type):Bool
-
+	uint8_t _pad[0xC];
 	// at 0x10
 	list Deposits; // <Deposit*>
 };
+VALIDATE_SIZE(CSimResources, 0x1C)
 
 struct SWldSessionInfo
 {	// 0x30 bytes
@@ -515,79 +514,80 @@ struct UserArmy
 };
 
 struct SimArmy // : IArmy
-{	// 0x288 bytes
-	void* vtable;
+{				// 0x288 bytes
+	void *vtable;
 	// at 0xA4 in vtable
-	//void* GetUnitCap;
-	//void* SetUnitCap;
-
-	void* unknown1;
+	// void* GetUnitCap;
+	// void* SetUnitCap;
+	void *unknown1;
 	int armyIndex;
 	string name;
 	string nickname;
-
 	// at 0x44
 	bool isCivilian;
+	uint8_t _pad1[0x40];
 	// at 0x88 Copy from [[self+1F4]+18]
 	float storedEnergy;
 	float storedMass;
-
-	float incomeEnergy;     // div 10
-	float incomeMass;       // div 10
+	float incomeEnergy; // div 10
+	float incomeMass;	// div 10
 	float reclaimedEnergy;
 	float reclaimedMass;
-
-	float requestedEnergy;  // div 10
-	float requestedMass;    // div 10
-	float expenseEnergy;    // div 10
-	float expenseMass;      // div 10
-
+	float requestedEnergy; // div 10
+	float requestedMass;   // div 10
+	float expenseEnergy;   // div 10
+	float expenseMass;	   // div 10
 	uint32_t maxEnergy;
 	int unknown3; // =0
 	uint32_t maxMass;
 	int unknown4; // =0
 	bool isResourceSharing;
+	uint8_t _pad2[4];
 	// at 0xC8
 	moho_set neutrals;
 	moho_set allies;
 	moho_set enemies;
-
 	// at 0x128
 	bool IsAlly;
+	uint8_t _pad3[4];
 	// at 0x130
 	moho_set mValidCommandSources;
-
 	// at 0x150
 	uint32_t color;
 	uint32_t iconColor;
 	string mArmyType; // 'human' for players
 	// at 0x174
 	int faction;
+	uint8_t _pad4[0x48];
 	// at 0x1C0
 	bool outOfGame;
 	// at 0x1C4
 	Vector2f StartPosition;
+	uint8_t _pad5[0x4];
 	// at 0x1D0
 	float noRushRadius;
 	float noRushOffsetX;
 	float noRushOffsetY;
-
+	uint8_t _pad6[0xC];
 	// at 0x1E8
-	void* Sim;
-	void* CAiBrain;
-
+	void *Sim;
+	void *CAiBrain;
 	// at 0x1F0
-	void* CAiReconDBImpl;
-	SimArmyEconomyInfo* EconomyInfo;
+	void *CAiReconDBImpl;
+	SimArmyEconomyInfo *EconomyInfo;
 	// at 0x1F8
 	string unknown5;
+	uint8_t _pad7[0x5C];
 	// at 0x270
 	float unitCap;
+	uint8_t _pad8[4];
 	// at 0x278
 	int pathCap_Land;
 	int pathCap_Sea;
 	int pathCap_Both;
+	uint8_t _pad9[4];
 };
+VALIDATE_SIZE(SimArmy, 0x288);
 
 struct CArmyImpl : SimArmy
 {
@@ -864,47 +864,59 @@ struct ReconBlip : Entity
 };
 
 struct Sim // : ICommandSink
-{	// 0xAF8 bytes
-	void* vtable;
+{		   // 0xAF8 bytes
+	void *vtable;
+	uint8_t _pad1[0x4C];
 	// at 0x50
 	char dynamicHash[16];
 	char hashTrash[0x50];
-	char simHashes[16*128]; // at 0xB0-8B0
+	char simHashes[16 * 128]; // at 0xB0-8B0
+	uint8_t _pad2[0x10];
 	// at 0x8C0
-	void* CEffectManager;   // 0x18 bytes
-	void* CSimSoundManager; // 0x720 bytes
-	RRuleGameRules* rules;  // from CSimDriver.LaunchInfoNew
-	void* STIMap;           // from CSimDriver.LaunchInfoNew
-	CSimResources* Deposits;
+	void *CEffectManager;	// 0x18 bytes
+	void *CSimSoundManager; // 0x720 bytes
+	RRuleGameRules *rules;	// from CSimDriver.LaunchInfoNew
+	void *STIMap;			// from CSimDriver.LaunchInfoNew
+	CSimResources *Deposits;
+	uint8_t _pad3[4];
 	// at 0x8D8
-	LuaState* state;
+	LuaState *state;
+	uint8_t _pad4[0xA];
 	// at 0x8E6
 	bool cheatsEnabled;
+	uint8_t _pad5[0x10];
 	// at 0x8F8
 	uint32_t beatCounter1;
-	void* unknown1; // self+0x900 or null
+	void *unknown1; // self+0x900 or null
 	uint32_t beatCounter2;
 	// at 0x904
-	void* unknown2; // 0x9CC bytes
-	void* unknown3; // 0x68 bytes
-	vector armies;// <class Moho::SimArmy*>
+	void *unknown2; // 0x9CC bytes
+	void *unknown3; // 0x68 bytes
+	vector armies;	// <class Moho::SimArmy*>
+	uint8_t _pad6[4];
 	// at 0x920
 	list SSTICommandSources;
 	// at 0x92C
 	int ourCmdSource; // possibly just current in simulation.
-	// at 0x97C
-	void** unknown4; // 0x30 bytes
-	void* CAiFormationDB; // 0x40 bytes
+					  // at 0x97C
+	uint8_t _pad7[0x4C];
+	void **unknown4;	  // 0x30 bytes
+	void *CAiFormationDB; // 0x40 bytes
 	// at 0x984
-	void* Entities;
-	void* unknown5; // 0xCD0 bytes
+	void *Entities;
+	void *unknown5; // 0xCD0 bytes
+	uint8_t _pad8[0x10];
 	// at 0x99C
-	void* unknown6; // 0xCF0 bytes
+	void *unknown6; // 0xCF0 bytes
+	uint8_t _pad9[0x98];
 	// at 0xA38
-	void* unknown7; // 0xC bytes
+	void *unknown7; // 0xC bytes
+	uint8_t _pad10[0x4C];
 	// at 0xA88
 	int focusArmyIndex; // focused army, -1 = observer
+	uint8_t _pad11[0x6C];
 };
+VALIDATE_SIZE(Sim, 0xAF8)
 
 struct CWldSession
 {						   // 0x0089318A, 0x508 bytes
@@ -964,23 +976,30 @@ struct CWldSession
 VALIDATE_SIZE(CWldSession, 0x508)
 
 struct CSimDriver // : ISTIDriver
-{	// 0x230 bytes
-	void* vtable;
-	Sim* sim;
-	IClientManager* ClientManager;
+{				  // 0x230 bytes
+	void *vtable;
+	Sim *sim;
+	IClientManager *ClientManager;
+	uint8_t _pad1[4];
 	// at 0x10
-	void* LaunchInfoNew; // from g_SWldSessionInfo, only when loading game init
+	void *LaunchInfoNew; // from g_SWldSessionInfo, only when loading game init
+	uint8_t _pad2[8];
 	// at 0x1C
 	uint32_t beatCounter1;
 	uint32_t beatCounter2; // copied to address 0x1290710
 	uint32_t beatCounter3;
+	uint8_t _pad4[0x86];
 	// at 0xB0
 	int focusArmyIndex;
+	uint8_t _pad5[0x6C];
 	// at 0x120
-	int focusArmyIndex2; //Copy from 0xB0
+	int focusArmyIndex2; // Copy from 0xB0
+	uint8_t _pad6[0x104];
 	// at 0x228
 	int maxSimRate; // from CalcMaxSimRate
+	uint8_t _pad7[4];
 };
+VALIDATE_SIZE(CSimDriver, 0x230);
 
 struct CHeightField // : .?AVsp_counted_base@detail@boost@@
 {	// 0x10 bytes

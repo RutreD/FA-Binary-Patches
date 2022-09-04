@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 #include "include/LuaAPI.h"
+<<<<<<< HEAD
 =======
 int SimSetCommandSource(void* L)
 {
@@ -101,6 +102,9 @@ int SimSetCommandSource(lua_State* L)
 	}
 };
 VALIDATE_SIZE(moho_set, 0x20)
+=======
+#include "include/moho.h"
+>>>>>>> aeab674 (1.5)
 
 int SimSetCommandSource(lua_State *L)
 {
@@ -108,12 +112,16 @@ int SimSetCommandSource(lua_State *L)
 	int sourceId = lua_tonumber(L, 2);
 	bool set_or_unset = lua_toboolean(L, 3);
 
+<<<<<<< HEAD
 	uintptr_t army = (*reinterpret_cast<uintptr_t **>(g_Sim + 0x910))[armyId];
 	moho_set *armyset = reinterpret_cast<moho_set *>(army + 0x130);
 >>>>>>> 4d1871f (lua_cfuncs asm to cpp)
+=======
+	auto armyset = (reinterpret_cast<SimArmy *>(g_Sim->armies[armyId]))->mValidCommandSources;
+>>>>>>> aeab674 (1.5)
 	if (set_or_unset)
-		armyset->add(sourceId);
+		armyset.add(sourceId);
 	else
-		armyset->remove(sourceId);
+		armyset.remove(sourceId);
 	return 0;
 }

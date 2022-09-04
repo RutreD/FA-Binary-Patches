@@ -1,4 +1,5 @@
 #include "include/LuaAPI.h"
+#include "include/moho.h"
 
 <<<<<<< HEAD
 int SimSetFocusArmy(lua_State* L)
@@ -9,7 +10,7 @@ int SimSetFocusArmy(lua_State *L)
 {
 >>>>>>> 4d1871f (lua_cfuncs asm to cpp)
     int armyIndex = lua_tonumber(L, 1);
-    *reinterpret_cast<int *>(g_STIDriver + 0xB0) = armyIndex;
+    g_STIDriver->focusArmyIndex = armyIndex;
     return 0;
 }
 <<<<<<< HEAD

@@ -33,10 +33,10 @@ Get debugging info about a Lua call:
 #define VALIDATE_SIZE(struc, size) \
   static_assert(sizeof(struc) == size, "Invalid structure size of " #struc);
 
-#define g_STIDriver			GDecl(0x10C4F50, uintptr_t)
+#define g_STIDriver GDecl(0x10C4F50, CSimDriver *)
 #define g_SWldSessionInfo		GDecl(0x10C4F58, uintptr_t)
-#define g_CWldSession			((CWldSession*)0x10A6470)
-#define g_Sim				GDecl(0x10A63F0, uintptr_t)
+#define g_CWldSession			((CWldSession *)0x10A6470)
+#define g_Sim				GDecl(0x10A63F0, Sim *)
 #define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, uintptr_t)
 #define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, uintptr_t)
 #define g_CUIManager			GDecl(0x10A6450, uintptr_t)

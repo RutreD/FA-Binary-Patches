@@ -1,19 +1,12 @@
 #include "include/LuaAPI.h"
+#include "include/moho.h"
+
 // --- Return list of deposits around a point of type
 // ---@param x number
 // ---@param z number
 // ---@param radius number
 // ---@param type PatchedDepositType
 // ---@return PatchedDepositResult[]
-struct stDeposits
-{ // 0x14
-    int X1;     // 0x0
-    int Z1;     // 0x4
-    int X2;     // 0x8
-    int Z2;     // 0xC
-    int Type;   // 0x10
-};
-VALIDATE_SIZE(stDeposits, 0x14)
 
 int SimGetDepositsAroundPoint(lua_State *L)
 {
@@ -43,46 +36,42 @@ int SimGetDepositsAroundPoint(lua_State *L)
     lua_newtable(L);
     int i = 1;
 
-    auto SimResources = *reinterpret_cast<uintptr_t *>(g_Sim + 0x8D0);
-    auto Deposit = *reinterpret_cast<stDeposits **>(SimResources + 0x10);    // list deposit begin
-    auto endDeposit = *reinterpret_cast<stDeposits **>(SimResources + 0x14); // list deposit end
-    while (Deposit < endDeposit)
+    auto deposit = reinterpret_cast<Deposit *>(g_Sim->Deposits->Deposits.objects_begin);
+    auto endDeposit = reinterpret_cast<Deposit *>(g_Sim->Deposits->Deposits.objects_end);
+    for (; deposit < endDeposit; deposit++)
     {
-        if (!PatchedDepositType || PatchedDepositType == Deposit->Type)
+        if (!PatchedDepositType || PatchedDepositType == deposit->Type)
         {
-            float x1 = ((Deposit->X2 + Deposit->X1) * 0.5f) - X;
-            float z1 = ((Deposit->Z2 + Deposit->Z1) * 0.5f) - Z;
+            float x1 = ((deposit->X2 + deposit->X1) * 0.5f) - X;
+            float z1 = ((deposit->Z2 + deposit->Z1) * 0.5f) - Z;
             float distance = sqrt((x1 * x1) + (z1 * z1));
             if (distance <= Radius)
             {
-                lua_pushnumber(L, i);
+                lua_pushnumber(L, i++);
                 lua_newtable(L);
 
                 lua_pushstring(L, "X1");
-                lua_pushnumber(L, Deposit->X1);
+                lua_pushnumber(L, deposit->X1);
                 lua_rawset(L, -3);
                 lua_pushstring(L, "Z1");
-                lua_pushnumber(L, Deposit->Z1);
+                lua_pushnumber(L, deposit->Z1);
                 lua_rawset(L, -3);
                 lua_pushstring(L, "X2");
-                lua_pushnumber(L, Deposit->X2);
+                lua_pushnumber(L, deposit->X2);
                 lua_rawset(L, -3);
                 lua_pushstring(L, "Z2");
-                lua_pushnumber(L, Deposit->Z2);
+                lua_pushnumber(L, deposit->Z2);
                 lua_rawset(L, -3);
                 lua_pushstring(L, "Type");
-                lua_pushnumber(L, Deposit->Type);
+                lua_pushnumber(L, deposit->Type);
                 lua_rawset(L, -3);
                 lua_pushstring(L, "Dist");
                 lua_pushnumber(L, distance);
                 lua_rawset(L, -3);
 
                 lua_settable(L, -3);
-                i++;
             }
         }
-
-        Deposit++;
     }
 
     return 1;
