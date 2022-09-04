@@ -92,6 +92,15 @@ struct vector
 };
 VALIDATE_SIZE(vector, 0x10)
 
+template<typename T>
+struct std_list
+{						 // 0xC bytes
+	T *objects_begin; // 0 if empty
+	T *objects_end;
+	T *objects_capacity_end;
+};
+VALIDATE_SIZE(std_list<void>, 0xC)
+
 // probably not from visual c++ 9, but made by gpg
 struct list
 {       // 0xC bytes
@@ -434,7 +443,7 @@ struct CSimResources // : ISimResources // : IResources
 	// ecx:FindResourceDeposit(PtrPosXZ, PtrResultXZ, Radius, Type):Bool
 	uint8_t _pad[0xC];
 	// at 0x10
-	list Deposits; // <Deposit*>
+	std_list<Deposit> Deposits; // <Deposit*>
 };
 VALIDATE_SIZE(CSimResources, 0x1C)
 

@@ -36,8 +36,8 @@ int SimGetDepositsAroundPoint(lua_State *L)
     lua_newtable(L);
     int i = 1;
 
-    auto deposit = reinterpret_cast<Deposit *>(g_Sim->Deposits->Deposits.objects_begin);
-    auto endDeposit = reinterpret_cast<Deposit *>(g_Sim->Deposits->Deposits.objects_end);
+    auto deposit = g_Sim->Deposits->Deposits.objects_begin;
+    auto endDeposit = g_Sim->Deposits->Deposits.objects_end;
     for (; deposit < endDeposit; deposit++)
     {
         if (!PatchedDepositType || PatchedDepositType == deposit->Type)
