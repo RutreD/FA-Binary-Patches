@@ -46,6 +46,8 @@ This are just the patch files for this game. I decided to separate them from pat
     - hooks/aiinitattack.cpp
 - Fix a crash when units arrive at waypoints
     - hooks/WayPointArrive.cpp
+- Improvements to lua messages
+    - hooks/LuaMessages.cpp
 
 ## Additions
 - Allows changing army of ACUs
@@ -53,6 +55,9 @@ This are just the patch files for this game. I decided to separate them from pat
 - Allows customize colors for team color mode
     - hooks/TeamColorMode.cpp
     - section/TeamColorMode.cpp
+- Adds the order ID to the UserUnit:GetCommandQueue output
+    - hooks/HOrderIDOutput.cpp
+    - section/OrderIDOutput.cpp
 - GetSessionClients also output maximum sim speed(maxSP)
     - hooks/HOutputMaxSP.cpp
     - section/OutputMaxSP.cpp
@@ -60,7 +65,7 @@ This are just the patch files for this game. I decided to separate them from pat
     - hooks/MinimapMesh.cpp
     - section/MinimapMesh.cpp
 - Allow players to double-click to select Walls
-    - hooks/Walls.cpp
+    - hooks/WallSelection.cpp
 - Adds GetTimeForProfile to Sim and UI. Allows to deal with the loss of accuracy
     - section/GetTimeForProfile.cpp
     - section/LuaFuncRegs.cpp
@@ -84,7 +89,7 @@ This are just the patch files for this game. I decided to separate them from pat
 - Adds SetInvertMidMouseButton to UI
     - section/InvertMidMouseButton.cpp
     - section/LuaFuncRegs.cpp
-- Allow devs to write console commands to the log
+- Writes called console commands to the log
     - hooks/ConsoleLog.cpp
     - section/ConsoleLog.cpp
 - Unlock an "Ultra" graphics preset

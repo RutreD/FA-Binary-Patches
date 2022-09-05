@@ -68,13 +68,21 @@ FDecl(0x937D30, WarningF,	int (*)(const char *fmt, ...))
 FDecl(0x937C30, SpewF,		int (*)(const char *fmt, ...))
 FDecl(0x41C990, ConsoleLogF,	int (*)(const char *fmt, ...))
 FDecl(0xA9B4E6, FileWrite,	int (*)(int fileIndex, const char *str, int strlen)) //index 3 is log.
-FDecl(0xA825B9, shi_new,	void* (*)(uint32_t size))
-FDecl(0x958C40, shi_delete,	void (*)(void* ptr))
+FDecl(0xA825B9, shi_new,	void* (*)(size_t size))
+FDecl(0x957B00, realloc,	void* (*)(void *ptr, size_t new_size))
+FDecl(0x958B20, malloc,		void* (*)(size_t size))
+FDecl(0x958C40, free,		void (*)(void *ptr))
+FDecl(0x957EA0, msize,		size_t (*)(void *memblock))
+FDecl(0x957AB0, calloc,		void* (*)(size_t num, size_t size))
+FDecl(0xA89110, memset,		void* (*)(void *dest, int ch, size_t count))
+FDecl(0xA89190, memcpy,		void* (*)(void *dest, const void *src, size_t count))
+FDecl(0x452FC0, sqrtf,		float (*)(float arg))
 FDecl(0xA94450, strlen,		size_t (*)(const char *str))
-FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char* str))
+FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char *str))
+FDecl(0x4059E0, AssignString,	__thiscall void (*)(void *this_, const char *str, size_t size))
 
-#define GetModuleHandle WDecl(0xC0F378, __stdcall void* (*)(const char* lpLibFileName))
-#define GetProcAddress  WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char* lpProcName))
+#define GetModuleHandle WDecl(0xC0F378, __stdcall void* (*)(const char *lpLibFileName))
+#define GetProcAddress  WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char *lpProcName))
 
 /*
 LuaPlus: See FALuaFuncs.txt
@@ -105,21 +113,20 @@ LuaObjectFinalize
 00915D90 luaC_collectgarbage
 009248E0 CreateHashStr
 009142A0 CallCFunctionFromLua
+009240A0 GetLuaState(lua_State*):eax
+0090A510 GetLuaState+1
 
 // Other
 
 00938E00 Format
 00938F10 Format+1
-00A89950 _CxxThrowException
+00A89950 CxxThrowException
 
-00958B20 AllocMemory(Size):eax
-00957A70 AllocMemory+1
-00A825B9 AllocMemory2(Size):eax
-00A82130 AllocMemory2+1
-00958C40 FreeMemory(Ptr)
-00957AF0 FreeMemory+1
-00957A60 FreeMemory+2
-00A82542 FreeMemory+3
+00957A70 malloc+1
+00A82130 shi_new+1
+00957AF0 free+1
+00957A60 free+2
+00A82542 free+3
 
 00459D10 OpenFile
 008E0750 LookupRType
@@ -284,8 +291,9 @@ LuaObjectFinalize
 0057CBB0 CanBuildStructureAt(CAiBrain*, x, y, z, Blueprint*, ?, ?, ?):al
 006856C0 SimFindEntityChainById(ecx* entities, ebx* id, eax* result)
 00898DC0 UserFindEntityChainById(ecx* entities, ebx* id, eax* result)
+008B05E0 ISSUE_Command
+008B0180 GiveOrder(list<UserUnit*>*, unused void*, out int?, struct?)
 
-const int _CastState_LuaState_LuaPlus__SAPAV12_PAUlua_State___Z = 0x90A510;
 const int LuaStackObject__GetBoolean = 0x415560;
 
 const int _AssignClientIndex_CLobby_Moho__AAEXHVStrArg_gpg__AAIAAH_Z = 0x7C4E80;
@@ -309,17 +317,12 @@ const int _Moho_SSTICommandIssueData_Destructor = 0x0057ABB0;
 #define _NeitherInCategoryInConstruct = 0x006EFACE;
 #define _EndCalculateNoRushTimerVariable = 0x006FF3D6;
 
-#define _CheckCategory = 0x00405550;
-#define _CheckCategory_sub_func = 0x004059E0;
 #define _GetCatCmpResult = 0x0067B050;
-#define _exit_STAYONWATSUR_check = 0x0062ADEE;
-#define _exit_STAYONWATSUR_NoMatch = 0x0062ADEC;
 #define _Moho_SSTICommandIssueData_SSTICommandIssueData = 0x00552550;
 
 // MSVCR80.dll
 #define _memmove_s = 0x00A824E7;
 
 // New unit categories.
-//const char* sCQUEMOV = "CQUEMOV";
-//const char* sSTAYONWATSUR = "STAYONWATSUR";
+const char* sCQUEMOV = "CQUEMOV";
 */

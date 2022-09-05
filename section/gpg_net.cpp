@@ -1,7 +1,5 @@
 #include "include/desync_fix_global.h"
 
-//FUNCTIONS with NAMES ARE WINAPI FOR THIS FILE. FOR EXAMPLE recvfrom
-
 uint32_t tag_sent = 0;
 uint32_t p_index = 0;
 uint32_t sender_sock = 1;
@@ -54,8 +52,7 @@ __attribute__((noinline)) void p_sptr()
 void _recvfrom()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"recvfrom = 0x00C0F8D8;" //WINAPI
 		"L0xABEL_0x0048A94C = 4761932;"
 		"SetEvent = 0x00C0F578;"
@@ -142,8 +139,7 @@ void _recvfrom()
 		"mov esi,eax;"
 		"mov eax, dword ptr [0x11FD247];" //RETREIVE NETBUFFER PTR
 	);
-	asm volatile
-	(
+	asm(
 		"cmp dword ptr [0x011FD243], 0x1;" // check if we are the sender
 		"jne not_sender;"
 		"cmp byte ptr [eax+0x3], 0xFE;"
@@ -155,50 +151,41 @@ void _recvfrom()
 		"mov eax,dword ptr [esp+0xA8];" //get sender's socket
 	);
 
-	asm volatile
-	(
+	asm(
 		"call %[func];"
 		:
 		: [func] "i" (&CheckClients)
 		: "memory"
 	);
-
 	if(discard)
 	{
 		asm("jmp _skip;");
 	}
-
-	asm volatile
-	(
+	asm(
 		"call %[func];"
 		"mov eax,dword ptr [esp+0xA8];" //get sender's socket
 		:
 		: [func] "i" (&p_rptr)
 		: "memory"
 	);
-
 	p_index++;
 	sync_buffer[p_index] = eax;
 
 	if((current_num_clients-1) - p_index == 0)
 	{
-		asm
-		(
+		asm(
 		"push dword ptr [0x11FD253];"
 		"call dword ptr [SetEvent];"
 		);
 		p_index = 0;
-		asm volatile
-		(
+		asm(
 			"call %[func];"
 			:
 			: [func] "i" (&p_SetEvent)
 			: "memory"
 		);
 	}
-
-	asm
-	(
+	asm(
 		"jmp not_received;"
 		"not_sender:;"
 		"cmp byte ptr [eax+0x3], 0xA4;" //CHECK IF EXIT VARIABLE IS SET
@@ -214,16 +201,13 @@ void _recvfrom()
 	{
 		sender_sock = eax;
 	}
-
-	asm
-	(
+	asm(
 		"_skip:;"
 		"not_received:;"
 
 	);
 
-	asm
-	(
+	asm(
 
 		"test esi,esi;"
 		"mov dword ptr [esp+0x10],esi;"
@@ -231,14 +215,12 @@ void _recvfrom()
 		"jmp 0x0048A374;" //THERE ARE A LOT MORE CODE FURTHER BUT I AM LAZY TO WRITE IT BECAUSE THERE IS SWITCH CASE
 		//WHICH REQUIRES MANUAL CODING.
 	);
-
 }
 
 void _sendto()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"htons = 0x00C0F8D0;"
 		"htonl = 0x00C0F8CC;"
 		"sendto = 0x00C0F8E0;"
@@ -295,15 +277,13 @@ void _sendto()
 		"mov byte ptr [eax + 0x2], 0x4E;" //WRITE VAR INTO THE PACKET HEADER
 		"mov eax, dword ptr [edx];"
 	);
-	asm volatile
-	(
+	asm(
 		"call %[func];"
 		:
 		: [func] "i" (&p_sptr)
 		: "memory"
 	);
-	asm
-	(
+	asm(
 
 		"jmp skip;"
 
@@ -317,16 +297,14 @@ void _sendto()
 	{
 		if(sender_sock == eax)
 		{
-			asm volatile
-			(
+			asm(
 				//"mov dword ptr [0x011FD23F+0x30],eax;"
 				"call %[func];"
 				:
 				: [func] "i" (&p_sptr)
 				: "memory"
 			);
-			asm
-			(
+			asm(
 			"mov eax, edi;"
 			"cmp byte ptr [eax + 0x3], 0;"     //overwrite only known memory, ie 0
 			"jne skip;"
@@ -338,11 +316,9 @@ void _sendto()
 			//sender_sock = 0;
 		}
 	}
-	asm
-	(
+	asm(
 		"skip:;"
 		"call dword ptr [sendto];"
-
 
 		"mov esi,dword ptr [ebp+0x418];"
 		"call 0x489F30;"
@@ -593,8 +569,7 @@ void _sendto()
 
 void Gpg_Net_Entry()
 {
-	asm
-	(
+	asm(
 		"GetCurrentThread = 0x00C0F588;"
 		"SetThreadPriority = 0x00C0F52C;"
 		"WSAWaitForMultipleEvents = 0x00C0F930;"
@@ -648,7 +623,6 @@ void Gpg_Net_Entry()
 		"push ecx;"
 		"call dword ptr [CreateEvent];"
 		"mov dword ptr [0x11FD253], eax;"
-
 
 		"lea ecx,dword ptr [edi+0x8];"
 		"mov dword ptr [esp+0x1C],ecx;"
@@ -854,8 +828,7 @@ void EndGame()
 {
 	game_ended = true;
 	asm("mov dword ptr [0x011FD23F], 0xB;"); //remove block when last player remains.
-	asm
-	(
+	asm(
 		"push esi;"
 		"mov esi,eax;"
 		"mov eax,dword ptr [esi];"

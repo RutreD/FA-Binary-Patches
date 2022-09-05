@@ -44,7 +44,7 @@ namespace LuaPlus
       LuaObject GetByObject(const LuaObject&) const; //0x908e70
       LuaObject GetMetaTable() const; //0x908ba0
       LuaObject Lookup(const char*) const; //0x9093b0
-      LuaStackObject PushStack(LuaState*) const; //0x907d80
+      void PushStack(LuaStackObject* out, LuaState*) const; //0x907d80
       LuaState* GetActiveState() const; //0x9072b0
       const char* GetString() const; //0x907a90
       const char* ToString(); //0x9073e0

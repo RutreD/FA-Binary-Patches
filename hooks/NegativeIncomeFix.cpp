@@ -1,5 +1,4 @@
-asm
-(
+asm(
   ".section h0; .set h0,0x7722B0;"
   "FSUBRP ST(1),ST;"
   "FSTP DWORD PTR [ESP+0x24];"

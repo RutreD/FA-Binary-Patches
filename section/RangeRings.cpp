@@ -2,8 +2,7 @@
 
 void GlobalRings()
 {
-	asm
-	(
+	asm(
 		"sub esp,0x14;"
 		"push ebx;"
 		"push ebp;"
@@ -17,12 +16,12 @@ void GlobalRings()
 		"lea eax,dword ptr [esp+0x3C];"
 		"mov ebx,ebp;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8330320;"
 		"mov eax,dword ptr [esp+0x30];"
 		"lea esi,dword ptr [esp+0x34];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8327632;"
 		"mov eax,dword ptr [esp+0x34];"
 		"cmp eax,dword ptr [0x10BF00C];"
@@ -77,7 +76,7 @@ void GlobalRings()
 		"mov edx,dword ptr [esp+0x30];"
 		"add edx,0x20;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +5683664;"
 		"test eax,eax;"
 		"jbe ExitLabel;"
@@ -115,7 +114,7 @@ void GlobalRings()
 		"lea edx,dword ptr [esp+0x10];"
 		"mov esi,ebp;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8327952;"
 		"ExitLabel:;"
 		"mov ecx,dword ptr [esp+0x28];"
@@ -134,8 +133,7 @@ void GlobalRings()
 
 void GetSelectedUnits()
 {
-	asm
-	(
+	asm(
 		"sub esp,0x14;"
 		"mov eax,dword ptr [ebx+0x4A4];"
 		"mov eax,dword ptr [eax];"
@@ -147,7 +145,7 @@ void GetSelectedUnits()
 		"push eax;"
 		"lea edi,dword ptr [esp+0x28];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +6730544;"
 		"mov dword ptr [0x011FD23B],0;"
 		"mov eax,dword ptr [eax];"
@@ -174,19 +172,19 @@ void GetSelectedUnits()
 		"push ebp;"
 		"lea esi,dword ptr [esp+0x1C];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8532592;"
 		"label2_sel:;"
 		"lea edx,dword ptr [esp+0x10];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +6733264;"
 		"mov eax,dword ptr [esp+0x10];"
 		"mov esi,dword ptr [esp+0xC];"
 		"push eax;"
 		"lea edi,dword ptr [esp+0x28];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +6730544;"
 		"mov eax,dword ptr [eax];"
 		"cmp eax,dword ptr [ebx+0x4A4];"
@@ -199,13 +197,11 @@ void GetSelectedUnits()
 		"add esp,0x14;"
 		"ret 0x4;"
 	);
-
 }
 
 void SelectionRings()
 {
-	asm
-	(
+	asm(
 		"push 0xFFFFFFFF;"
 		"mov eax,dword ptr [fs:0x0];"
 		"push 0xBA7B58;"
@@ -224,7 +220,7 @@ void SelectionRings()
 		"push ecx;"
 		"lea eax,dword ptr [esp+0x18];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8330320;"
 		"cmp byte ptr [0x10A640A],0x0;"
 		"je exit1;"
@@ -236,7 +232,7 @@ void SelectionRings()
 		"push 0x0;"
 		"mov ecx,esi;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +4241536;"
 		"test eax,eax;"
 		"je exit1;"
@@ -247,7 +243,7 @@ void SelectionRings()
 		"push 0x0;"
 		"mov ecx,esi;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +4241536;"
 		"test eax,eax;"
 		"je exit1;"
@@ -261,21 +257,21 @@ void SelectionRings()
 		"je exit1;"
 		"mov eax,esi;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8317504;"
 		"mov ebp,eax;"
 		"test ebp,ebp;"
 		"je exit1;"
 		"lea esi,dword ptr [esp+0x1C];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8074688;"
 		"mov eax,esi;"
 		"push eax;"
 		"mov ebx,edi;"
 		"mov dword ptr [esp+0x48],0x0;"
 	);
-	asm (
+	asm(
 		"call %[GetSelectedUnits];"
 		"lea ebx,dword ptr [esp+0x14];"
 		"mov eax,esi;"
@@ -283,7 +279,7 @@ void SelectionRings()
 		: [GetSelectedUnits] "i" (GetSelectedUnits)
 		: "memory"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8074736;"
 		"mov eax,dword ptr [esp+0x18];"
 		"cmp eax,dword ptr [esp+0x20];"
@@ -312,7 +308,7 @@ void SelectionRings()
 		"mov edx,dword ptr [esp+0x50];"
 		"add edx,0x20;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +5683664;"
 		"test eax,eax;"
 		"jbe ContinueLoop;"
@@ -358,13 +354,13 @@ void SelectionRings()
 		"mov esi,dword ptr [esp+0x4C];"
 		"lea edx,dword ptr [esp+0x28];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8327952;"
 		"ContinueLoop:;"
 		"lea eax,dword ptr [esp+0x14];"
 		"push eax;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8328336;"
 		"mov eax,dword ptr [esp+0x18];"
 		"cmp eax,dword ptr [esp+0x20];"
@@ -373,7 +369,7 @@ void SelectionRings()
 		"lea eax,dword ptr [esp+0x1C];"
 		"mov dword ptr [esp+0x44],0xFFFFFFFF;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8074544;"
 		"exit1:;"
 		"mov ecx,dword ptr [esp+0x3C];"
@@ -385,14 +381,12 @@ void SelectionRings()
 		"add esp,0x38;"
 		"ret 0xC;"
 	);
-
 }
 
 
 void RangeRings()
 {
-	asm
-	(
+	asm(
 		"push 0xFFFFFFFF;"
 		"push 0xBBB776;"
 		"mov eax,dword ptr [fs:0x0];"
@@ -405,7 +399,7 @@ void RangeRings()
 		"push edi;"
 		"mov edi,ecx;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +9336624;"
 		"xor esi,esi;"
 		"mov dword ptr [esp+0x18],esi;"
@@ -422,7 +416,7 @@ void RangeRings()
 		"push ebp;"
 		"mov ecx,edi;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8322640;"
 		"label1:;"
 		"mov eax,dword ptr [ebp+0x14];"
@@ -449,7 +443,7 @@ void RangeRings()
 		"push ecx;"
 		"mov edx,eax;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8328144;"
 		"mov byte ptr [esp+0x19C],0x1;"
 		"mov eax,dword ptr [ebp+0x14];"
@@ -469,7 +463,7 @@ void RangeRings()
 		"fstp dword ptr [esp];"
 		"push ecx;"
 	);
-	asm (
+	asm(
 		"call %[GlobalRings];"
 		"lea edx,dword ptr [esp+0x14];"
 		"push edx;"
@@ -485,7 +479,7 @@ void RangeRings()
 		: [GlobalRings] "i" (GlobalRings)
 		: "memory"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8324512;"
 		"mov eax,dword ptr [ebp+0x18];"
 		"add esi,0x88;"
@@ -541,7 +535,7 @@ void RangeRings()
 		"je label2;"
 		"push edx;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +11023682;"
 		"add esp,0x4;"
 		"label2:;"
@@ -560,7 +554,7 @@ void RangeRings()
 		"push edx;"
 		"mov ecx,edi;"
 	);
-	asm (
+	asm(
 		"call %[SelectionRings];"
 		"lea eax,dword ptr [esp+0x14];"
 		"push eax;"
@@ -577,11 +571,11 @@ void RangeRings()
 		: [SelectionRings] "i" (SelectionRings)
 		: "memory"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8324512;"
 		"lea edx,dword ptr [esp+0xC];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8335440;"
 		"mov eax,dword ptr [esp+0xC];"
 		"cmp eax,dword ptr [ebp+0x8];"
@@ -599,11 +593,11 @@ void RangeRings()
 		"mov eax,edi;"
 	);
 
-	asm (
+	asm(
 		"call -0x1000 +8324128;"
 		"lea eax,dword ptr [esp+0x14];"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8323520;"
 		"movss xmm0,dword ptr [0xDFEC20];"
 		"movss xmm1,dword ptr [0xDFEB0C];"
@@ -628,14 +622,14 @@ void RangeRings()
 		"movss dword ptr [esp+0x48],xmm0;"
 		"movss dword ptr [esp+0x4C],xmm0;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +8324512;"
 		"mov eax,dword ptr [esp+0x18];"
 		"test eax,eax;"
 		"je label12;"
 		"push eax;"
 	);
-	asm (
+	asm(
 		"call -0x1000 +9800288;"
 		"add esp,0x4;"
 		"label12:;"
@@ -647,5 +641,4 @@ void RangeRings()
 		"add esp,0x194;"
 		"ret 0xC;"
 	);
-
 }

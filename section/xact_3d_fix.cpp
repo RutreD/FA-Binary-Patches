@@ -1,8 +1,7 @@
 void xact_3d_apply()
 {
 	static bool once = true;
-	asm
-	(
+	asm(
 		"push ebx;"
 		"push edi;"
 		"mov ebx,ecx;"
@@ -43,18 +42,12 @@ void xact_3d_apply()
 		"test eax,eax;"
 		"jge L0xABEL_0x004D9B04;"
 		"call 0x4D8A50;"
-	);
 
-	asm
-	(
 		"push eax;"
 		"push 0xE0B410;"
 		"call 0x937D30;"
 		"add esp,0x8;"
-	);
 
-	asm
-	(
 		"pop esi;"
 		"pop edi;"
 		"pop ebx;"
@@ -70,8 +63,7 @@ void xact_3d_apply()
 	);
 	if(once)
 	{
-		asm
-		(
+		asm(
 			"push eax;"
 			"push 0xE0B430;"
 			"call 0x937D30;"
@@ -80,8 +72,7 @@ void xact_3d_apply()
 		once = false;
 	}
 
-	asm
-	(
+	asm(
 		"L0xABEL_0x004D9B29:;"
 		"pop esi;"
 		"L0xABEL_0x004D9B2A:;"

@@ -1,11 +1,9 @@
-
 char LOWSELECTPRIO[] = "LOWSELECTPRIO";
 char buf[48];
 
 void selectionPriority()
 {
-	asm
-    (
+	asm(
         "cmp byte ptr [ebx-0xD8],0x1;"
         "je label1;"
         "label2:;"

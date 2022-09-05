@@ -1,6 +1,6 @@
 #include "../define.h"
-asm
-( //HOOK BuildUnit
+asm(
+  //HOOK BuildUnit
   ".section h0; .set h0,0x6EFAC9;"
   "JMP "QU(BuildUnit)";"
   "ADD ESP,4;"
