@@ -21,8 +21,7 @@ int strCmp(const char* s1, const char* s2)
 void Conexecute()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"push ebp;"
 		"mov ebp,esp;"
 		"and esp,0xFFFFFFF8;"
@@ -53,11 +52,9 @@ void Conexecute()
 		"call 0x90CA90;"
 		"mov esi,eax;"
 	);
-
 	if(strCmp(eax, safe_quit) == 0)
 	{
-		asm
-		(
+		asm(
 			"mov dword ptr [0x011FD24F], 0x1;"
 			"add esp,0x8;"
 			"pop edi;"
@@ -68,9 +65,7 @@ void Conexecute()
 		);
 		return;
 	}
-
-	asm
-	(
+	asm(
 
 		"add esp,0x8;"
 		"test esi,esi;"
@@ -117,43 +112,35 @@ __attribute__((noinline)) void xor_sync()
 void SessionEndGame()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"Sleep = 0x00C0F574;"
 		"GetCurrentThread = 0x00C0F588;"
 		"SuspendThread = 0x00C0F4F8;"
 		"WaitForSingleObject = 0x00C0F524;"
 	);
-
 	if(current_num_clients > 1 && current_num_clients < 17 && !game_ended)
 	{
-		asm
-		(
+		asm(
 			"mov dword ptr [0x011FD243], 0x1;" // send network var
 			"push 0x2500;"
 			"push dword ptr [0x11FD253];"
 			"call dword ptr [WaitForSingleObject];"
 		);
-
 		if(eax == 0x00000102)
 		{
-			asm volatile
-			(
+			asm(
 				"call %[func];"
 				:
 				: [func] "i" (&timed_out)
 				: "memory"
 			);
 		}
-
-/* 		asm
-		(
+/* 		asm(
 			"push 100;"
 			"call dword ptr [Sleep];"
 		); */
 	}
-	asm
-	(
+	asm(
 		//"push 30000;"
 		//"call dword ptr [Sleep];"
 		"mov dword ptr [0x011FD243], 0xC;" //reset send trigger
@@ -188,16 +175,14 @@ void SessionEndGame()
 		"call eax;"
 	);
 
-	asm volatile
-	(
+	asm(
 		"call %[func];"
 		:
 		: [func] "i" (&xor_sync)
 		: "memory"
 	);
 
-	asm
-	(
+	asm(
 		"mov dword ptr [0x011FD23F], 0xB;" //RESET BLOCK VARIABLE
 		//"mov dword ptr [0x011FD243], 0xC;" //reset send trigger
 		"xor eax,eax;"
@@ -221,8 +206,7 @@ __attribute__((noinline)) void term()
 void Moho__CDecoder__DecodeMessage()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"push ebp;"
 		"mov ebp,esp;"
 		"and esp,0xFFFFFFF8;"
@@ -271,20 +255,17 @@ void Moho__CDecoder__DecodeMessage()
 		"mov dword ptr [0x011FD23F], 0x0;"
 		"skip:;" */
 	);
-
 	switch (eax)
 	{
 	case 0: //decode_advance -> On_Beat()
-		asm
-		(
+		asm(
 		"lea ecx,dword ptr [esp+0x8];"
 		"push ecx;"
 		"call 0x6E4400;"
 		);
 		break;
 	case 1: //decode_set_command_source
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea eax,dword ptr [esp+0xC];"
 		"call 0x6E4440;"
@@ -296,32 +277,28 @@ void Moho__CDecoder__DecodeMessage()
 		//this is what i like about C the most, there is no limitation of what you can do with
 		//the data type, i bet you to try this in Java and see what kind of shit code you'll have to write
 		//tag_sent = 0;
-		asm
-		(
+		asm(
 		"cmp dword ptr [0x011FD23F], 0x1;"
 		"jne late;"
 		);
 		terminated = tick_num;
 		asm("jmp next;");
 		asm("late:;");
-		asm volatile
-		(
+		asm(
 		    "call %[func];"
 		    :
 		    : [func] "i" (&err_print)
 		    : "memory"
 		);
 
-		asm
-		(
+		asm(
 		"next:;"
 		"mov ecx,dword ptr [esi+0xC];"
 		"mov edx,dword ptr [ecx];"
 		"mov eax,dword ptr [edx+0x4];"
 		"call eax;"
 		);
-		asm volatile
-		(
+		asm(
 		    "call %[func];"
 		    :
 		    : [func] "i" (&term)
@@ -330,8 +307,7 @@ void Moho__CDecoder__DecodeMessage()
 		current_num_clients--;
 		break;
 	case 3: //verify checksum
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];"
 		"call 0x6E4480;"
@@ -339,8 +315,7 @@ void Moho__CDecoder__DecodeMessage()
 		break;
 	case 4: //sim request pause
 		paused = true;
-		asm
-		(
+		asm(
 		"pause:;"
 		"mov ecx,dword ptr [esi+0xC];" //3
 		"mov edx,dword ptr [ecx];"
@@ -350,8 +325,7 @@ void Moho__CDecoder__DecodeMessage()
 		break;
 	case 5: // sim resume
 		paused = false;
-		asm
-		(
+		asm(
 		"mov ecx,dword ptr [esi+0xC];" //4
 		"mov edx,dword ptr [ecx];"
 		"mov eax,dword ptr [edx+0x10];"
@@ -359,8 +333,7 @@ void Moho__CDecoder__DecodeMessage()
 		);
 		break;
 	case 6:
-		asm
-		(
+		asm(
 		"mov ecx,dword ptr [esi+0xC];"
 		"mov edx,dword ptr [ecx];"
 		"mov eax,dword ptr [edx+0x14];"
@@ -368,140 +341,122 @@ void Moho__CDecoder__DecodeMessage()
 		);
 		break;
 	case 7:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea ecx,dword ptr [esp+0xC];"
 		"call 0x6E44F0;"
 		);
 		break;
 	case 8:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea ecx,dword ptr [esp+0xC];" //7
 		"call 0x6E45D0;"
 		);
 		break;
 	case 9:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea eax,dword ptr [esp+0xC];"
 		"call 0x6E4670;"
 		);
 		break;
 	case 0xA:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //9
 		"call 0x6E46A0;"
 		);
 		break;
 	case 0xB:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea ecx,dword ptr [esp+0xC];" //10
 		"call 0x6E46E0;"
 		);
 		break;
 	case 0xC:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //11
 		"call 0x6E47D0;"
 		);
 		break;
 	case 0xD:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //12
 		"call 0x6E48E0;"
 		);
 		break;
 	case 0xE:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //13
 		"call 0x6E49F0;"
 		);
 		break;
 	case 0xF:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //14
 		"call 0x6E4A30;"
 		);
 		break;
 	case 0x10:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea eax,dword ptr [esp+0xC];" //15
 		"call 0x6E4A70;"
 		);
 		break;
 	case 0x11:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //16
 		"call 0x6E4AC0;"
 		);
 		break;
 	case 0x12:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //17
 		"call 0x6E4B00;"
 		);
 		break;
 	case 0x13:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea esi,dword ptr [esp+0xC];" //18
 		"call 0x6E4BB0;"
 		);
 		break;
 	case 0x14:
-		asm
-		(
+		asm(
 		"push esi;"
 		"lea ecx,dword ptr [esp+0xC];" //19
 		"call 0x6E4D80;"
 		);
 		break;
 	case 0x15:
-		asm
-		(
+		asm(
 		"lea ecx,dword ptr [esp+0x8];" //20
 		"call 0x6E4BF0;"
 		);
 		break;
 	case 0x16:
-		asm
-		(
+		asm(
 		"lea ecx,dword ptr [esp+0x8];" //21
 		"call 0x6E4CA0;"
 		);
 		break;
 	case 0x17:
-		asm
-		(
+		asm(
 		"call 0x6E4E70;" //22
 		);
 		break;
 	default:
-		asm
-		(
+		asm(
 			"movzx ecx,cl;"
 			"push ecx;"
 			"lea edx,dword ptr [esp+0x10];"
@@ -522,8 +477,7 @@ void Moho__CDecoder__DecodeMessage()
 		);
 		return;
 	}
-	asm
-	(
+	asm(
 		"lea ecx,dword ptr [esp+0x28];"
 		"mov dword ptr [esp+0x7C],0xFFFFFFFF;"
 		"call 0x956DD0;"
@@ -538,8 +492,7 @@ void Moho__CDecoder__DecodeMessage()
 void sim_dispatch()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"Sleep = 0x00C0F574;"
 		"ResetEvent = 0x00C0F4CC;"
 		"push ebp;"
@@ -561,12 +514,10 @@ void sim_dispatch()
 
 		"add eax,0x1;" // counts sim ticks
 	);
-
 		tick_num = eax;
 		if(terminated && eax >= (terminated + 10)) //wait 10 more sim ticks
 		{
-			asm
-			(
+			asm(
 				"mov dword ptr [0x011FD23F], 0xB;" //RESET BLOCK VARIABLE
 				"mov dword ptr [0x011FD243], 0xC;" //reset send trigger
 				"mov byte ptr  [0x011FD24F], 0x0;" //reset safeQuit
@@ -580,8 +531,7 @@ void sim_dispatch()
 		static bool overflow = false;
 		if(eax <= 10)
 		{
-			asm
-			(
+			asm(
 				"mov dword ptr [0x011FD23F], 0xB;" //RESET BLOCK VARIABLE
 				"mov dword ptr [0x011FD243], 0xC;" //reset send trigger
 				"mov byte ptr  [0x011FD24F], 0x0;" //reset safeQuit
@@ -605,9 +555,7 @@ void sim_dispatch()
 		{
 			overflow = true;
 		}
-
-	asm
-	(
+	asm(
 		"mov dword ptr [edi+0x20],eax;"
 		"cmp byte ptr [ebx+0x4],0x0;"
 		"jne L0xABEL_0x0073D916;"
@@ -752,8 +700,7 @@ void sim_dispatch()
 void Update_Pipeline_Stream()
 {
 	register int eax asm("eax");
-	asm
-	(
+	asm(
 		"push ebp;"
 		"mov ebp,esp;"
 		"and esp,0xFFFFFFF8;"
@@ -801,8 +748,7 @@ void Update_Pipeline_Stream()
 		num_clients = eax;
 		if(update_pl_count)
 		{
-			asm volatile
-			(
+			asm(
 				"call %[func];"
 				:
 				: [func] "i" (&p_Version)
@@ -811,8 +757,7 @@ void Update_Pipeline_Stream()
 			current_num_clients = num_clients;
 			update_pl_count = false;
 		}
-	asm
-	(
+	asm(
 		"push 0x33;"
 		"lea eax,dword ptr [esp+0x44];"
 		"push eax;"
@@ -884,8 +829,7 @@ void Update_Pipeline_Stream()
 
 		"L0xABEL_0x0053F170:;"
 	);
-	asm
-	(
+	asm(
 		"push esi;"
 		"lea eax,dword ptr [esp+0x44];"
 		"call 0x47BD40;"
@@ -909,8 +853,7 @@ void Update_Pipeline_Stream()
 		"L0xABEL_0x0053F1A0:;"
 	);
 
-	asm
-	(
+	asm(
 		"lea eax,dword ptr [esp+0x13];"
 		"push eax;"
 		"mov eax,0x3;"

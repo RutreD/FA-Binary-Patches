@@ -6,8 +6,7 @@
 
 void minimapMesh()
 {
-	asm
-	(
+	asm(
         "cmp dword ptr [0x00F57A88], 0x0;"
         "jne MeshRenderON;"
         "jmp 0x007D1B02;"

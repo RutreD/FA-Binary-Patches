@@ -1,60 +1,43 @@
 #include "../define.h"
 
-asm
-( //HOOK decode
+asm(
+  //HOOK decode
   ".section h0; .set h0,0x6E4150;"
   "jmp "QU(Moho__CDecoder__DecodeMessage)";"
   "nop;"
-);
 
-asm
-(
   ".section h1; .set h1,0x74B8B0;"
   "jmp "QU(EndGame)";"
-);
 
-asm
-(
   ".section h2; .set h2,0x489F90;"
   "jmp "QU(Gpg_Net_Entry)";"
   "nop;"
   "nop;"
-);
 
-asm
-( //HOOK instance running
+  //HOOK instance running
   ".section h3; .set h3,0x8CF0D2;"
   "jmp 0x8CF23E;"
   "nop;"
-);
 
-asm
-( //HOOK recvfrom
+  //HOOK recvfrom
   ".section h4; .set h4,0x48A280;"
   "jmp "QU(_recvfrom)";"
   "nop;"
-);
 
-asm
-( //HOOK sendto
+  //HOOK sendto
   ".section h5; .set h5,0x488D80;"
   "jmp "QU(_sendto)";"
   "nop;"
   "nop;"
-);
 
-asm
-(
   ".section h6; .set h6,0x8984B0;"
   "jmp "QU(SessionEndGame)";"
   "nop;"
   "nop;"
   "nop;"
   "nop;"
-);
 
-asm
-( //HOOK SetPaused
+  //HOOK SetPaused
   ".section h7; .set h7,0x8BC100;"
   "cmp dword ptr [0x011FD23F], 0x1;"
   "jne run_input_check;"
@@ -179,10 +162,8 @@ asm
   "mov esp,ebp;"
   "pop ebp;"
   "ret;"
-);
 
-asm
-( //HOOK SimCallback
+  //HOOK SimCallback
   ".section h8; .set h8,0x8BA770;"
   "cmp dword ptr [0x011FD23F], 0x1;"
   "jne run_input_check2;"
@@ -392,24 +373,16 @@ asm
   "mov esp,ebp;"
   "pop ebp;"
   "ret;"
-);
 
-asm
-(
   ".section h9; .set h9,0x73D8C0;"
   "jmp "QU(sim_dispatch)";"
   "nop;"
-);
 
-asm
-(
   ".section h10; .set h10,0x53F010;"
   "jmp "QU(Update_Pipeline_Stream)";"
   "nop;"
-);
 
-asm
-( //HOOK user input
+  //HOOK user input
   ".section h11; .set h11,0x8704B0;"
   "jmp "QU(MOHO_USER_INPUT)";"
   "nop;"

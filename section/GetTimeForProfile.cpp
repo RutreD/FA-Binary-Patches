@@ -1,7 +1,6 @@
 int GetTimeForProfile(void* L)
 {
-    asm
-    (
+    asm(
         "SUB ESP,0x8;"
         "PUSH ESP;"
         "CALL DWORD PTR [0xC0F470];" //QueryPerformanceCounter

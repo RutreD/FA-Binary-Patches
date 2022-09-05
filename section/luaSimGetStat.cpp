@@ -1,4 +1,3 @@
-
 char SalemWaterOnlyBp[1536];
 char SalemDefaultBp[4];
 
@@ -11,8 +10,7 @@ char SalemDefaultBp[4];
 
 void luaSimGetStat()
 {
-	asm
-	(
+	asm(
         "cmp byte ptr [eax], 0x68;"
         "jne EXIT;"
         "cmp byte ptr [eax+0x1], 0x31;"

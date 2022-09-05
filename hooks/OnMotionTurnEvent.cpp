@@ -1,5 +1,5 @@
-asm
-( //HOOK OnMotionTurnEventChange1
+asm(
+  //HOOK OnMotionTurnEventChange1
   ".section h0; .set h0,0x6B8FB9;"
   "jmp 0x6B8FE0;"
   "nop;"

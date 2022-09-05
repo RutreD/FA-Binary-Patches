@@ -1,7 +1,6 @@
 void FixCreateEntityDialog()
 {
-	asm
-    (
+	asm(
         "MOV EAX,[0x10A6470];"
         "MOV AL,[EAX+0x4D4];"
         "CMP AL,1;"

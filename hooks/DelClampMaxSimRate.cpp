@@ -1,5 +1,5 @@
-asm
-( //CalcMaxSimRate
+asm(
+  //CalcMaxSimRate
   ".section h0; .set h0,0x55AE56;"
   "MOV ESP,EBP;"
   "POP EBP;"

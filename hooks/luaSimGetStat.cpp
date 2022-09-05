@@ -1,6 +1,5 @@
 #include "../define.h"
-asm
-( //HOOK luaSimGetStat
+asm(
   ".section h0; .set h0,0x6CC759;"
   "jmp "QU(luaSimGetStat)";"
   "nop;"

@@ -1,11 +1,9 @@
-
 char sCQUEMOV[] = "CQUEMOV";
 char** pCQUEMOV = (char**)&sCQUEMOV;
 
 void SelectUnit()
 {
-    asm
-    (
+    asm(
         "PUSH %[pCQUEMOV];"
         "LEA ECX,SS:[ESP+0x50];"
         "CALL 0x00405550;"

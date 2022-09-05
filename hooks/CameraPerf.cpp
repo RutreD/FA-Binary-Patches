@@ -1,5 +1,5 @@
-asm
-( //HOOK LogParticleCap (removes the info log) runout
+asm(
+  //HOOK LogParticleCap (removes the info log) runout
   ".section h0; .set h0,0x493A9B;"
   "nop;"
   "nop;"

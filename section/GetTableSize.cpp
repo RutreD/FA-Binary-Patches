@@ -1,7 +1,6 @@
 void GetTableSize()
 {
-    asm
-    (
+    asm(
         "MOV EAX,[ESI+0xC];"
         "CMP EAX,[ESI+0x8];"
         "JAE Err;"
@@ -52,8 +51,7 @@ void GetTableSize()
 
 void IsTableEmpty()
 {
-    asm
-    (
+    asm(
         "MOV EAX,[ESI+0xC];"
         "CMP EAX,[ESI+0x8];"
         "JAE L72;"
@@ -103,8 +101,7 @@ int RegTableFuncsDesc[] = {"getsize2",&GetTableSize,
 
 void RegTableFuncs()
 {
-    asm
-    (
+    asm(
         "CALL 0x0090DE00;"
         "MOV DWORD PTR [ESP+0x8],%[RegTableFuncsDesc];"
         "MOV DWORD PTR [ESP+0xC],0x0;"

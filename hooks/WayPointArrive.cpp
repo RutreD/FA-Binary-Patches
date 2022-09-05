@@ -1,5 +1,4 @@
-asm
-( //HOOK Fixes crash when unit arrives at the waypoint
+asm(
   ".section h0; .set h0,0x598E80;"
   "push ebp;"
   "mov ebp,esp;"

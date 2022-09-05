@@ -6,8 +6,7 @@ int SimGetDepositsAroundPoint(void* L)
     const char* s_Z2 = "Z2";
     const char* s_Type = "Type";
     const char* s_Dist = "Dist";
-    asm
-    (
+    asm(
         "SUB ESP,0x1C;"
         "XORPS XMM5,XMM5;"
         "MOVUPS [ESP],XMM5;"
