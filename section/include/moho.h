@@ -7,15 +7,24 @@ typedef unsigned short uint16;
 
 struct luaFuncDescReg
 {	// 0x1C bytes
-	void** RegisterFunc;  // call for register lua function
-	char* FuncName;       // lua name function
-	char* ClassName;      // lua class name. <global> if class none
-	char* FuncDesc;       // for log
-	luaFuncDescReg* Next; // reg func of chain
-	void* FuncPtr;        // code address
-	void* ClassPtr;       // C++ class type address. NULL if class none
+	uintptr_t RegisterFunc;    // call for register lua function
+	const char* FuncName;      // lua name function
+	const char* ClassName;     // lua class name. <global> if class none
+	const char* FuncDesc;      // for log
+	luaFuncDescReg* Next;      // reg func of chain
+	void* FuncPtr;         	   // code address
+	uintptr_t ClassPtr;        // C++ class type address. NULL if class none
 };
 VALIDATE_SIZE(luaFuncDescReg, 0x1C)
+
+struct conDescReg
+{
+	uintptr_t vftable = 0x0E01700;
+	const char *name;
+	const char *description;
+	void *var;
+};
+VALIDATE_SIZE(conDescReg, 0x10)
 
 struct vtable;
 struct typeInfo
@@ -50,12 +59,20 @@ struct string
 {       // 0x1c bytes
 	void* ptr1;
 	char str[0x10]; // DataPtr or used as memory for 'Short Set Optimization'
-	uint strLen;
-	uint size; // 0f if SSO, 1f not SSO
-
-	const char* data() {
-		return size == 0xF ? &str : (const char*)str;
+	size_t strLen;
+	size_t size; // 0f if SSO, 1f not SSO
+	string()
+	{
+		size = 0xF;
 	}
+	string(char *str)
+	{
+		InitString(this, str);
+	};
+	char* data() {
+		return size == 0xF ? &str : str;
+	}
+
 };
 VALIDATE_SIZE(string, 0x1C)
 
