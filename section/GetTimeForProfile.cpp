@@ -2,15 +2,7 @@
 
 int GetTimeForProfile(lua_State *L)
 {
-<<<<<<< HEAD
-    asm(
-        "SUB ESP,0x8;"
-        "PUSH ESP;"
-        "CALL DWORD PTR [0xC0F470];" //QueryPerformanceCounter
-        "FILD QWORD PTR [ESP];"
-=======
     int64_t OriginTime = static_cast<int64_t>(lua_tonumber(L, 1));
->>>>>>> a3cbe69 (GetTimeForProfile)
 
     int64_t Counter;
     int64_t Frequency;

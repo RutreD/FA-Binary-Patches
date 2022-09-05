@@ -78,21 +78,11 @@ FDecl(0xA89110, memset,		void* (*)(void *dest, int ch, size_t count))
 FDecl(0xA89190, memcpy,		void* (*)(void *dest, const void *src, size_t count))
 FDecl(0x452FC0, sqrtf,		float (*)(float arg))
 FDecl(0xA94450, strlen,		size_t (*)(const char *str))
-<<<<<<< HEAD
 FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char *str))
 FDecl(0x4059E0, AssignString,	__thiscall void (*)(void *this_, const char *str, size_t size))
 
 #define GetModuleHandle WDecl(0xC0F378, __stdcall void* (*)(const char *lpLibFileName))
 #define GetProcAddress  WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char *lpProcName))
-=======
-FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char* str))
-struct LuaState;
-struct lua_State;
-FDecl(0x90A510, GetLuaState, LuaState* (__cdecl*)(lua_State* L))
-FDecl(0x40EAF0, sqrt, double(__cdecl*)(float))
-#define GetModuleHandle WDecl(0xC0F378, __stdcall void* (*)(const char* lpLibFileName))
-#define GetProcAddress  WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char* lpProcName))
->>>>>>> f3c2e21 (simgetdeposits to cpp)
 
 /*
 LuaPlus: See FALuaFuncs.txt

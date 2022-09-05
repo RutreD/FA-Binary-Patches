@@ -1,6 +1,5 @@
 #include "include/moho.h"
 
-<<<<<<< HEAD
 int SimSessionIsReplay(lua_State *L); // End Sim chain
 luaFuncDescReg SSIRRegDesc =  {0x00E45E90,          // Std register func
                                0x00E4AFBC,          // "SessionIsReplay"
@@ -18,25 +17,6 @@ luaFuncDescReg SSCSRegDesc =  {0x00E45E90,
                                &SSIRRegDesc,
                                SimSetCommandSource,
                                0x00000000};
-=======
-int SimSessionIsReplay(lua_State *L);             // End Sim chain
-luaFuncDescReg SSIRRegDesc = {0x00E45E90,         // Std register func
-                              0x00E4AFBC,         // "SessionIsReplay"
-                              0x00E00D90,         // "<global>"
-                              0x00E4AF84,         // "Return true if the active session is a replay session."
-                              0x010B8AE8,         // Next reg desc: ArmyGetHandicap
-                              SimSessionIsReplay, // Func ptr
-                              0x00000000};        // C++ class vtable ptr
-
-int SimSetCommandSource(lua_State *L);
-luaFuncDescReg SSCSRegDesc = {0x00E45E90,
-                              "SetCommandSource",
-                              0x00E00D90,
-                              "(targetArmyIndex, sourceHumanIndex, Set or Unset)",
-                              &SSIRRegDesc,
-                              SimSetCommandSource,
-                              0x00000000};
->>>>>>> 4d1871f (lua_cfuncs asm to cpp)
 
 #define s_GDAPName "GetDepositsAroundPoint"
 #define s_GDAPDesc "(X, Z, Radius, Type)"
@@ -68,7 +48,6 @@ luaFuncDescReg SGMWPRegDesc = {0x00E45E90,
                                0x00842BB0,
                                0x00000000};
 
-<<<<<<< HEAD
 int SimSetFocusArmy(lua_State *L);                  // Sim chain entry
 luaFuncDescReg SSFARegDesc =  {0x00E45E90,          // Std register func
                                0x00E43408,          // "SetFocusArmy"
@@ -77,16 +56,6 @@ luaFuncDescReg SSFARegDesc =  {0x00E45E90,          // Std register func
                                &SGMWPRegDesc,       // Next reg desc
                                SimSetFocusArmy,     // Func ptr
                                0x00000000};         // C++ class vtable ptr
-=======
-int SimSetFocusArmy(lua_State *L);             // Sim chain entry
-luaFuncDescReg SSFARegDesc = {0x00E45E90,      // Std register func
-                              0x00E43408,      // "SetFocusArmy"
-                              0x00E00D90,      // "<global>"
-                              0x00E451FC,      // "SetFocusArmy(armyIndex or -1)"
-                              &SGMWPRegDesc,   // Next reg desc
-                              SimSetFocusArmy, // Func ptr
-                              0x00000000};     // C++ class vtable ptr
->>>>>>> 4d1871f (lua_cfuncs asm to cpp)
 
 luaFuncDescReg UGTFPRegDesc = {0x00E45E90, // UI chain end
                                s_GTFPName,
@@ -112,7 +81,3 @@ luaFuncDescReg UGDAPRegDesc = {0x00E45E90, // UI chain entry
                                &USIMMBRegDesc, // Next reg desc
                                SimGetDepositsAroundPoint,
                                0x00000000};
-<<<<<<< HEAD
-
-=======
->>>>>>> 4d1871f (lua_cfuncs asm to cpp)
