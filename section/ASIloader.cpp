@@ -175,7 +175,7 @@ FuncDesc Funcs[] = {
     {"", 0x90c890},
     {"lua_rawget", 0x90d050},
     {"lua_rawgeti", 0x90d0a0},
-    {"", 0x90d2a0},
+    {"lua_rawset", 0x90d2a0},
     {"lua_rawseti", 0x90d2f0},
     {"", 0x90c5f0},
     {"", 0x90c690},
@@ -274,7 +274,7 @@ void ASILoader()
         }
 
     __asm(
-        "ADD ESP,0x2C;"
+        "ADD ESP,0x3C;"
         "POP EBX;"
         "POP ESI;"
         "POP EDI;"
