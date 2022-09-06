@@ -18,7 +18,10 @@ struct lua_Debug {
   int i_ci;  // active function
 };
 
-typedef struct lua_State lua_State;
+class LuaState;
+//lua.org/source/5.0/lstate.h.html#lua_State
+typedef struct {uint8_t pad[0x44]; LuaState* LuaState;} lua_State;
+
 typedef struct luaL_Buffer luaL_Buffer;
 typedef const char* (*lua_Chunkreader)(lua_State *L, void *data, size_t *size);
 typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
@@ -110,9 +113,24 @@ typedef union {
   int b;
 } Value;
 
+//lua.org/source/5.0/lobject.h.html#TObject
 typedef struct {
   int tt;
   Value value;
+
+  /* Types:
+   -1 - None
+    0 - Nil
+    1 - Boolean
+    2 - LightUserData
+    3 - Number
+    4 - String
+    5 - Table
+    6 - CFunction
+    7 - Function
+    8 - UserData
+    9 - Thread
+  */
 } TObject;
 VALIDATE_SIZE(TObject, 8)
 
@@ -129,12 +147,6 @@ VALIDATE_SIZE(TObject, 8)
       int m_stackIndex;
   };
   VALIDATE_SIZE(LuaStackObject, 8)
-
-  namespace CLuaStackObject
-  {
-    //public
-      //FDecl(, CLuaStackObject, __thiscall LuaStackObject (*)(LuaStackObject* this_, LuaState* state, int stackIndex))
-  }
 
   class LuaObject
   {// 0x14 bytes

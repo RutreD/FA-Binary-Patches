@@ -407,7 +407,7 @@ void RangeRings()
 		"mov dword ptr [esp+0x20],esi;"
 		"mov dword ptr [esp+0x19C],esi;"
 		"cmp byte ptr [0x10A6414],0x0;"
-		"je label1;"
+		"je RR_L1;"
 		"mov eax,dword ptr [esp+0x1A8];"
 		"push eax;"
 		"push ebx;"
@@ -418,7 +418,7 @@ void RangeRings()
 	);
 	asm(
 		"call -0x1000 +8322640;"
-		"label1:;"
+		"RR_L1:;"
 		"mov eax,dword ptr [ebp+0x14];"
 		"cmp eax,esi;"
 		"je -0x1000 + 8321877;" //STARTREGULARFUNC_NO_OVERLOAD
@@ -532,13 +532,13 @@ void RangeRings()
 		"mov edx,dword ptr [esp+0x3C];"
 		"label5:;"
 		"cmp edx,dword ptr [esp+0x48];"
-		"je label2;"
+		"je RR_L2;"
 		"push edx;"
 	);
 	asm(
 		"call -0x1000 +11023682;"
 		"add esp,0x4;"
-		"label2:;"
+		"RR_L2:;"
 		"mov ecx,dword ptr [ebp+0x8];"
 		"mov eax,dword ptr [ecx];"
 		"cmp eax,ecx;"

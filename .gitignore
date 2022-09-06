@@ -2,3 +2,4 @@
 /build
 define.h
 patch.ld
+section.cpp

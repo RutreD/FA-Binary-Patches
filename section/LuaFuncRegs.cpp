@@ -20,7 +20,7 @@ luaFuncDescReg SSCSRegDesc =  {0x00E45E90,
 
 #define s_GDAPName "GetDepositsAroundPoint"
 #define s_GDAPDesc "(X, Z, Radius, Type)"
-int SimGetDepositsAroundPoint(void *L);
+int SimGetDepositsAroundPoint(lua_State *L);
 luaFuncDescReg SGDAPRegDesc = {0x00E45E90,
                                s_GDAPName,
                                0x00E00D90,
@@ -31,7 +31,7 @@ luaFuncDescReg SGDAPRegDesc = {0x00E45E90,
 
 #define s_GTFPName "GetTimeForProfile"
 #define s_GTFPDesc "(OriginTime)"
-int GetTimeForProfile(void *L);
+int GetTimeForProfile(lua_State *L);
 luaFuncDescReg SGTFPRegDesc = {0x00E45E90,
                                s_GTFPName,
                                0x00E00D90,
@@ -48,7 +48,7 @@ luaFuncDescReg SGMWPRegDesc = {0x00E45E90,
                                0x00842BB0,
                                0x00000000};
 
-int SimSetFocusArmy(lua_State *L);                  // Sim chain entry
+int SimSetFocusArmy(lua_State *L); // Sim chain entry
 luaFuncDescReg SSFARegDesc =  {0x00E45E90,          // Std register func
                                0x00E43408,          // "SetFocusArmy"
                                0x00E00D90,          // "<global>"

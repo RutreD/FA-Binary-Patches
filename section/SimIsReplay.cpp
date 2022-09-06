@@ -1,7 +1,6 @@
-#include "include/LuaAPI.h"
+#include "include/moho.h"
 
-int SimSessionIsReplay(lua_State* L)
-{
-    lua_pushboolean(L, *reinterpret_cast<bool *>(g_CWldSession + 0x484));
+int SimSessionIsReplay(lua_State *L) {
+    lua_pushboolean(L, g_CWldSession->isReplay);
     return 1;
 }

@@ -28,21 +28,21 @@ Get debugging info about a Lua call:
   ((type)*(uintptr_t*)addr)
 
 #define FDecl(addr, name, type) \
-  inline const auto name = (type)addr;
+  const auto name = (type)addr;
 
 #define VALIDATE_SIZE(struc, size) \
   static_assert(sizeof(struc) == size, "Invalid structure size of " #struc);
 
-#define g_STIDriver			GDecl(0x10C4F50, uintptr_t)
-#define g_SWldSessionInfo		GDecl(0x10C4F58, uintptr_t)
-#define g_CWldSession			GDecl(0x10A6470, uintptr_t)
-#define g_Sim				GDecl(0x10A63F0, uintptr_t)
-#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, uintptr_t)
-#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, uintptr_t)
-#define g_CUIManager			GDecl(0x10A6450, uintptr_t)
-#define g_EngineStats			GDecl(0x10A67B8, uintptr_t)
-#define g_WRenViewport			GDecl(0x10C7C28, uintptr_t)
-#define g_ConsoleLuaState		GDecl(0x10A6478, uintptr_t)
+#define g_CSimDriver			GDecl(0x10C4F50, CSimDriver*)
+#define g_SWldSessionInfo		GDecl(0x10C4F58, SWldSessionInfo*)
+#define g_CWldSession			GDecl(0x10A6470, CWldSession*)
+#define g_Sim				GDecl(0x10A63F0, Sim*)
+#define g_EntityCategoryTypeInfo	GDecl(0x10C6E70, EntityCategoryTypeInfo*)
+#define g_CAiBrainTypeInfo		GDecl(0x10C6FA0, CAiBrainTypeInfo*)
+#define g_CUIManager			GDecl(0x10A6450, CUIManager*)
+#define g_EngineStats			GDecl(0x10A67B8, EngineStats*)
+#define g_WRenViewport			GDecl(0x10C7C28, WRenViewport*)
+#define g_ConsoleLuaState		GDecl(0x10A6478, LuaState*)
 
 #define ui_ProgressBarColor		GDecl(0x0F57BB8, int)
 #define ui_SelectTolerance		GDecl(0x0F57A90, float)
@@ -78,11 +78,15 @@ FDecl(0xA89110, memset,		void* (*)(void *dest, int ch, size_t count))
 FDecl(0xA89190, memcpy,		void* (*)(void *dest, const void *src, size_t count))
 FDecl(0x452FC0, sqrtf,		float (*)(float arg))
 FDecl(0xA94450, strlen,		size_t (*)(const char *str))
+
 FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char *str))
 FDecl(0x4059E0, AssignString,	__thiscall void (*)(void *this_, const char *str, size_t size))
 
 #define GetModuleHandle WDecl(0xC0F378, __stdcall void* (*)(const char *lpLibFileName))
 #define GetProcAddress  WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char *lpProcName))
+
+#define QueryPerformanceCounter   WDecl(0xC0F470, __stdcall bool (*)(int64_t*))
+#define QueryPerformanceFrequency WDecl(0xC0F46C, __stdcall bool (*)(int64_t*))
 
 /*
 LuaPlus: See FALuaFuncs.txt
