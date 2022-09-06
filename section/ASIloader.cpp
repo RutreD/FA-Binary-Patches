@@ -1,7 +1,8 @@
+#include <ctype.h>
 struct FuncDesc
 {
     const char *Name;
-    unsigned long Ptr;
+    uintptr_t Ptr;
 };
 
 FuncDesc Funcs[] = {
@@ -76,7 +77,7 @@ FuncDesc Funcs[] = {
     {"?IsUserData@LuaObject@@QBE_NXZ", 0x907320},
     {"?Lookup@LuaObject@@QBE?AV1@PBD@Z", 0x9093b0},
     {"?LuaPlusH_next@@YA_NPAVLuaState@@PBVLuaObject@@PAV2@2@Z", 0x90a6b0},
-    {"?PushStack@LuaObject@@QBE?AVLuaStackObject@@PAVLuaState@@@Z", 0x907d80},
+    {"?PushStack@LuaObject@@QBEXPAVLuaStackObject@@PAVLuaState@@@Z", 0x907d80},
     {"?PushStack@LuaObject@@QBEXPAUlua_State@@@Z", 0x907d10},
     {"?Register@LuaObject@@QAEXPBDP6AHPAUlua_State@@@ZH@Z", 0x907630},
     {"?Reset@LuaObject@@QAEXXZ", 0x9075f0},
