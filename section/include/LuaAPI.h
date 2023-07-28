@@ -159,6 +159,9 @@ VALIDATE_SIZE(TObject, 8)
     LuaObject(LuaState* state, int stackIndex) {
       ((void(__thiscall*)(LuaObject*, LuaState*, int))0x9089c0)(this, state, stackIndex);
     }
+    ~LuaObject() {
+      ((void(__thiscall*)(LuaObject*))0x9075d0)(this);
+    }
     void Insert(LuaObject* obj) {
       ((void(__thiscall*)(LuaObject*, LuaObject*))0x909af0)(this, obj);
     }
@@ -189,6 +192,25 @@ VALIDATE_SIZE(TObject, 8)
       ((void(__thiscall*)(LuaObject*, int, const char*))0x9084e0)(this, key, value);
     }
 
+    void AssignNewTable(LuaState* state, int narray = 0, int numhash = 0) {
+      ((void(__thiscall*)(LuaObject*, LuaState*, int, int))0x909940)(this, state, narray, numhash);
+    }
+
+    void PushStack() {
+      LuaStackObject stack;
+      PushStack(&stack, m_state);
+    }
+    void PushStack(LuaStackObject* out, LuaState* state) {
+      ((LuaStackObject*(__thiscall*)(LuaObject*, LuaStackObject*, LuaState*))0x907d80)(this, out, state);
+    }
+
+    void SetObject(int key, LuaObject* value) {
+      ((void(__thiscall*)(LuaObject*, int, LuaObject*))0x9087a0)(this, key, value);
+    }
+    void SetObject(int key, LuaObject& value) {
+      SetObject(key, &value);
+      // ((void(__thiscall*)(LuaObject*, int, LuaObject*))0x9087a0)(this, key, &value);
+    }
     LuaObject* m_next;
     LuaObject* m_prev;
     LuaState* m_state;
