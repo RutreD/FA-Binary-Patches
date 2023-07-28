@@ -148,13 +148,46 @@ VALIDATE_SIZE(TObject, 8)
   };
   VALIDATE_SIZE(LuaStackObject, 8)
 
-  class LuaObject
+  struct LuaObject
   {// 0x14 bytes
-    public:
-      LuaObject* m_next;
-      LuaObject* m_prev;
-      LuaState* m_state;
-      TObject m_object;
+    LuaObject() {
+      ((void(__thiscall*)(LuaObject*))0x9072a0)(this);
+    }
+    LuaObject(LuaState* state) {
+      ((void(__thiscall*)(LuaObject*, LuaState*))0x908970)(this, state);
+    }
+    LuaObject(LuaState* state, int stackIndex) {
+      ((void(__thiscall*)(LuaObject*, LuaState*, int))0x9089c0)(this, state, stackIndex);
+    }
+    void Insert(LuaObject* obj) {
+      ((void(__thiscall*)(LuaObject*, LuaObject*))0x909af0)(this, obj);
+    }
+    void Insert(int index, LuaObject* obj) {
+      ((void(__thiscall*)(LuaObject*, int, LuaObject*))0x909ce0)(this, index, obj);
+    }
+    void SetInteger(const char* key, int value) {
+      ((void(__thiscall*)(LuaObject*, const char*, int))0x9081f0)(this, key, value);
+    }
+    void SetInteger(int key, int value) {
+      ((void(__thiscall*)(LuaObject*, int, int))0x908240)(this, key, value);
+    }
+    void SetNumber(const char* key, float value) {
+      ((void(__thiscall*)(LuaObject*, const char*, float))0x908320)(this, key, value);
+    }
+    void SetNumber(int key, float value) {
+      ((void(__thiscall*)(LuaObject*, int, float))0x908370)(this, key, value);
+    }
+    void SetString(const char* key, const char* value) {
+      ((void(__thiscall*)(LuaObject*, const char*, const char*))0x908450)(this, key, value);
+    }
+    void SetString(int key, const char* value) {
+      ((void(__thiscall*)(LuaObject*, int, const char*))0x9084e0)(this, key, value);
+    }
+
+    LuaObject* m_next;
+    LuaObject* m_prev;
+    LuaState* m_state;
+    TObject m_object;
   };
   VALIDATE_SIZE(LuaObject, 0x14)
 
