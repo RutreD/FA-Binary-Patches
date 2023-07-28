@@ -163,7 +163,9 @@ VALIDATE_SIZE(TObject, 8)
       ((void(__thiscall*)(LuaObject*, LuaObject*))0x909af0)(this, obj);
     }
     void Insert(LuaObject& obj) {
-      ((void(__thiscall*)(LuaObject*, LuaObject&))0x909af0)(this, obj); // ((void(__thiscall*)(LuaObject*, LuaObject*))0x909af0)(this, &obj)
+      ((void(__thiscall*)(LuaObject*, LuaObject&))0x909af0)(this, obj); 
+      // ((void(__thiscall*)(LuaObject*, LuaObject*))0x909af0)(this, &obj)
+      // Insert(&obj);
     }
     void Insert(int index, LuaObject* obj) {
       ((void(__thiscall*)(LuaObject*, int, LuaObject*))0x909ce0)(this, index, obj);
