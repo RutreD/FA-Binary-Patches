@@ -212,6 +212,13 @@ VALIDATE_SIZE(TObject, 8)
       // ((void(__thiscall*)(LuaObject*, int, LuaObject*))0x9087a0)(this, key, &value);
     }
 
+
+    LuaObject Clone() {
+      LuaObject obj{};
+      Clone(&obj);
+      return obj;
+    }
+    
     void Clone(LuaObject* obj) {
       ((void(__thiscall*)(LuaObject*, LuaObject*))0x90a180)(this, obj);
     }

@@ -98,9 +98,7 @@ void IsTableEmpty()
 int TableClone(lua_State* L)
 {
     LuaObject obj{L->LuaState, 1};
-    LuaObject cloned{};
-    obj.Clone(&cloned);
-    cloned.PushStack();
+    obj.Clone().PushStack();
     return 1;
 }
 
