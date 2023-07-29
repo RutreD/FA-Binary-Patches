@@ -83,10 +83,10 @@ void IsTableEmpty()
         "JNZ ITE_L5;"
         "L072:;"
         "PUSH 0x1;"
-        "JMP L12;"
+        "JMP L12_;"
         "L62:;"
         "PUSH 0x0;"
-        "L12:;"
+        "L12_:;"
         "PUSH ESI;"
         "CALL 0x0090CF80;"     //PushBool
         "ADD ESP,0x8;"
@@ -94,9 +94,20 @@ void IsTableEmpty()
     );
 }
 
+#include "include/LuaAPI.h"
+int TableClone(lua_State* L)
+{
+    LuaObject obj{L->LuaState, 1};
+    LuaObject cloned{};
+    obj.Clone(&cloned);
+    cloned.PushStack();
+    return 1;
+}
+
 int RegTableFuncsDesc[] = {"getsize2",&GetTableSize,
                            "empty2",&IsTableEmpty,
                            "getn2",0x00927C20,
+                           "clone", &TableClone,
                            0,0};
 
 void RegTableFuncs()

@@ -201,7 +201,7 @@ VALIDATE_SIZE(TObject, 8)
       PushStack(&stack, m_state);
     }
     void PushStack(LuaStackObject* out, LuaState* state) {
-      ((LuaStackObject*(__thiscall*)(LuaObject*, LuaStackObject*, LuaState*))0x907d80)(this, out, state);
+      ((void(__thiscall*)(LuaObject*, LuaStackObject*, LuaState*))0x907d80)(this, out, state);
     }
 
     void SetObject(int key, LuaObject* value) {
@@ -211,6 +211,11 @@ VALIDATE_SIZE(TObject, 8)
       SetObject(key, &value);
       // ((void(__thiscall*)(LuaObject*, int, LuaObject*))0x9087a0)(this, key, &value);
     }
+
+    void Clone(LuaObject* obj) {
+      ((void(__thiscall*)(LuaObject*, LuaObject*))0x90a180)(this, obj);
+    }
+
     LuaObject* m_next;
     LuaObject* m_prev;
     LuaState* m_state;
