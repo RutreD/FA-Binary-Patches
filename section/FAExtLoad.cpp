@@ -216,6 +216,9 @@ FuncDesc Funcs[] = {
 typedef __stdcall void* LoadLibrary_t(char *lpLibFileName);
 typedef __stdcall int VirtualProtect_t(void *lpAddress, int dwSize, int flNewProtect, int *lpflOldProtect);
 
+__attribute__ ((noinline)) void ret() {
+    asm("JMP 0xA8ED7E;");
+}
 void FAExtLoad()
 {
     {
@@ -236,5 +239,5 @@ void FAExtLoad()
             //}
         }
     }
-    asm("JMP 0xA8ED7E;");
+    ret();
 }
