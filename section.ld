@@ -15,5 +15,6 @@ SECTIONS {
     *(.ctors)
     *(.reloc)
     *(.idata*)
+    *(.gcc_except_table)
   }
 }

@@ -72,6 +72,9 @@ This are just the patch files for this game. I decided to separate them from pat
     - section/StopReclaimWhenPaused.cpp
 
 ## Additions
+- Adds GetProcessAffinityMask, SetProcessAffinityMask, SetProcessPriority to "init.lua"
+    - hooks/OnCreateInitLuaState.cpp
+    - section/OnCreateInitLuaState.cpp
 - Adds the commandType, position, targetId and blueprintId to sim unit:GetCommandQueue
     - hooks/SimGetCommandQueue.cpp
     - section/SimGetCommandQueue.cpp
