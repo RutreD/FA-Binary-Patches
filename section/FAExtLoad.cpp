@@ -243,3 +243,21 @@ void FAExtLoad()
         "JMP 0xA8ED7E \n"
     );
 }
+
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wreturn-type"
+
+// extern "C" int __cdecl atexit(void (__cdecl *)(void)) {
+//     asm("jmp 0xA8211E");
+// }
+// #pragma GCC diagnostic pop
+
+struct A
+{
+    A() {
+        WarningF("qq");
+    }
+    // ~A() {
+    //     WarningF("bb");
+    // }
+} a;

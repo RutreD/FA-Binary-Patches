@@ -7,12 +7,12 @@ SECTIONS {
     *(.data*)
     *(.bss*)
     *(.rdata)
+    *(.text.startup)
+    *(.ctors)
   }
   /DISCARD/ : {
-    *(.text.startup)
     *(.rdata$zzz)
     *(.eh_frame*)
-    *(.ctors)
     *(.reloc)
     *(.idata*)
   }
