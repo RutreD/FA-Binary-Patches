@@ -218,13 +218,13 @@ typedef __stdcall int VirtualProtect_t(void *lpAddress, int dwSize, int flNewPro
 
 void FAExtLoad()
 {
-    void *Kernel = GetModuleHandle("KERNEL32");
-    LoadLibrary_t *LoadLibrary = GetProcAddress(Kernel, "LoadLibraryA");
-    VirtualProtect_t *VirtualProtect = GetProcAddress(Kernel, "VirtualProtect");
+    void *Kernel = FAGetModuleHandle("KERNEL32");
+    LoadLibrary_t *LoadLibrary = FAGetProcAddress(Kernel, "LoadLibraryA");
+    VirtualProtect_t *VirtualProtect = FAGetProcAddress(Kernel, "VirtualProtect");
     void *ldll = LoadLibrary("FAExt.dll");
     if (ldll)
     for (int i = 0; i < sizeof(Funcs) / sizeof(Funcs[0]); i++) {
-        char *FPtr = GetProcAddress(ldll, Funcs[i].Name);
+        char *FPtr = FAGetProcAddress(ldll, Funcs[i].Name);
         //if (FPtr) {
             int OldProtect;
             char* Ptr = Funcs[i].Ptr;
@@ -244,6 +244,7 @@ void FAExtLoad()
     );
 }
 
+#include <d3d9.h>
 struct A
 {
     A() {

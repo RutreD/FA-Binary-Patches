@@ -8,7 +8,7 @@ void __thiscall OnCreateInitLuaState(LuaState* state, int enumStdLibs) {
         auto GetProcessAffinityMask = *reinterpret_cast<int(__stdcall**)(void*, uint32_t*, uint32_t*)>(0x00C0F584);
         uint32_t dwProcessAffinityMask;
         uint32_t dwSystemAffinityMask;
-        int res = GetProcessAffinityMask(GetCurrentProcess(), &dwProcessAffinityMask, &dwSystemAffinityMask);
+        int res = GetProcessAffinityMask(FAGetCurrentProcess(), &dwProcessAffinityMask, &dwSystemAffinityMask);
         lua_pushboolean(L, res != 0);
         lua_pushnumber(L, dwProcessAffinityMask);
         lua_pushnumber(L, dwSystemAffinityMask);
@@ -19,7 +19,7 @@ void __thiscall OnCreateInitLuaState(LuaState* state, int enumStdLibs) {
         //bool SetProcessAffinityMask(uint32_t dwProcessAffinityMask)
         uint32_t dwProcessAffinityMask = luaL_checknumber(L, 1);
         auto SetProcessAffinityMask = *reinterpret_cast<int(__stdcall**)(void*, uint32_t)>(0x00C0F444);
-        int res = SetProcessAffinityMask(GetCurrentProcess(), dwProcessAffinityMask);
+        int res = SetProcessAffinityMask(FAGetCurrentProcess(), dwProcessAffinityMask);
         lua_pushboolean(L, res != 0);
         return 1;
     });
@@ -27,8 +27,8 @@ void __thiscall OnCreateInitLuaState(LuaState* state, int enumStdLibs) {
     lua_register(state->m_state, "SetProcessPriority", [](lua_State *L) -> int {
         //bool SetProcessPriority(uint32_t dwPriorityClass)
         uint32_t dwPriorityClass = luaL_checknumber(L, 1);
-        auto SetPriorityClass = reinterpret_cast<uint32_t(__stdcall*)(void*, uint32_t)>(GetProcAddress(GetModuleHandle("kernel32.dll"), "SetPriorityClass"));
-        int res = SetPriorityClass(GetCurrentProcess(), dwPriorityClass);
+        auto SetPriorityClass = reinterpret_cast<uint32_t(__stdcall*)(void*, uint32_t)>(FAGetProcAddress(FAGetModuleHandle("kernel32.dll"), "SetPriorityClass"));
+        int res = SetPriorityClass(FAGetCurrentProcess(), dwPriorityClass);
         lua_pushboolean(L, res != 0);
         return 1;
     });

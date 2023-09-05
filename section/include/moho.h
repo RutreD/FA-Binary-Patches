@@ -111,7 +111,7 @@ struct moho_set
 };
 VALIDATE_SIZE(moho_set, 0x20)
 
-typedef int SOCKET;
+// typedef int SOCKET;
 // GPGCore
 
 struct Vector2f
@@ -1305,7 +1305,7 @@ struct CNetUDPConnetor // : INetConnector
 	void* smth; // Listen socket fd?
 	gpg_mutex mMutex;
 	// at 0x14
-	SOCKET mSocket;
+	int mSocket;
 	// at 0x24
 	linked_list<CNetUDPConnection*> mConnections;
 };
