@@ -1,5 +1,5 @@
 #pragma once
-
+#include <windows.h>
 #include <cstdint>
 #include "../../workflow.cpp"
 /*
@@ -85,13 +85,6 @@ FDecl(0xA82F32, FAsprintf_s,	int (*)(char *Buffer, size_t BufferCount, const cha
 
 FDecl(0x405550, InitString,	__thiscall void (*)(void *this_, const char *str))
 FDecl(0x4059E0, AssignString,	__thiscall void (*)(void *this_, const char *str, size_t size))
-
-#define FAGetModuleHandle   WDecl(0xC0F378, __stdcall void* (*)(const char *lpLibFileName))
-#define FAGetProcAddress    WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char *lpProcName))
-#define FAGetCurrentProcess WDecl(0xC0F58C, __stdcall void* (*)())
-
-#define FAQueryPerformanceCounter   WDecl(0xC0F470, __stdcall bool (*)(int64_t*))
-#define FAQueryPerformanceFrequency WDecl(0xC0F46C, __stdcall bool (*)(int64_t*))
 
 /*
 LuaPlus: See FALuaFuncs.txt

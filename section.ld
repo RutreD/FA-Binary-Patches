@@ -1,14 +1,21 @@
 OUTPUT_FORMAT(pei-i386)
 OUTPUT(section.pe)
 SECTIONS {
-  . = __image_base__ + 0x1000;
-  .text : {
+  
+  .definition 0 : SUBALIGN(1) {
+    _atexit = 0xA8211E;
+    "__imp__GetModuleHandleA@4" = 0xC0F378;
+    "__imp__GetProcAddress@8" = 0xC0F48C;
+    "__imp__GetCurrentProcess@0" = 0xC0F58C;
+    "__imp__QueryPerformanceCounter@4" = 0xC0F470;
+    "__imp__QueryPerformanceFrequency@4" = 0xC0F46C;
+  }
+  
+  .text __image_base__ + 0x1000 : {
     *(.text*)
     *(.data*)
     *(.bss*)
     *(.rdata)
-    *(.text.startup)
-    *(.ctors)
   }
   /DISCARD/ : {
     *(.rdata$zzz)
