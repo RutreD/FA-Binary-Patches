@@ -245,24 +245,19 @@ void FAExtLoad()
 }
 
 #include <d3d9.h>
-struct A
-{
-    A() {
-        WarningF("qq");
-    }
-    ~A() {
-        WarningF("bb");
-    }
-} a;
+#include "include/magic_classes.h"
 
-A c;
+SimRegisterFunction hello{"qq", "qq", [](lua_State *L) -> int {
+                              return 0;
+                          }};
+SimRegisterFunction hello1{"qqw", "qqw", [](lua_State *L) -> int {
+                               return 0;
+                           }};
 
-struct B
-{
-    B() {
-        WarningF("ww");
-    }
-    ~B() {
-        WarningF("ss");
-    }
-} b;
+UIRegisterFunction hellou{hello};
+
+UIRegisterFunction ui{"ss", "ww", [](lua_State *L) -> int {
+                          return 0;
+                      }};
+
+SimRegisterFunction simui{ui};

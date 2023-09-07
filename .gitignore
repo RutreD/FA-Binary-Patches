@@ -1,5 +1,6 @@
-*.exe
+*.exe*
 /build
 define.h
 patch.ld
 section.cpp
+.vscode
