@@ -261,3 +261,14 @@ UIRegisterFunction ui{"ss", "ww", [](lua_State *L) -> int {
                       }};
 
 SimRegisterFunction simui{ui};
+
+ConDescReg myConFunction{"name", "description", +[](vector<string> *vec_) {
+                                           auto &vec = *vec_;
+                                           WarningF("Command: %s", vec[0].data());
+                                           if (vec.size() >= 2)
+                                               for (auto it = vec.begin + 1; it != vec.end; it++)
+                                                   WarningF("param[%d]: %s", it - vec.begin, it->data());
+                                       }};
+
+int v;
+ConDescReg myConIntV{"name2", "description", &v};
