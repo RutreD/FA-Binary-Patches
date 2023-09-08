@@ -507,7 +507,12 @@ FDecl(0x90c800, lua_isstring, int __cdecl (*)(lua_State*, int))
 FDecl(0x90c980, lua_lessthan, int __cdecl (*)(lua_State*, int, int))
 FDecl(0x90d5c0, lua_load, int __cdecl (*)(lua_State*, lua_Chunkreader, void*, const char*))
 FDecl(0x90d6d0, lua_next, int __cdecl (*)(lua_State*, int))
-FDecl(0x90d430, lua_pcall, int __cdecl (*)(lua_State*, int, int))
+// FDecl(0x90d430, lua_pcall, int __cdecl (*)(lua_State*, int, int))
+extern "C" {
+int __cdecl lua_pcall(lua_State*, int, int);
+//int __cdecl lua_.........
+//....
+}
 FDecl(0x90c890, lua_rawequal, int __cdecl (*)(lua_State*, int, int))
 FDecl(0x914610, lua_resume, int __cdecl (*)(lua_State*, int))
 FDecl(0x90d3b0, lua_setfenv, int __cdecl (*)(lua_State*, int))

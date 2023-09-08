@@ -1,6 +1,6 @@
 OUTPUT_FORMAT(pei-i386)
 OUTPUT(section.pe)
-
+_lua_pcall = 0x90d430;
 _atexit = 0xA8211E;
 "__Znwj" = 0xA825B9; /*operator new(uint)*/
 "__ZdlPvj" = 0x958C40; /*operator delete(void*, uint)*/
