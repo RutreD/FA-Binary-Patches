@@ -4,25 +4,25 @@
 
 struct SimRegFunc : luaFuncDescReg
 {
-    constexpr SimRegFunc(const char *name, const char *desc,
-        lua_CFunction f, const char *className = 0xE00D90, void *classPtr = nullptr) :
+    SimRegFunc(const char *name, const char *desc,
+        lua_CFunction f, const char *className = (const char *)0xE00D90, void *classPtr = nullptr) :
         luaFuncDescReg{0xE45E90, name, className, desc, *reinterpret_cast<luaFuncDescReg**>(0xF5A124), f, classPtr}
     {
         *reinterpret_cast<luaFuncDescReg**>(0xF5A124) = this;
     }
-    constexpr SimRegFunc(luaFuncDescReg &srf) :
-        SimRegFunc(srf.FuncName, srf.FuncDesc, srf.FuncPtr, srf.ClassPtr, srf.ClassPtr) {}
+    SimRegFunc(luaFuncDescReg &srf) :
+        SimRegFunc(srf.FuncName, srf.FuncDesc, srf.FuncPtr, srf.ClassName, srf.ClassPtr) {}
 };
 struct UIRegFunc : luaFuncDescReg
 {
-    constexpr UIRegFunc(const char *name, const char *desc,
-        lua_CFunction f, const char *className = 0xE00D90, void *classPtr = nullptr) :
+    UIRegFunc(const char *name, const char *desc,
+        lua_CFunction f, const char *className = (const char *)0xE00D90, void *classPtr = nullptr) :
         luaFuncDescReg{0xE45E90, name, className, desc, *reinterpret_cast<luaFuncDescReg**>(0xF59690), f, classPtr}
     {
         *reinterpret_cast<luaFuncDescReg**>(0xF59690) = this;
     }
 
-    constexpr UIRegFunc(luaFuncDescReg &srf) :
+    UIRegFunc(luaFuncDescReg &srf) :
         UIRegFunc(srf.FuncName, srf.FuncDesc, srf.FuncPtr, srf.ClassName, srf.ClassPtr) {}
 };
 

@@ -14,7 +14,7 @@ int SimSetCommandSource(lua_State *L) {
 luaFuncDescReg SSCSRegDesc = {
     0x00E45E90,
     "SetCommandSource",
-    0x00E00D90,
+    (char*)0x00E00D90,
     "(targetArmyIndex, sourceHumanIndex, Set or Unset)",
     0x00000000,
     SimSetCommandSource,

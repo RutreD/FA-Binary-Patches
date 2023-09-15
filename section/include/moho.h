@@ -7,12 +7,12 @@ typedef int unk_t;
 
 struct luaFuncDescReg
 {	// 0x1C bytes
-	void **RegisterFunc;  // call for register lua function. 0x00E45E90 is std func
-	char *FuncName;       // lua name function
-	char *ClassName;      // lua class name. 0x00E00D90 - <global> if none
-	char *FuncDesc;       // for log
+	uintptr_t RegisterFunc;  // call for register lua function. 0x00E45E90 is std func
+	const char *FuncName;       // lua name function
+	const char *ClassName;      // lua class name. 0x00E00D90 - <global> if none
+	const char *FuncDesc;       // for log
 	luaFuncDescReg *Next; // reg func of chain
-	void *FuncPtr;        // code address
+	lua_CFunction FuncPtr;        // code address
 	void *ClassPtr;       // C++ class type address. NULL if class none
 };
 VALIDATE_SIZE(luaFuncDescReg, 0x1C)
@@ -55,7 +55,8 @@ struct string
 	uint32_t size; // 0f if SSO, 1f not SSO
 
 	const char* data() {
-		return size == 0xF ? &str : (const char*)str;
+		return "";
+		// return size == 0xF ? &str : (const char*)str;
 	}
 };
 VALIDATE_SIZE(string, 0x1C)
@@ -111,7 +112,7 @@ struct moho_set
 };
 VALIDATE_SIZE(moho_set, 0x20)
 
-typedef int SOCKET;
+// typedef int SOCKET;
 // GPGCore
 
 struct Vector2f
@@ -1255,7 +1256,7 @@ struct CClientManagerImpl : IClientManager
 	bool unk1; // if value is 1 then KERNEL32.SetEvent is bypassed
 };
 
-typedef struct mRequest {IClient* mRequester; int mAfterBeat;};
+struct mRequest {IClient* mRequester; int mAfterBeat;};
 
 struct CClientBase : IClient
 {//0x0053B5E9, 0xD8 bytes
@@ -1324,7 +1325,7 @@ struct CNetUDPConnetor // : INetConnector
 	void* smth; // Listen socket fd?
 	gpg_mutex mMutex;
 	// at 0x14
-	SOCKET mSocket;
+	int mSocket;
 	// at 0x24
 	linked_list<CNetUDPConnection*> mConnections;
 };

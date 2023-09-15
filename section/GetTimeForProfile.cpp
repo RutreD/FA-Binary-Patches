@@ -16,7 +16,7 @@ int GetTimeForProfile(lua_State *L) {
 luaFuncDescReg SGTFPRegDesc = {
     0x00E45E90,
     s_GTFPName,
-    0x00E00D90,
+    (char*)0x00E00D90,
     s_GTFPDesc,
     0x00000000,
     GetTimeForProfile,
@@ -26,7 +26,7 @@ luaFuncDescReg SGTFPRegDesc = {
 luaFuncDescReg UGTFPRegDesc = {
     0x00E45E90,
     s_GTFPName,
-    0x00E00D90,
+    (char*)0x00E00D90,
     s_GTFPDesc,
     0x00000000,
     GetTimeForProfile,

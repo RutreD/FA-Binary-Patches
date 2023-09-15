@@ -45,7 +45,7 @@ int SimGetDepositsAroundPoint(lua_State *L) {
 luaFuncDescReg SGDAPRegDesc = {
     0x00E45E90,
     s_GDAPName,
-    0x00E00D90,
+    (char*)0x00E00D90,
     s_GDAPDesc,
     0x00000000,
     SimGetDepositsAroundPoint,
@@ -55,7 +55,7 @@ luaFuncDescReg SGDAPRegDesc = {
 luaFuncDescReg UGDAPRegDesc = {
     0x00E45E90,
     s_GDAPName,
-    0x00E00D90,
+    (char*)0x00E00D90,
     s_GDAPDesc,
     0x00000000,
     SimGetDepositsAroundPoint,

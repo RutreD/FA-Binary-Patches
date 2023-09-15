@@ -104,9 +104,9 @@ int TableClone(lua_State* L)
     return 1;
 }
 
-int RegTableFuncsDesc[] = {"getsize2",&GetTableSize,
-                           "empty2",&IsTableEmpty,
-                           "getn2",0x00927C20,
+luaL_reg RegTableFuncsDesc[] = {"getsize2",(lua_CFunction)&GetTableSize,
+                           "empty2",(lua_CFunction)&IsTableEmpty,
+                           "getn2",(lua_CFunction)0x00927C20,
                            "clone", &TableClone,
                            0,0};
 

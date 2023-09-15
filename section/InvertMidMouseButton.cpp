@@ -25,7 +25,7 @@ int SetInvertMidMouseButton(lua_State *L)
 luaFuncDescReg USIMMBRegDesc = {
     0x00E45E90,
     "SetInvertMidMouseButton",
-    0x00E00D90,
+    (char*)0x00E00D90,
     "(bool)",
     0x00000000,
     SetInvertMidMouseButton,

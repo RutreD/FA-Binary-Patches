@@ -54,7 +54,7 @@ void Conexecute()
 		"call 0x90CA90;"
 		"mov esi,eax;"
 	);
-	if(strCmp(eax, safe_quit) == 0)
+	if(strCmp((char*)eax, safe_quit) == 0)
 	{
 		asm(
 			"mov dword ptr [0x011FD24F], 0x1;"

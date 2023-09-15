@@ -1,7 +1,6 @@
 struct FuncDesc {
-    char* Name; char* Ptr;
+    char* Name; unsigned int Ptr;
 };
-
 FuncDesc Funcs[] = {
     {"??0LuaObject@@QAE@ABV0@@Z", 0x908a40},
     {"??0LuaObject@@QAE@ABVLuaStackObject@@@Z", 0x908a70},
@@ -219,15 +218,15 @@ typedef __stdcall int VirtualProtect_t(void *lpAddress, int dwSize, int flNewPro
 void FAExtLoad()
 {
     void *Kernel = GetModuleHandle("KERNEL32");
-    LoadLibrary_t *LoadLibrary = GetProcAddress(Kernel, "LoadLibraryA");
-    VirtualProtect_t *VirtualProtect = GetProcAddress(Kernel, "VirtualProtect");
+    auto LoadLibrary = (LoadLibrary_t *)GetProcAddress(Kernel, "LoadLibraryA");
+    auto VirtualProtect = (VirtualProtect_t *)GetProcAddress(Kernel, "VirtualProtect");
     void *ldll = LoadLibrary("FAExt.dll");
     if (ldll)
     for (int i = 0; i < sizeof(Funcs) / sizeof(Funcs[0]); i++) {
-        char *FPtr = GetProcAddress(ldll, Funcs[i].Name);
+        uintptr_t FPtr = (uintptr_t)GetProcAddress(ldll, Funcs[i].Name);
         //if (FPtr) {
             int OldProtect;
-            char* Ptr = Funcs[i].Ptr;
+            char* Ptr = (char*)Funcs[i].Ptr;
             VirtualProtect(Ptr, 5, 0x04, &OldProtect);
             *Ptr = (char)(0xE9);
             *(int*)(Ptr+1) = FPtr - (unsigned int)(Ptr) - 5;

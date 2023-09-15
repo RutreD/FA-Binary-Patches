@@ -9,9 +9,9 @@ int SimSetFocusArmy(lua_State *L) {
 //PatcherList_SimFuncRegs_SSFARegDesc
 luaFuncDescReg SSFARegDesc = {
     0x00E45E90,
-    0x00E43408, // "SetFocusArmy"
-    0x00E00D90,
-    0x00E451FC, // "SetFocusArmy(armyIndex or -1)"
+    (char*)0x00E43408, // "SetFocusArmy"
+    (char*)0x00E00D90,
+    (char*)0x00E451FC, // "SetFocusArmy(armyIndex or -1)"
     0x00000000,
     SimSetFocusArmy,
     0x00000000};
