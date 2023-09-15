@@ -6,7 +6,7 @@ asm(
 #ifdef STARTUP
   ".section h1; .set h1,0x45A926;"
   "push eax;"
-  "call "QU(STARTUP)";"
+  "call "QU(InitCtors)";"
   "pop eax;"
   "ret 8;"
 #endif
