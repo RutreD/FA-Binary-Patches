@@ -28,7 +28,7 @@ jobs:
         run: |
           pacman --noconfirm -S mingw-w64-i686-gcc
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Download Patcher
         run: curl -L "https://github.com/FAForever/FA_Patcher/releases/latest/download/FaP.exe" -o FaP.exe

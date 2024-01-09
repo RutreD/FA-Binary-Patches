@@ -1,11 +1,6 @@
-name: Release
-
+name: Test
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release Version'
-        required: true
 
 jobs:
   build:
@@ -22,7 +17,7 @@ jobs:
         run: |
           pacman --noconfirm -S mingw-w64-i686-gcc
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Download Patcher
         run: curl -L "https://github.com/FAForever/FA_Patcher/releases/latest/download/FaP.exe" -o FaP.exe
@@ -32,14 +27,3 @@ jobs:
 
       - name: Patch Binary
         run: ./FaP.exe
-
-      - name: Create Draft Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: v${{ github.event.inputs.version }}
-          draft: true
-          prerelease: true
