@@ -674,6 +674,7 @@ struct Entity : CScriptObject
 struct Projectile : Entity
 {//0x004C702B, 0x380 bytes
 	// at 0x6C
+	using Type = ObjectType<0x10C7578, 0xF77914>;
 	RProjectileBlueprint *Blueprint;
 };
 
