@@ -86,10 +86,15 @@ To apply the patches you can use the upload action or do it local via the [patch
     - section/StopReclaimWhenPaused.cpp
 
 ## Additions
+- Adds new methods to the the `Projectile` class (section/ProjectileNewMethods.cpp):
+    - `Projectile:SetNewTargetGroundXYZ(x, y, z)`
+    - `x, y, z = Projectile:GetCurrentTargetPositionXYZ()`
+    - `frequency = Projectile:GetZigZagFrequency()`
+    - `maxzigzag = Projectile:GetMaxZigZag()`
 - Adds Custom World Rendering (hooks: `HDraw.cpp`, `GetFPS.cpp`; section: `DrawFunc.cpp`, `DrawCircleSetColor.cpp`,`WorldView.cpp`)
     - `UI_DrawRect(pos:vector, size:float, color:string, thickness?=0.15:float)`
     - `UI_DrawCircle(pos:vector, radius:float, color:string, thickness?=0.15:float)`
-  
+
     Both functions must be called within `WorldView:OnRenderWorld(delta_time)`. To enable CWR call `WorldView:SetCustomRender(true)` of WorldView you want to draw in. To disable call `WorldView:SetCustomRender(false)` respectively.
 - Adds Strategic icon scale support:
     - hooks/IconScale.cpp
