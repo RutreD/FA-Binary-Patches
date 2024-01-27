@@ -1071,7 +1071,7 @@ struct CWldSession
 		float mouseWorldPosZ;
 		void *unk2;
 		void *unk3;
-		int IsDragger;
+		int highlightCommandId;
 		float mouseScreenPosX;
 		float mouseScreenPosY;
 	} mouse;
