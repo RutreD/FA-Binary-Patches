@@ -99,6 +99,25 @@ struct moho_set
 };
 VALIDATE_SIZE(moho_set, 0x20)
 
+struct mohostring
+{
+	int dword0;
+	int dword4;
+	int type;
+	union
+	{
+		char str[16];
+		char *pStr;
+	};
+	int size;
+	int allocated;
+	int dword24;
+	char *data() {
+		return allocated < 16 ? str : pStr;
+	}
+};
+VALIDATE_SIZE(mohostring, 0x28)
+
 typedef int SOCKET;
 // GPGCore
 
