@@ -6,7 +6,7 @@
     lua_pushnumber(L, val); \
     lua_rawset(L, -3);
 
-UIRegFunc GetHighlightCommand{"GetHighlightCommand", "", +[](lua_State* L) {
+UIRegFunc GetHighlightCommand{"GetHighlightCommand", "table? GetHighlightCommand() - return table of command or nil", +[](lua_State* L) {
     auto commandId = g_CWldSession->mouse.highlightCommandId;
     if (commandId == -1)
         return 0;
