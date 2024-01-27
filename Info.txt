@@ -158,6 +158,7 @@ LuaObjectFinalize
 0040A0A0 CreateStatItemRoot(EngineStats*):eax
 00408730 InitStatItem(StatItem*, char* name):eax
 008E5050 CalcHash
+0090AC10 CreateLuaPlus
 005D62B0 CreateCAiAttackerImpl
 005D6AA0 InitCAiAttackerImpl
 005D5D90 AiAttacker::GetWeaponCount
