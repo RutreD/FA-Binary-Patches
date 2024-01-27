@@ -680,6 +680,7 @@ struct EntityChain // [[Entities+4]+4]
 };
 
 struct Sim;
+struct Unit;
 struct Entity : CScriptObject
 {	// 0x270 bytes
 	// at 0x68
@@ -693,6 +694,7 @@ struct Entity : CScriptObject
 struct Projectile : Entity
 {//0x004C702B, 0x380 bytes
 	// at 0x6C
+	using Type = ObjectType<0x10C7578, 0xF77914>;
 	RProjectileBlueprint *Blueprint;
 };
 
@@ -702,6 +704,50 @@ struct Prop : Entity
 	RPropBlueprint *Blueprint;
 };
 
+struct CUnitCommand;
+struct CCommandTask
+{	//0x34 bytes
+	void* vtable;
+	void* unk0; // self+4;
+	// at 0x10
+	CCommandTask *prevTask; // ?
+	// at 0x1C
+	Unit *owner;
+	Sim *sim;
+	// at 0x28
+	//CCommandTask *prevTask; -0x2C
+};
+
+struct CUnitMobileBuildTask : CCommandTask
+{	//0xE8 bytes
+	// at 0xC
+	Unit *owner;
+	Sim *sim;
+	Unit *target0; // -4
+	CCommandTask *next; // ?
+	// at 0x2C
+	string name;
+	float FractionComplete;
+	// at 0x50
+	CUnitCommand *unitCommand;
+	RUnitBlueprint *build;
+	float unk0, unk1, unk2, unk3;
+	// at 0x84
+	Unit *target1; // -4
+};
+
+struct CUnitRepairTask : CCommandTask
+{	//0x9C bytes
+	// at 0xC
+	Unit *owner;
+	Sim *sim;
+	// at 0x2C
+	string name;
+	// at 0x50
+	CUnitCommand *unitCommand;
+	Unit *target; // -4
+};
+
 struct CUnitCommand
 {	// 0x178 bytes
 	void *vtable;
@@ -709,6 +755,10 @@ struct CUnitCommand
 	void *unk2;
 	LuaObject UserData;
 	LuaObject Table;
+	// at 0x34
+	CCommandTask *task; // -4
+	// at 0x40
+	Sim *sim;
 	// at 0x4C
 	float unk3;
 	// at 0x5C
@@ -736,7 +786,6 @@ struct SCommand
 	void *nil;
 };
 
-struct Unit;
 struct CommandQueue
 {	// 0x28 bytes
 	void *unk1;
@@ -869,7 +918,9 @@ struct Unit : WeakObject
 	float WorkRate;
 	// at 0x544
 	void* IAiAttacker;
-	// at 0x55C
+	void* IAiCommandDispatch;
+	// at 0x558
+	void* IAiSiloBuild;
 	void* IAiTransport;
 	// at 0x59C
 	Vector3f Pos6;
@@ -1400,6 +1451,8 @@ struct Clutter
 struct Silhouette
 {	// 0x74? bytes
 	void* vtable;
+	// at 0xC
+	CUIWorldView *worldView;
 };
 
 struct WRenViewport // : WD3DViewport
