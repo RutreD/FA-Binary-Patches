@@ -12,10 +12,12 @@ UIRegFunc GetHighlightCommand{"GetHighlightCommand", "table? GetHighlightCommand
         return 0;
     volatile incomplete::Command* command;
     asm("push %[commandId] \n"
-        "call 0x8B5BB0":"=a"(command) : "S"(g_CWldSession->unk3), [commandId]"g"(commandId));
+        "call 0x8B5BB0"
+        :"=a"(command) 
+        :"S"(g_CWldSession->unk3), [commandId]"g"(commandId)
+        :);
     if (!command)
         return 0;
-
     lua_newtable(L);
     lua_push(L, "commandType", command->commandType);
     lua_push(L, "x", command->pos.x);
