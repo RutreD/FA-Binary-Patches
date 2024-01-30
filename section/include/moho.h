@@ -99,25 +99,6 @@ struct moho_set
 };
 VALIDATE_SIZE(moho_set, 0x20)
 
-struct mohostring
-{
-	int dword0;
-	int dword4;
-	int type;
-	union
-	{
-		char str[16];
-		char *pStr;
-	};
-	int size;
-	int allocated;
-	int dword24;
-	char *data() {
-		return allocated < 16 ? str : pStr;
-	}
-};
-VALIDATE_SIZE(mohostring, 0x28)
-
 typedef int SOCKET;
 // GPGCore
 
@@ -1479,9 +1460,9 @@ struct WRenViewport // : WD3DViewport
 namespace incomplete {
 	struct Command
 	{
-		Command* self;
+		Command *self;
 		uint8_t pad1[0x1C];
-		mohostring* blueprintId; // at 0x20 // valid if != nullptr
+		RBlueprint *bpBuild; // at 0x20
 		uint8_t pad2[0x34];
 		int commandType; // at 0x58 // see EUnitCommandType; sub_552170
 		uint8_t pad3[0x4];

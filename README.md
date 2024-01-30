@@ -86,7 +86,7 @@ To apply the patches you can use the upload action or do it local via the [patch
     - section/StopReclaimWhenPaused.cpp
 
 ## Additions
-- Adds `table? GetHighlightCommand() - return table of command or nil` to UI (section/GetHighlightCommand.cpp)
+- Adds `GetHighlightCommand() - return table of command or nil` to UI (section/GetHighlightCommand.cpp)
 - Adds new methods to the the `Projectile` class (section/ProjectileNewMethods.cpp):
     - `Projectile:SetNewTargetGroundXYZ(x, y, z)`
     - `x, y, z = Projectile:GetCurrentTargetPositionXYZ()`

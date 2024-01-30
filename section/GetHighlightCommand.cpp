@@ -6,18 +6,16 @@
     lua_pushnumber(L, val); \
     lua_rawset(L, -3);
 
-UIRegFunc GetHighlightCommand{"GetHighlightCommand", "table? GetHighlightCommand() - return table of command or nil", +[](lua_State* L) {
+int UIGetHighlightCommand(lua_State *L) {
     auto commandId = g_CWldSession->mouse.highlightCommandId;
-    if (commandId == -1)
-        return 0;
+    if (commandId == -1) return 0;
     volatile incomplete::Command* command;
-    asm("push %[commandId] \n"
+    asm("push %[commandId];"
         "call 0x8B5BB0"
-        :"=a"(command) 
+        :"=a"(command)
         :"S"(g_CWldSession->unk3), [commandId]"g"(commandId)
         :);
-    if (!command)
-        return 0;
+    if (!command) return 0;
     lua_newtable(L);
     lua_push(L, "commandType", command->commandType);
     lua_push(L, "x", command->pos.x);
@@ -31,11 +29,14 @@ UIRegFunc GetHighlightCommand{"GetHighlightCommand", "table? GetHighlightCommand
         lua_pushstring(L, buf);
         lua_rawset(L, -3);
     }
-    auto blueprintId = command->blueprintId;
-    if (blueprintId) {
+    auto bp = command->bpBuild;
+    if (bp) {
         lua_pushstring(L, "blueprintId");
-        lua_pushstring(L, blueprintId->data());
+        lua_pushstring(L, bp->name.data());
         lua_rawset(L, -3);
     }
     return 1;
-}};
+};
+
+UIRegFunc RegGetHighlightCommand{"GetHighlightCommand",
+    "GetHighlightCommand() - return table of command or nil", UIGetHighlightCommand};
