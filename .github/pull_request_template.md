@@ -5,5 +5,6 @@ A clear and concise description (or visuals) of what the changes imply. If it cl
 ## Checklist
 - [ ] Read all guides
 - [ ] Clear naming of variables and structs
-- [ ] Add description of changes to [README.md](/README.md)
 - [ ] Add new data into moho.h/global.h/Info.txt
+- [ ] Add description of changes to [README.md](/README.md)
+- [ ] Add test hints/instructions
