@@ -71,11 +71,11 @@ VALIDATE_SIZE(list<unk_t>, 0xC)
 
 template<typename T>
 struct linked_list
-{
+{	// ~0x8 bytes
 };
 
 struct moho_set
-{       // 0x20 bytes
+{	// 0x20 bytes
 	int baseI;
 	int unk1;
 	uint32_t *begin, *end, *capacity_end;
@@ -118,8 +118,10 @@ struct Vector4f
 };
 
 struct RObject
-{	// ~0x10 bytes
+{	// 0xC bytes
 	void *vtable;
+	void *unk1;
+	void *unk2;
 };
 
 template <int T, int TInfo>
@@ -129,8 +131,11 @@ struct ObjectType {
 };
 
 struct CScriptObject : RObject
-{//0x004C6F8A, 0x3C bytes
+{//0x004C6F8A, 0x34 bytes
+	LuaObject UserData;
+	LuaObject Table;
 };
+VALIDATE_SIZE(CScriptObject, 0x34)
 
 struct WeakObject
 {	// 0x8 bytes?
@@ -566,10 +571,6 @@ struct Sim;
 struct SimArmy // : IArmy, BaseArmy
 {//0x006FD332, 0x288 bytes
 	void *vtable;
-	// at 0xA4 in vtable
-	//GetUnitCap;
-	//SetUnitCap;
-
 	void *unk1;
 	// at 0x8, BaseArmy
 	int armyIndex;
@@ -729,13 +730,8 @@ struct CUnitRepairTask : CCommandTask
 	Unit *target; // -4
 };
 
-struct CUnitCommand
+struct CUnitCommand : CScriptObject
 {	// 0x178 bytes
-	void *vtable;
-	void *unk1;
-	void *unk2;
-	LuaObject UserData;
-	LuaObject Table;
 	// at 0x34
 	CCommandTask *task; // -4
 	// at 0x40
@@ -745,13 +741,13 @@ struct CUnitCommand
 	// at 0x5C
 	float unk4;
 	// at 0x60
-	RUnitBlueprint* Build;
+	RUnitBlueprint* BpBuild;
 	string unk5;
 	// at 0x98
-	uint32_t Order;
+	uint32_t CommandType;
 	// at 0xA0
-	uint32_t TargetID;
-	Vector4f Pos1;
+	uint32_t TargetId;
+	Vector4f Pos;
 	// at 0x120
 	Entity Target; //-0x4
 	// at 0x128
