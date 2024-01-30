@@ -1103,7 +1103,7 @@ struct CWldSession
 		float mouseWorldPosZ;
 		void *unk2;
 		void *unk3;
-		int IsDragger;
+		int highlightCommandId;
 		float mouseScreenPosX;
 		float mouseScreenPosY;
 	} mouse;
@@ -1456,3 +1456,17 @@ struct WRenViewport // : WD3DViewport
 	// at 0x2134
 	Silhouette silhouette;
 };
+
+namespace incomplete {
+	struct Command
+	{
+		Command *self;
+		uint8_t pad1[0x1C];
+		RBlueprint *bpBuild; // at 0x20
+		uint8_t pad2[0x34];
+		int commandType; // at 0x58 // see EUnitCommandType; sub_552170
+		uint8_t pad3[0x4];
+		int targetId; // at 0x60 // valid if != 0xF0000000
+		Vector3f pos; // at 0x64
+	};
+}
