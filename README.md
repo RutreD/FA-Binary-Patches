@@ -14,6 +14,8 @@ To apply the patches you can use the upload action or do it local via the [patch
     - hooks/LuaFuncRegs.cpp
     - section/LuaFuncRegs.cpp
 ## Fixes
+- Fix CUIWorldMesh:GetInterpolatedAlignedBox return table to properly store `ymax` and `zMax`
+    - hooks/FixGetInterpolatedAlignedBox.cpp
 - Optimize `VDist3` function
     - hooks/VDist3.cpp
     - section/VDist3.cpp
