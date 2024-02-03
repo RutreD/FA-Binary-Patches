@@ -71,7 +71,9 @@ VALIDATE_SIZE(list<unk_t>, 0xC)
 
 template<typename T>
 struct linked_list
-{	// ~0x8 bytes
+{	// 0x8 bytes
+	T *next;
+	T *prev;
 };
 
 struct moho_set
@@ -118,10 +120,8 @@ struct Vector4f
 };
 
 struct RObject
-{	// 0xC bytes
+{	// 0x4 bytes
 	void *vtable;
-	void *unk1;
-	void *unk2;
 };
 
 template <int T, int TInfo>
@@ -132,6 +132,7 @@ struct ObjectType {
 
 struct CScriptObject : RObject
 {//0x004C6F8A, 0x34 bytes
+	linked_list<CScriptObject> ll;
 	LuaObject UserData;
 	LuaObject Table;
 };
