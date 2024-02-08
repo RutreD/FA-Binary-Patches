@@ -1,32 +1,35 @@
+// todo check crash
+
+#include "include/global.h"
 #include "include/magic_classes.h"
 
-typedef __stdcall int VirtualProtect_t(void *lpAddress, int dwSize, int flNewProtect, int *lpflOldProtect);
+// typedef __stdcall int VirtualProtect_t(void *lpAddress, int dwSize, int flNewProtect, int *lpflOldProtect);
 
-#define CreateFileA	WDecl(0xC0F540, __stdcall void* (*)(const char* lpFileName,\
-    uint32_t dwDesiredAccess, uint32_t dwShareMode, void* lpSecurityAttributes,\
-    uint32_t dwCreationDisposition, uint32_t dwFlagsAndAttributes, void* hTemplateFile))
+// #define CreateFileA	WDecl(0xC0F540, __stdcall void* (*)(const char* lpFileName,\
+//     uint32_t dwDesiredAccess, uint32_t dwShareMode, void* lpSecurityAttributes,\
+//     uint32_t dwCreationDisposition, uint32_t dwFlagsAndAttributes, void* hTemplateFile))
 
-#define ReadFile	WDecl(0xC0F560, __stdcall bool (*)(void* hFile, void* lpBuffer,\
-    uint32_t nNumberOfBytesToRead, uint32_t* lpNumberOfBytesRead, void* lpOverlapped))
+// #define ReadFile	WDecl(0xC0F560, __stdcall bool (*)(void* hFile, void* lpBuffer,\
+//     uint32_t nNumberOfBytesToRead, uint32_t* lpNumberOfBytesRead, void* lpOverlapped))
 
-#define WriteFile	WDecl(0xC0F51C, __stdcall bool (*)(void* hFile, const void* lpBuffer,\
-    uint32_t nNumberOfBytesToWrite, uint32_t* lpNumberOfBytesWritten, void* lpOverlapped))
+// #define WriteFile	WDecl(0xC0F51C, __stdcall bool (*)(void* hFile, const void* lpBuffer,\
+//     uint32_t nNumberOfBytesToWrite, uint32_t* lpNumberOfBytesWritten, void* lpOverlapped))
 
-#define GetFileSize	WDecl(0xC0F550, __stdcall uint32_t (*)(void* hFile, uint32_t* lpFileSizeHigh))
+// #define GetFileSize	WDecl(0xC0F550, __stdcall uint32_t (*)(void* hFile, uint32_t* lpFileSizeHigh))
 
-#define CloseHandle	WDecl(0xC0F590, __stdcall bool (*)(void* hObject))
+// #define CloseHandle	WDecl(0xC0F590, __stdcall bool (*)(void* hObject))
 
-#define GENERIC_READ			0x80000000
-#define GENERIC_WRITE			0x40000000
-#define FILE_FLAG_SEQUENTIAL_SCAN	0x08000000
-#define FILE_SHARE_READ			1
-#define CREATE_ALWAYS			2
-#define OPEN_EXISTING			3
+// #define GENERIC_READ			0x80000000
+// #define GENERIC_WRITE			0x40000000
+// #define FILE_FLAG_SEQUENTIAL_SCAN	0x08000000
+// #define FILE_SHARE_READ			1
+// #define CREATE_ALWAYS			2
+// #define OPEN_EXISTING			3
 
 int hcMode = 0;
 int hashIndex;
 void* hcFile = 0;
-VirtualProtect_t *VirtualProtect;
+// VirtualProtect_t *VirtualProtect;
 
 void HashWarn(uint64_t *data1, uint64_t *data2) {
     WarningF("Hash %d d1: 0x%X d2: 0x%X not equal", hashIndex, data1, data2);
@@ -114,8 +117,8 @@ int HashChecker(lua_State *L) {
         return 0;
     }
     hcMode = luaL_checknumber(L, 1);
-    void *Kernel = GetModuleHandleA("KERNEL32");
-    VirtualProtect = GetProcAddress(Kernel, "VirtualProtect");
+    // void *Kernel = GetModuleHandleA("KERNEL32");
+    // VirtualProtect = GetProcAddress(Kernel, "VirtualProtect");
     HashCheckerStop();
     if (hcMode) {
         uint32_t oldProt;

@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 
 #include <cstdint>
 #include "../../workflow.cpp"
@@ -78,12 +80,20 @@ int strcmp(const char *str1, const char *str2) asm("0xAA549E");
 int sprintf_s(char *Buffer, size_t BufferCount, const char *Format, ...) asm("0xA82F32");
 float sqrtf(float) asm("0x452FC0");
 }
-#define GetModuleHandleA  WDecl(0xC0F378, __stdcall void* (*)(const char *lpLibFileName))
-#define GetProcAddress    WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char *lpProcName))
-#define GetCurrentProcess WDecl(0xC0F58C, __stdcall void* (*)())
 
-#define QueryPerformanceCounter   WDecl(0xC0F470, __stdcall bool (*)(int64_t*))
-#define QueryPerformanceFrequency WDecl(0xC0F46C, __stdcall bool (*)(int64_t*))
+auto FAVirtualProtect = reinterpret_cast<decltype(VirtualProtect)*>(GetProcAddress(GetModuleHandleA("kernel32"), "VirtualProtect"));
+BOOL WINAPI VirtualProtect(LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect) {
+  return FAVirtualProtect(lpAddress, dwSize, flNewProtect, lpflOldProtect);
+}
+
+// #define VirtualProtect Kernel = GetModuleHandleA("KERNEL32"); 
+        // VirtualProtect = GetProcAddress(Kernel, "VirtualProtect");
+// #define GetModuleHandleA  WDecl(0xC0F378, __stdcall void* (*)(const char *lpLibFileName))
+// #define GetProcAddress    WDecl(0xC0F48C, __stdcall void* (*)(void* hModule, const char *lpProcName))
+// #define GetCurrentProcess WDecl(0xC0F58C, __stdcall void* (*)())
+
+// #define QueryPerformanceCounter   WDecl(0xC0F470, __stdcall bool (*)(int64_t*))
+// #define QueryPerformanceFrequency WDecl(0xC0F46C, __stdcall bool (*)(int64_t*))
 
 #define DebugLog(_s) LogF("%s", (_s))
 
@@ -120,6 +130,10 @@ struct basic_string {
       wstring_copy_ctor(this, s); else
       static_assert(false, "Unknown type T.");
   }
+  ~basic_string() {
+    if (size >= sso_size)
+      free(*(void**)str);
+  }
 
   const T* data() {
     return size < sso_size ? &str : *(const T**)str;
@@ -140,4 +154,12 @@ struct Result {
   constexpr static Result<T> Success(void *data) { return {(T *)data, nullptr}; }
 
   inline bool IsFail() { return reason != nullptr; }
+};
+
+template<typename T1, typename T2>
+struct pair {
+  using first_type = T1;
+  using second_type = T2;
+  T1 first;
+  T2 second;
 };

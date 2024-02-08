@@ -1,5 +1,6 @@
 #pragma once
-
+#define NOMINMAX
+#include <Windows.h>
 #include "LuaAPI.h"
 
 typedef int BOOL;
@@ -54,7 +55,7 @@ struct vector
 	uint32_t pad;
 	T *begin, *end, *capacity_end;
 
-	T operator[](int i) { return begin[i]; }
+	T& operator[](int i) { return begin[i]; }
 	size_t size() { return begin ? end - begin : 0; }
 };
 VALIDATE_SIZE(vector<unk_t>, 0x10)
@@ -101,7 +102,6 @@ struct moho_set
 };
 VALIDATE_SIZE(moho_set, 0x20)
 
-typedef int SOCKET;
 // GPGCore
 
 struct Vector2f
@@ -1370,7 +1370,7 @@ struct CNetUDPConnetor // : INetConnector
 	void* smth; // Listen socket fd?
 	gpg_mutex mMutex;
 	// at 0x14
-	SOCKET mSocket;
+	int mSocket;
 	// at 0x24
 	linked_list<CNetUDPConnection*> mConnections;
 };
@@ -1467,3 +1467,30 @@ namespace incomplete {
 		Vector3f pos; // at 0x64
 	};
 }
+
+class CVirtualFileSystem
+{
+    // 00E03560	7 methods		Moho::CVFSImpl	Moho::CVFSImpl: Moho::CVirtualFileSystem;
+    struct {
+        void (__thiscall *destroy)(void*);
+        void (__thiscall *getAbsolutePath)(void*, string*, const char*, struct _FILETIME *);
+        void (__thiscall *getMountedPath)(void*, string*, const char*);
+    } *vtbl;
+	CVirtualFileSystem() = default;
+public:
+	static auto getInstance() {
+		return *reinterpret_cast<CVirtualFileSystem**>(*reinterpret_cast<uintptr_t*>(0x10A6374) + 0x4C);
+	}
+	// /lua/sim.lua -> C:/game/gamedata/lua.nx2/lua/sim.lua
+    auto getAbsolutePath(const char *mountpath, struct _FILETIME *out_filetime = nullptr) {
+        string out;
+        vtbl->getAbsolutePath(this, &out, mountpath, out_filetime);
+        return out;
+    }
+	// C:/game/gamedata/lua.nx2/lua/sim.lua -> /lua/sim.lua
+    auto getMountedPath(const char *absolutePath) {
+        string out;
+        vtbl->getMountedPath(this, &out, absolutePath);
+        return out;
+    }
+};

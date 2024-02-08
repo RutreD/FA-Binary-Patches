@@ -213,33 +213,21 @@ FuncDesc Funcs[] = {
 
 #include "include/global.h"
 
-typedef __stdcall void* LoadLibrary_t(char *lpLibFileName);
-typedef __stdcall int VirtualProtect_t(void *lpAddress, int dwSize, int flNewProtect, int *lpflOldProtect);
-
-void FAExtLoad()
-{
-    void *Kernel = GetModuleHandleA("KERNEL32");
-    LoadLibrary_t *LoadLibrary = GetProcAddress(Kernel, "LoadLibraryA");
-    VirtualProtect_t *VirtualProtect = GetProcAddress(Kernel, "VirtualProtect");
-    void *ldll = LoadLibrary("FAExt.dll");
-    if (ldll)
-    for (int i = 0; i < sizeof(Funcs) / sizeof(Funcs[0]); i++) {
-        char *FPtr = GetProcAddress(ldll, Funcs[i].Name);
-        //if (FPtr) {
-            int OldProtect;
-            char* Ptr = Funcs[i].Ptr;
-            VirtualProtect(Ptr, 5, 0x04, &OldProtect);
-            *Ptr = (char)(0xE9);
-            *(int*)(Ptr+1) = FPtr - (unsigned int)(Ptr) - 5;
-            VirtualProtect(Ptr, 5, OldProtect, &OldProtect);
-        //}
-    }
-    asm(
-        "ADD ESP,0x3C;"
-        "POP EBX;"
-        "POP ESI;"
-        "POP EDI;"
-        "POP EBP;"
-        "JMP 0xA8ED7E;"
-    );
+void FAExtLoad() {
+    ([] __attribute__((noinline)) {
+        void *ldll = LoadLibrary("FAExt.dll");
+        if (ldll)
+        for (int i = 0; i < sizeof(Funcs) / sizeof(Funcs[0]); i++) {
+            char *FPtr = (char*)GetProcAddress(ldll, Funcs[i].Name);
+            //if (FPtr) {
+                int OldProtect;
+                char* Ptr = Funcs[i].Ptr;
+                VirtualProtect(Ptr, 5, 0x04, &OldProtect);
+                *Ptr = (char)(0xE9);
+                *(int*)(Ptr+1) = FPtr - (unsigned int)(Ptr) - 5;
+                VirtualProtect(Ptr, 5, OldProtect, &OldProtect);
+            //}
+        }
+    })();
+    asm("jmp 0xA8ED7E");
 }
