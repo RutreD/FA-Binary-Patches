@@ -39,6 +39,8 @@ These don't matter except for other assembly patches
     - hooks/aiinitattack.cpp
 
 ## Bugs
+- Remove lingering transport load factor calcuation at aircraft initialization
+    - hooks/RemoveTransportLoadFactor.cpp
 - Fix `RolloverInfo` returning integer economy values. 
     - hooks/GetRolloverInfoFix.cpp
 - Fix [problem described here](https://www.lua.org/bugs.html#5.0.2-5)
