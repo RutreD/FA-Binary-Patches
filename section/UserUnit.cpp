@@ -101,7 +101,7 @@ int GetFractionComplete(lua_State *l)
 // UI_Lua LOG(GetSelectedUnits()[1]:GetFractionComplete())
 // UI_Lua LOG(GetSelectedUnits()[1].GetFractionComplete{})
 
-using UserUnitMethodReg = UIRegFunc<0x00E4DA64, 0x00F8D89C>;
+using UserUnitMethodReg = UIRegFuncT<0x00E4DA64, 0x00F8D89C>;
 
 UserUnitMethodReg UserUnitGetInterpolatedPosition{
     "GetInterpolatedPosition",

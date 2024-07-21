@@ -27,7 +27,7 @@ void ProjectVectors(lua_State *l, int index, float *camera)
     const char *t = (const char *)lua_topointer(l, index);
     uint32_t asize;
     uint8_t hbits;
-    GetTableAH(t, &asize, &hbits);
+    GetTableAH((void*)t, &asize, &hbits);
     lua_createtable(l, asize, hbits); // result table
     lua_pushvalue(l, index);          // input vectors
     lua_pushnil(l);
@@ -79,7 +79,7 @@ int ProjectMultiple(lua_State *l)
 // UI_Lua reprsl(import("/lua/ui/game/worldview.lua").viewLeft.ProjectMultiple())
 // UI_Lua reprsl(import("/lua/ui/game/worldview.lua").viewLeft.ProjectMultiple({},{}))
 
-using WorldViewMethodReg = UIRegFunc<0x00E491E8, 0x00F8D88C>;
+using WorldViewMethodReg = RegFunc<0xF59690,0x00E491E8, 0x00F8D88C>;
 
 WorldViewMethodReg WorldViewProjectMultiple{
     "ProjectMultiple",

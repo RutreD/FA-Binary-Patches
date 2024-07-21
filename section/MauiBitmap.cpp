@@ -33,13 +33,12 @@ int SetColorMask(lua_State *l)
     *(uint32_t *)((int)bitmap + 244) = (*(uint32_t *)((int)bitmap + 244) & 0xFF000000u) | color;
     return 0;
 }
+using BitmapMethodReg = UIRegFuncT<0x00E37C14, 0x00F8D7DC>;
 
-// PatcherList_UIFuncRegs_BitmapSetColorMaskDesc
-luaFuncDescReg BitmapSetColorMaskDesc = {0x00E37C14,
-                                         "SetColorMask",
-                                         "CMauiBitmap",
-                                         "Bitmap:SetColorMask(color)",
-                                         nullptr,
-                                         SetColorMask,
-                                         0x00F8D7DC};
+
+BitmapMethodReg BitmapSetColorMaskDesc{
+    "SetColorMask",
+    "Bitmap:SetColorMask(color)",
+    SetColorMask,
+    "CMauiBitmap"};
 

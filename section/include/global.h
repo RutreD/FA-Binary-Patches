@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include "../../workflow.cpp"
-#include <type_traits>
+#include "types.h"
 
 #define GPtr(addr, type) \
   (*(type*)addr)
@@ -114,15 +114,15 @@ struct basic_string {
   }
 
   basic_string(const char*s) {
-    if constexpr(std::is_same_v<char, T>)
+    if constexpr(IsSame<char, T>)
       InitString(this, s); else
-    if constexpr(std::is_same_v<wchar_t, T>)
+    if constexpr(IsSame<wchar_t, T>)
       wstring_copy_ctor(this, s); else
       static_assert(false, "Unknown type T.");
   }
 
   const T* data() {
-    return size < sso_size ? &str : *(const T**)str;
+    return size < sso_size ? (const T*)&str : *(const T**)str;
   }
 };
 
