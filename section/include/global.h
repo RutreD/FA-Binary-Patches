@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include "../../workflow.cpp"
 #include "types.h"
 
 #define GPtr(addr, type) \
@@ -28,33 +27,32 @@
 #define g_ConsoleLuaState		GPtr(0x10A6478, LuaState*)
 #define g_Device			GPtr(0x0F8E284, Device*)
 
-GDecl(ui_ProgressBarColor,		0x0F57BB8, int)
-GDecl(ui_SelectTolerance,		0x0F57A90, float)
-GDecl(ui_ExtractSnapTolerance,		0x0F57A94, float)
-GDecl(ui_DisableCursorFixing,		0x10A6464, bool)
-GDecl(ui_RenderIcons,			0x0F57B27, bool)
-GDecl(range_RenderSelected,		0x10A640A, bool)
-GDecl(range_RenderHighlighted,		0x10A640B, bool)
-GDecl(range_RenderBuild,		0x10A6414, bool)
-GDecl(d3d_WindowsCursor,		0x10A636E, bool)
-GDecl(debugSelect,			0x10A645E, bool)
+extern int ui_ProgressBarColor		asm("0x0F57BB8");
+extern float ui_SelectTolerance		asm("0x0F57A90");
+extern float ui_ExtractSnapTolerance		asm("0x0F57A94");
+extern bool ui_DisableCursorFixing		asm("0x10A6464");
+extern bool ui_RenderIcons			asm("0x0F57B27");
+extern bool range_RenderSelected		asm("0x10A640A");
+extern bool range_RenderHighlighted		asm("0x10A640B");
+extern bool range_RenderBuild		asm("0x10A6414");
+extern bool d3d_WindowsCursor		asm("0x10A636E");
+extern bool debugSelect			asm("0x10A645E");
 
-GDecl(s_FACTORY,			0xE19824, const char*)
-GDecl(s_EXPERIMENTAL,			0xE204B8, const char*)
-GDecl(s_ExpectedButGot,			0xE0A220, const char*) // "%s\n  expected %d args, but got %d"
-GDecl(s_ExpectedBetweenButGot,		0xE0A270, const char*) // "%s\n  expected between %d and %d args, but got %d"
-GDecl(s_Global,				0xE00D90, const char*) // "<global>"
-GDecl(s_CMauiBitmap,			0xE37438, const char*) // "CMauiBitmap"
-GDecl(s_UserUnit,			0xE4D090, const char*) // "UserUnit"
-GDecl(s_ExpectedAGameObject,		0xE09860, const char*) // "Expected a game object. (Did you call with '.' instead of ':'?)"
-GDecl(s_GameObjectHasBeenDestroyed,	0xE098A0, const char*) // "Game object has been destroyed"
-GDecl(s_IncorrectTypeOfGameObject,	0xE098C0, const char*) // "Incorrect type of game object.  (Did you call with '.' instead of ':'?)"
-GDecl(s_UnknownColor,			0x4B2D54, const char*) // "Unknown color: %s"
-GDecl(s_c_object,			0xE016DC, const char*) // "_c_object"
-
-GDecl(g_ExeVersion1,			0x876666, const int)
-GDecl(g_ExeVersion2,			0x87612d, const int)
-GDecl(g_ExeVersion3,			0x4d3d40, const int)
+extern const char* s_FACTORY			asm("0xE19824");
+extern const char* s_EXPERIMENTAL			asm("0xE204B8");
+extern const char* s_ExpectedButGot			asm("0xE0A220"); // "%s\n  expected %d args, but got %d"
+extern const char* s_ExpectedBetweenButGot		asm("0xE0A270"); // "%s\n  expected between %d and %d args, but got %d"
+extern const char* s_Global				asm("0xE00D90"); // "<global>"
+extern const char* s_CMauiBitmap			asm("0xE37438"); // "CMauiBitmap"
+extern const char* s_UserUnit			asm("0xE4D090"); // "UserUnit"
+extern const char* s_ExpectedAGameObject		asm("0xE09860"); // "Expected a game object. (Did you call with '.' instead of ':'?)"
+extern const char* s_GameObjectHasBeenDestroyed	asm("0xE098A0"); // "Game object has been destroyed"
+extern const char* s_IncorrectTypeOfGameObject	asm("0xE098C0"); // "Incorrect type of game object.  (Did you call with '.' instead of ':'?)"
+extern const char* s_UnknownColor			asm("0x4B2D54"); // "Unknown color: %s"
+extern const char* s_c_object			asm("0xE016DC"); // "_c_object"
+extern const int g_ExeVersion1			asm("0x876666");
+extern const int g_ExeVersion2			asm("0x87612d");
+extern const int g_ExeVersion3			asm("0x4d3d40");
 
 void AbortF(wchar_t *fmt, ...) asm("0x9C4940");
 int LogF(const char *fmt, ...) asm("0x937CB0");
