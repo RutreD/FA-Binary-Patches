@@ -1,4 +1,5 @@
 #include "include/moho.h"
+#include "include/magic_classes.h"
 
 int SimSessionIsReplay(lua_State *L) {
   lua_pushboolean(L, g_CWldSession->isReplay);

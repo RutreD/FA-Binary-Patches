@@ -1467,3 +1467,20 @@ namespace incomplete {
 		Vector3f pos; // at 0x64
 	};
 }
+
+namespace Moho
+{
+int *D3D_GetDevice() asm("0x00430590");
+bool __cdecl TryConvertToColor(const char *s, uint32_t &color) asm("0x4B2B90");
+namespace CPrimBatcher
+{
+	 struct Texture
+        {
+            int a;
+            int b;
+        };
+
+		 void FromSolidColor(Texture *t, unsigned int color) asm("0x4478C0");
+}
+
+}

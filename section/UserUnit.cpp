@@ -44,7 +44,6 @@ namespace Moho
     } // namespace MeshInstance
 
 }
-
 int GetInterpolatedPosition(lua_State *l)
 {
     if (lua_gettop(l) != 1)
@@ -65,7 +64,7 @@ int GetInterpolatedPosition(lua_State *l)
     if (mesh == nullptr)
         return 0;
     Moho::MeshInstance::UpdateInterpolatedTransform(mesh);
-    PushVector(l, {mesh[34], mesh[35], mesh[36]});
+    PushVector3f(l, {mesh[34], mesh[35], mesh[36]});
     return 1;
 }
 // for testing

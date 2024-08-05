@@ -101,14 +101,6 @@ namespace Moho
             *(char *)((int *)batcher + 285) = 0;
         }
 
-        struct Texture
-        {
-            int a;
-            int b;
-        };
-
-        void FromSolidColor(Texture *t, unsigned int color) asm("0x4478C0");
-
         Texture FromSolidColor(unsigned int color)
         {
             Texture t;
@@ -138,15 +130,11 @@ namespace Moho
         }
     } // namespace CPrimBatcher
 
-    int *D3D_GetDevice() asm("0x00430590");
-
     void SetupDevice(int *device, const char *target, const char *mode)
     {
         (*(void(__thiscall **)(int *, const char *))(*device + 80))(device, target);
         (*(void(__thiscall **)(int *, const char *))(*device + 84))(device, mode);
     }
-
-    bool __cdecl TryConvertToColor(const char *s, uint32_t &color) asm("0x4B2B90");
 
     float GetLODMetric(float *camera, const Vector3f &v)
     {

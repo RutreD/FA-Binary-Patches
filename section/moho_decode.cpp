@@ -96,7 +96,11 @@ __attribute__((noinline)) void timed_out()
 
 __attribute__((noinline)) void p_Version()
 {
+	#ifdef gitsha
 	LogF("Exe GitSHA: %s", gitsha);
+	#else
+	LogF("Exe GitSHA: %s", "no adds guys");
+	#endif
 	return;
 }
 

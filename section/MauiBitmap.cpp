@@ -1,9 +1,6 @@
 #include "include/CObject.h"
-#include "include/LuaApi.h"
-#include "include/global.h"
+#include "include/moho.h"
 #include "include/magic_classes.h"
-
-bool __cdecl TryConvertToColor(const char *s, uint32_t &color) asm("0x4B2B90");
 
 int SetColorMask(lua_State *l)
 {
@@ -24,7 +21,7 @@ int SetColorMask(lua_State *l)
         return 0;
     const char *s = lua_tostring(l, 2);
     uint32_t color;
-    if (!TryConvertToColor(s, color))
+    if (!Moho::TryConvertToColor(s, color))
     {
         luaL_error(l, s_UnknownColor, s);
         return 0;

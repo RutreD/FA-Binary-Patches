@@ -36,7 +36,7 @@ void ProjectVectors(lua_State *l, int index, float *camera)
         Vector3f v = ToVector(l, -1);
         Vector2f p = ProjectVec(v, camera);
         lua_pushvalue(l, -2); // key
-        PushVector(l, p);     // value
+        PushVector2f(l, p);     // value
         lua_rawset(l, -6);
         lua_pop(l, 1);
     }

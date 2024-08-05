@@ -1,4 +1,5 @@
 #include "include/LuaAPI.h"
+#include "include/magic_classes.h"
 
 int SetInvertMidMouseButton(lua_State *L)
 {
