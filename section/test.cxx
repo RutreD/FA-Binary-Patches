@@ -1,4 +1,7 @@
 #include "include/magic_classes.h"
+#include "include/CObject.h"
+#include "include/moho.h"
+#include "include/utility.h"
 #include <stdexcept>
 
 UIRegFunc _{"clang", "q", [](lua_State *L) {
@@ -11,5 +14,15 @@ UIRegFunc _{"clang", "q", [](lua_State *L) {
               } catch (std::runtime_error &e) {
                 WarningF("Catch: %s", e.what());
               }
+              return 0;
+            }};
+
+UIRegFunc __{"test", "q", [](lua_State *l) {
+              if (lua_gettop(l) != 2) {
+                l->LuaState->Error(s_ExpectedButGot, __FUNCTION__, 2,
+                                   lua_gettop(l));
+              }
+
+              auto r = GetCScriptObject<CMauiBitmap>(l, 1);
               return 0;
             }};

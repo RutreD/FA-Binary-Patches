@@ -5,9 +5,8 @@
 
 #define GPtr(addr, type) (*(type *)addr)
 
-#define GDecl(name, addr, type) extern type name asm(#addr);
-
 #define WDecl(addr, type) ((type) * (uintptr_t *)addr)
+#define CSTR(NAME) extern const char NAME[]
 
 #define VALIDATE_SIZE(struc, size)                                             \
   static_assert(sizeof(struc) == size, "Invalid structure size of " #struc);
@@ -24,6 +23,7 @@
 #define g_ConsoleLuaState GPtr(0x10A6478, LuaState *)
 #define g_Device GPtr(0x0F8E284, Device *)
 
+
 extern int ui_ProgressBarColor asm("0x0F57BB8");
 extern float ui_SelectTolerance asm("0x0F57A90");
 extern float ui_ExtractSnapTolerance asm("0x0F57A94");
@@ -35,23 +35,24 @@ extern bool range_RenderBuild asm("0x10A6414");
 extern bool d3d_WindowsCursor asm("0x10A636E");
 extern bool debugSelect asm("0x10A645E");
 
-extern const char *s_FACTORY asm("0xE19824");
-extern const char *s_EXPERIMENTAL asm("0xE204B8");
-extern const char *
-    s_ExpectedButGot asm("0xE0A220"); // "%s\n  expected %d args, but got %d"
-extern const char *s_ExpectedBetweenButGot asm(
-    "0xE0A270"); // "%s\n  expected between %d and %d args, but got %d"
-extern const char *s_Global asm("0xE00D90");      // "<global>"
-extern const char *s_CMauiBitmap asm("0xE37438"); // "CMauiBitmap"
-extern const char *s_UserUnit asm("0xE4D090");    // "UserUnit"
- // "Expected a game object. (Did you call with '.' instead of ':'?)"
-extern const char *    s_ExpectedAGameObject asm("0xE09860");
- // "Game object has been destroyed"
-extern const char *s_GameObjectHasBeenDestroyed asm("0xE098A0");
- // "Incorrect type of game object.  (Did you call with '.' instead of ':'?)"
-extern const char *s_IncorrectTypeOfGameObject asm("0xE098C0");
-extern const char *s_UnknownColor asm("0x4B2D54"); // "Unknown color: %s"
-extern const char *s_c_object asm("0xE016DC");     // "_c_object"
+CSTR(s_FACTORY) asm("0xE19824");
+CSTR(s_EXPERIMENTAL) asm("0xE204B8");
+// "%s\n  expected %d args, but got %d"
+CSTR(s_ExpectedButGot) asm("0xE0A220");
+// "%s\n  expected between %d and %d args, but got %d"
+CSTR(s_ExpectedBetweenButGot) asm("0xE0A270");
+CSTR(s_Global) asm("0xE00D90");      // "<global>"
+CSTR(s_CMauiBitmap) asm("0xE37438"); // "CMauiBitmap"
+// "UserUnit"
+CSTR(s_UserUnit) asm("0xE4D090");
+// "Expected a game object. (Did you call with '.' instead of ':'?)"
+CSTR(s_ExpectedAGameObject) asm("0xE09860");
+// "Game object has been destroyed"
+CSTR(s_GameObjectHasBeenDestroyed) asm("0xE098A0");
+// "Incorrect type of game object.  (Did you call with '.' instead of ':'?)"
+CSTR(s_IncorrectTypeOfGameObject) asm("0xE098C0");
+CSTR(s_UnknownColor) asm("0x00E07D14"); // "Unknown color: %s"
+CSTR(s_c_object) asm("0xE016DC");       // "_c_object"
 extern const int g_ExeVersion1 asm("0x876666");
 extern const int g_ExeVersion2 asm("0x87612d");
 extern const int g_ExeVersion3 asm("0x4d3d40");
