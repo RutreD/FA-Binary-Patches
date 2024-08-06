@@ -1,5 +1,5 @@
-#include "include/moho.h"
-#include "include/magic_classes.h"
+#include "moho.h"
+#include "magic_classes.h"
 
 int GetTimeForProfile(lua_State *L) {
     int64_t Time, Freq;

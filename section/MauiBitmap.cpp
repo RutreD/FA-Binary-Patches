@@ -1,6 +1,6 @@
-#include "include/CObject.h"
-#include "include/moho.h"
-#include "include/magic_classes.h"
+#include "CObject.h"
+#include "moho.h"
+#include "magic_classes.h"
 
 int SetColorMask(lua_State *l)
 {

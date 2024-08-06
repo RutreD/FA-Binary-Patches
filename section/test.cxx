@@ -1,7 +1,7 @@
-#include "include/magic_classes.h"
-#include "include/CObject.h"
-#include "include/moho.h"
-#include "include/utility.h"
+#include "magic_classes.h"
+#include "CObject.h"
+#include "moho.h"
+#include "utility.h"
 #include <stdexcept>
 
 UIRegFunc _{"clang", "q", [](lua_State *L) {
