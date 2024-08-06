@@ -1,4 +1,5 @@
 #include "moho.h"
+#include "magic_classes.h"
 
 #define lua_push(L, name, val) \
     lua_pushstring(L, name); \
