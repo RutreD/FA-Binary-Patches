@@ -3,6 +3,8 @@
 #include "types.h"
 #include <cstdint>
 
+#define SHARED extern "C"
+
 #define GPtr(addr, type) (*(type *)addr)
 
 #define WDecl(addr, type) ((type) * (uintptr_t *)addr)
