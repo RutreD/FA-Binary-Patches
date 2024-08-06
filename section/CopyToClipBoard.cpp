@@ -1,6 +1,6 @@
 #include "magic_classes.h"
 
-int LuaCopyToClipboard(lua_State *l) {
+static int LuaCopyToClipboard(lua_State *l) {
     if (lua_gettop(l) != 1)
         l->LuaState->Error(s_ExpectedButGot, __FUNCTION__, 1, lua_gettop(l));
 
@@ -10,4 +10,4 @@ int LuaCopyToClipboard(lua_State *l) {
     return 1;
 }
 
-UIRegFunc copyToClipboardReg{"CopyToClipboard", "CopyToClipboard(val):bool", LuaCopyToClipboard};
+static UIRegFunc copyToClipboardReg{"CopyToClipboard", "CopyToClipboard(val):bool", LuaCopyToClipboard};
