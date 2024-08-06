@@ -4,8 +4,6 @@
 #include "utility.h"
 #include <cmath>
 
-#define NON_GENERAL_REG(var_) [var_] "g"(var_)
-
  SHARED void _DrawRect(
     Vector3f *v1,
     Vector3f *v2,
