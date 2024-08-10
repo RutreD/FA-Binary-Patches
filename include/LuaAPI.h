@@ -154,24 +154,25 @@ class LuaObject { // 0x14 bytes
   void __LuaObject() asm("0x9072a0");
   void __LuaObject(LuaState *state) asm("0x908970");
   void __LuaObject(LuaState *state, int index) asm("0x9089c0");
-  void __LuaObject(const LuaObject *obj) asm("0x908a40");
-  void __LuaObject(const LuaStackObject *stack) asm("0x908a70");
+  void __LuaObject(const LuaObject &obj) asm("0x908a40");
+  void __LuaObject(const LuaStackObject &stack) asm("0x908a70");
   void __LuaObject(LuaState *state, const TObject *obj) asm("0x9089f0");
   void __DLuaObject() asm("0x9075d0");
   void __Index(LuaObject *out, int key) asm("0x9091e0");
   void __Index(LuaObject *out, const char *key) asm("0x908f60");
 
 public:
-  LuaObject() { __LuaObject(); }
+  LuaObject()
+      : m_next{nullptr}, m_prev{nullptr}, m_state{nullptr}, m_object{0} {}
   LuaObject(LuaState *state) { __LuaObject(state); }
   LuaObject(LuaState *state, int index) { __LuaObject(state, index); }
-  LuaObject(const LuaObject *obj) { __LuaObject(obj); }
-  LuaObject(const LuaStackObject *stack) { __LuaObject(stack); }
+  LuaObject(const LuaObject &obj) { __LuaObject(obj); }
+  LuaObject(const LuaStackObject &stack) { __LuaObject(stack); }
   LuaObject(LuaState *state, const TObject *obj) { __LuaObject(state, obj); }
   ~LuaObject() { __DLuaObject(); }
 
-  LuaObject *operator=(const LuaObject *obj) asm("0x908ab0");
-  LuaObject *operator=(const LuaStackObject *stack) asm("0x908b00");
+  LuaObject &operator=(const LuaObject &obj) asm("0x908ab0");
+  LuaObject &operator=(const LuaStackObject &stack) asm("0x908b00");
 
   LuaObject operator[](int key) {
     LuaObject out;
@@ -431,3 +432,78 @@ void GetTableAH(void *t, uint32_t *asize, uint8_t *hbits);
 // lua_createtable_t *lua_createtable;
 
 void *FAJit = GetModuleHandleA("FAExt.dll");
+
+// #define luaplus_assert(e) if (!(e)) throw std::exception(#e)
+#define luaplus_assert(e)                                                      \
+  if (!(e)) {                                                                  \
+    WarningF("EXCEPTION: " #e);                                                \
+  }
+
+class LuaTableIterator {
+public:
+  inline LuaTableIterator(LuaObject &tableObj, bool doReset = true)
+      : m_isDone(false), m_tableObj(tableObj), m_keyObj(tableObj.m_state),
+        m_valueObj(tableObj.m_state) {
+    luaplus_assert(tableObj.IsTable());
+
+    if (doReset)
+      Reset();
+  }
+
+  inline void Reset() {
+    LuaState *state = m_tableObj.m_state;
+
+    m_keyObj.AssignNil(state);
+
+    if (!LuaPlusH_next(state, &m_tableObj, &m_keyObj, &m_valueObj))
+      m_isDone = true;
+  }
+
+  inline void Invalidate() {
+    LuaState *state = m_tableObj.m_state;
+    m_keyObj.AssignNil(state);
+    m_valueObj.AssignNil(state);
+  }
+
+  inline bool Next() {
+    luaplus_assert(IsValid());
+
+    LuaState *state = m_tableObj.m_state;
+
+    if (!LuaPlusH_next(state, &m_tableObj, &m_keyObj, &m_valueObj)) {
+      m_isDone = true;
+      return false;
+    }
+
+    return true;
+  }
+
+  inline LuaTableIterator &operator++() {
+    Next();
+    return *this;
+  }
+
+  inline bool IsValid() const { return !m_isDone; }
+
+  inline operator bool() const { return IsValid(); }
+
+  inline LuaObject &GetKey() {
+    luaplus_assert(IsValid());
+
+    return m_keyObj;
+  }
+
+  inline LuaObject &GetValue() {
+    luaplus_assert(IsValid());
+
+    return m_valueObj;
+  }
+
+  inline ~LuaTableIterator() {};
+
+private:
+  LuaObject &m_tableObj;
+  LuaObject m_keyObj;
+  LuaObject m_valueObj;
+  bool m_isDone;
+};

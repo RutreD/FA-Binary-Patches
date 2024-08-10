@@ -100,6 +100,24 @@ int TableClone(lua_State *L) noexcept(false) {
   return 1;
 }
 
+int LoopTable(lua_State *l) {
+  LuaState *ls = l->LuaState;
+  LuaObject obj{ls, 1};
+
+  if (!obj.IsTable()) {
+    ls->ArgError(1, "Expected table");
+  }
+
+  for (LuaTableIterator it(obj); it; ++it) {
+    // LuaObject& key = it.GetKey();
+    LuaObject &value = it.GetValue();
+    if (value.IsString())
+      LogF("%s", value.ToString());
+    else
+      ls->Error("Expected table of strings, but got %s", value.TypeName());
+  }
+  return 0;
+}
 
 void *RegTableFuncsDesc[] = {(void *)"getsize2",
                              (void *)&GetTableSize,
@@ -109,6 +127,8 @@ void *RegTableFuncsDesc[] = {(void *)"getsize2",
                              (void *)0x00927C20,
                              (void *)"clone",
                              (void *)&TableClone,
+                             (void *)"prints",
+                             (void *)&LoopTable,
                              nullptr,
                              nullptr};
 
