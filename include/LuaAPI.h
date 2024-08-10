@@ -433,11 +433,20 @@ void GetTableAH(void *t, uint32_t *asize, uint8_t *hbits);
 
 void *FAJit = GetModuleHandleA("FAExt.dll");
 
+void *__thiscall luaplusassert(void *except, const char *msg) asm("0x00457880");
+void __stdcall _CXXThrowException(void *except,
+                                  void *throwInfo) asm("0x00A89950");
+
+void ThrowLuaException(const char *message) {
+  int info[10];
+  luaplusassert((void *)info, message);
+  _CXXThrowException((void *)info, (void *)0x00EC23F0);
+}
+
 // #define luaplus_assert(e) if (!(e)) throw std::exception(#e)
 #define luaplus_assert(e)                                                      \
-  if (!(e)) {                                                                  \
-    WarningF("EXCEPTION: " #e);                                                \
-  }
+  if (!(e))                                                                    \
+  ThrowLuaException(#e)
 
 class LuaTableIterator {
 public:
