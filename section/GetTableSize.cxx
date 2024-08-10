@@ -108,9 +108,7 @@ int LoopTable(lua_State *l) {
     ls->ArgError(1, "Expected table");
   }
 
-  for (LuaTableIterator it(obj); it; ++it) {
-    // LuaObject& key = it.GetKey();
-    LuaObject &value = it.GetValue();
+  for (const auto &[key, value] : Pairs(obj)) {
     if (value.IsString())
       LogF("%s", value.ToString());
     else

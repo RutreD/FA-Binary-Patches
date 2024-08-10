@@ -192,7 +192,7 @@ public:
   bool IsInteger() asm("0x907350");
   bool IsNil() asm("0x9072f0");
   bool IsNumber() asm("0x907360");
-  bool IsString() asm("0x907370");
+  bool IsString() const asm("0x907370");
   bool IsTable() asm("0x907310");
   bool IsUserData() asm("0x907320");
   void Clone(LuaObject *out) asm("0x90a180");
@@ -209,8 +209,8 @@ public:
   void PushStack(lua_State *L) asm("0x907d10");
   LuaState *GetActiveState() asm("0x9072b0");
   const char *GetString() asm("0x907a90");
-  const char *ToString() asm("0x9073e0");
-  const char *TypeName() asm("0x908b50");
+  const char *ToString() const asm("0x9073e0");
+  const char *TypeName() const asm("0x908b50");
   lua_Number GetNumber() asm("0x907970");
   lua_Number GetDouble() asm("0x907a30");
   lua_Number ToNumber() asm("0x9073b0");
@@ -448,6 +448,8 @@ void ThrowLuaException(const char *message) {
   if (!(e))                                                                    \
   ThrowLuaException(#e)
 
+#include <utility>
+
 class LuaTableIterator {
 public:
   inline LuaTableIterator(LuaObject &tableObj, bool doReset = true)
@@ -515,4 +517,44 @@ private:
   LuaObject m_keyObj;
   LuaObject m_valueObj;
   bool m_isDone;
+};
+
+class EndIterator {};
+class PairsIterator {
+public:
+  PairsIterator(LuaObject &table)
+      : table{table}, key{table.m_state}, value{table.m_state}, done{false} {}
+
+  PairsIterator &operator++() {
+    LuaState *state = table.m_state;
+    if (!done && !LuaPlusH_next(state, &table, &key, &value)) {
+      done = true;
+    }
+    return *this;
+  }
+
+  const std::pair<LuaObject, LuaObject> operator*() const {
+    return {key, value};
+  }
+
+  std::pair<LuaObject, LuaObject> operator*() { return {key, value}; }
+
+  bool operator!=(const EndIterator) const { return !done; }
+
+private:
+  LuaObject &table;
+  LuaObject key;
+  LuaObject value;
+  bool done;
+};
+
+class Pairs {
+public:
+  Pairs(LuaObject &table) : table{table} {}
+
+  PairsIterator begin() { return ++PairsIterator(table); }
+  EndIterator end() { return EndIterator{}; }
+
+private:
+  LuaObject &table;
 };
