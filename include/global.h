@@ -25,7 +25,6 @@
 #define g_ConsoleLuaState GPtr(0x10A6478, LuaState *)
 #define g_Device GPtr(0x0F8E284, Device *)
 
-
 extern int ui_ProgressBarColor asm("0x0F57BB8");
 extern float ui_SelectTolerance asm("0x0F57A90");
 extern float ui_ExtractSnapTolerance asm("0x0F57A94");
@@ -103,6 +102,9 @@ string *__thiscall InitString(string *this_, const char *str) asm("0x405550");
 string *__thiscall AssignString(string *this_, const char *str,
                                 size_t size) asm("0x4059E0");
 
+int __thiscall wstring_dtor(wstring *ws) asm("0x00431390");
+void __thiscall string_dtor(string *ws) asm("0x00402370");
+
 #define SSO_bytes 0x10ul
 template <typename T> struct basic_string {
   static constexpr uint32_t sso_size = SSO_bytes / sizeof(T);
@@ -132,10 +134,12 @@ template <typename T> struct basic_string {
   }
 
   ~basic_string() {
-    if (size < sso_size) {
-      return;
-    }
-    free(*(const T **)str);
+    if constexpr (IsSame<char, T>)
+      string_dtor(this);
+    else if constexpr (IsSame<wchar_t, T>)
+      wstring_dtor(this);
+    else
+      static_assert(false, "Unknown type T.");
   }
 };
 
