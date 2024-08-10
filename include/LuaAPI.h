@@ -189,7 +189,7 @@ public:
   bool IsBoolean() asm("0x9078d0");
   bool IsConvertibleToString() asm("0x9077c0");
   bool IsFunction() asm("0x907810");
-  bool IsInteger() asm("0x907350");
+  bool IsInteger() const asm("0x907350");
   bool IsNil() asm("0x9072f0");
   bool IsNumber() asm("0x907360");
   bool IsString() const asm("0x907370");
@@ -220,7 +220,7 @@ public:
                          const RType *rType) asm("0x9097d0");
   void GetUserData(RRef *out) asm("0x907bc0");
   int GetCount() asm("0x907f50");
-  int GetInteger() asm("0x907910");
+  int GetInteger() const asm("0x907910");
   int GetN() asm("0x907e50");
   int GetTableCount() asm("0x90a410");
   int IsPassed() asm("0x907440");
