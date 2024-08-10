@@ -158,8 +158,8 @@ class LuaObject { // 0x14 bytes
   void __LuaObject(const LuaStackObject &stack) asm("0x908a70");
   void __LuaObject(LuaState *state, const TObject *obj) asm("0x9089f0");
   void __DLuaObject() asm("0x9075d0");
-  void __Index(LuaObject *out, int key) asm("0x9091e0");
-  void __Index(LuaObject *out, const char *key) asm("0x908f60");
+  void __Index(LuaObject *out, int key) const asm("0x9091e0");
+  void __Index(LuaObject *out, const char *key) const asm("0x908f60");
 
 public:
   LuaObject()
@@ -174,12 +174,12 @@ public:
   LuaObject &operator=(const LuaObject &obj) asm("0x908ab0");
   LuaObject &operator=(const LuaStackObject &stack) asm("0x908b00");
 
-  LuaObject operator[](int key) {
+  LuaObject operator[](int key) const {
     LuaObject out;
     __Index(&out, key);
     return out;
   }
-  LuaObject operator[](const char *key) {
+  LuaObject operator[](const char *key) const {
     LuaObject out;
     __Index(&out, key);
     return out;
@@ -221,7 +221,7 @@ public:
   void GetUserData(RRef *out) asm("0x907bc0");
   int GetCount() asm("0x907f50");
   int GetInteger() const asm("0x907910");
-  int GetN() asm("0x907e50");
+  int GetN() const asm("0x907e50");
   int GetTableCount() asm("0x90a410");
   int IsPassed() asm("0x907440");
   int Type() asm("0x9076d0");
@@ -539,7 +539,7 @@ public:
 
   std::pair<LuaObject, LuaObject> operator*() { return {key, value}; }
 
-  bool operator!=(const EndIterator) const { return !done; }
+  bool operator!=(const EndIterator &) const { return !done; }
 
 private:
   LuaObject &table;
@@ -554,6 +554,53 @@ public:
 
   PairsIterator begin() { return ++PairsIterator(table); }
   EndIterator end() { return EndIterator{}; }
+
+private:
+  LuaObject &table;
+};
+
+class IPairsEndIterator {
+public:
+  IPairsEndIterator(const LuaObject &table) : n{table.GetN()} {}
+
+  int GetN() const { return n; }
+
+private:
+  int n;
+};
+
+class IPairsIterator {
+public:
+  IPairsIterator(LuaObject &table)
+      : table{table}, index{0}, value{table.m_state} {}
+
+  IPairsIterator &operator++() {
+    LuaState *state = table.m_state;
+    ++index;
+    value = table[index];
+    return *this;
+  }
+
+  const std::pair<int, LuaObject> operator*() const { return {index, value}; }
+
+  std::pair<int, LuaObject> operator*() { return {index, value}; }
+
+  bool operator!=(const IPairsEndIterator &end_it) const {
+    return index <= end_it.GetN();
+  }
+
+private:
+  LuaObject &table;
+  int index;
+  LuaObject value;
+};
+
+class IPairs {
+public:
+  IPairs(LuaObject &table) : table{table} {}
+
+  IPairsIterator begin() { return ++IPairsIterator(table); }
+  IPairsEndIterator end() { return IPairsEndIterator{table}; }
 
 private:
   LuaObject &table;

@@ -108,11 +108,9 @@ int LoopTable(lua_State *l) {
     ls->ArgError(1, "Expected table");
   }
 
-  for (const auto &[key, value] : Pairs(obj)) {
-    if (value.IsString() && key.IsString())
-      LogF("%s: %s", key.ToString(), value.ToString());
-    else if (value.IsString() && key.IsInteger())
-      LogF("%d: %s", key.GetInteger(), value.ToString());
+  for (const auto &[key, value] : IPairs(obj)) {
+    if (value.IsString())
+      LogF("%d: %s", key, value.ToString());
     else
       ls->Error("Expected table of strings, but got %s", value.TypeName());
   }
