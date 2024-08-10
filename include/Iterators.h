@@ -1,6 +1,10 @@
 #include "LuaAPI.h"
 #include <utility>
-
+#ifdef __GNUC__
+#ifndef __clang__
+#error Do not include iterators and use them with GCC
+#endif
+#endif
 
 class LuaTableIterator {
 public:

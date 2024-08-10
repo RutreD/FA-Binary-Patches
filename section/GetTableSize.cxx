@@ -88,7 +88,8 @@ void IsTableEmpty() {
       "MOV EAX,0x1;");
 }
 
-#include "LuaAPI.h"
+#include "Iterators.h"
+
 int TableClone(lua_State *L) noexcept(false) {
   LuaObject obj{L->LuaState, 1};
   if (obj.IsNil()) {
