@@ -160,6 +160,7 @@ class LuaObject { // 0x14 bytes
   void __DLuaObject() asm("0x9075d0");
   void __Index(LuaObject *out, int key) const asm("0x9091e0");
   void __Index(LuaObject *out, const char *key) const asm("0x908f60");
+  void __Clone(LuaObject *out) const asm("0x90a180");
 
 public:
   LuaObject()
@@ -195,7 +196,11 @@ public:
   bool IsString() const asm("0x907370");
   bool IsTable() asm("0x907310");
   bool IsUserData() asm("0x907320");
-  void Clone(LuaObject *out) asm("0x90a180");
+  LuaObject Clone() const {
+    LuaObject obj;
+    __Clone(&obj);
+    return obj;
+  }
   void CreateTable(LuaObject *out, const char *key, int narray,
                    int lnhash) asm("0x908c10");
   void CreateTable(LuaObject *out, int key, int narray,

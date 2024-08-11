@@ -91,13 +91,7 @@ void IsTableEmpty() {
 #include "Iterators.h"
 
 int TableClone(lua_State *L) noexcept(false) {
-  LuaObject obj{L->LuaState, 1};
-  if (obj.IsNil()) {
-    L->LuaState->ArgError(1, "Expected not nil value");
-  }
-  LuaObject cloned{};
-  obj.Clone(&cloned);
-  cloned.PushStack(L);
+  LuaObject(L->LuaState, 1).Clone().PushStack(L);
   return 1;
 }
 
