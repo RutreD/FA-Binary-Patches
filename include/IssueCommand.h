@@ -99,7 +99,6 @@ VALIDATE_SIZE(Moho::EntitySetData, 0x10);
 VALIDATE_SIZE(Moho::EntitySet, 0x20);
 VALIDATE_SIZE(Moho::SSTICommandIssueData, 0x98);
 
-Moho::EntitySet *__cdecl CheckUnitList(Moho::EntitySet *units,
-                                       LuaStackObject *stackobject,
-                                       LuaState *luaState,
-                                       const char *funcName) asm("0x006EEE40");
+Moho::EntitySet *__cdecl CheckUnitList(
+    Moho::EntitySet *units, LuaStackObject *stackobject, LuaState *luaState,
+    const char *funcName) noexcept(false) asm("0x006EEE40");
