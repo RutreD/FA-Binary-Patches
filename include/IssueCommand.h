@@ -32,6 +32,8 @@ struct EntitySet {
     data.inlined = inlined_set_items;
   }
 
+  bool IsEmpty() { return data.begin == data.end; }
+
   ~EntitySet() {
     if (data.begin != data.inlined) {
       free(data.begin);
