@@ -7,6 +7,12 @@
 SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
                               Moho::SSTICommandIssueData *command, bool a5);
 
+SHARED void *GetBlueprintByName(LuaState *ls, int index,
+                                const char *name) noexcept(false);
+
+SHARED Moho::AddResult *
+EntitySetAddItem(Moho::EntitySet *set, Moho::AddResult *insert_res, void *unit);
+
 int IssueStop(lua_State *L) {
   int top = lua_gettop(L);
   if (top != 1)

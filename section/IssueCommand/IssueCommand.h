@@ -93,11 +93,19 @@ public:
 
   ~SSTICommandIssueData() { Dtor__SSTICommandIssueData(this); }
 };
+
+struct AddResult {
+  uint32_t *add_location;
+  bool resized;
+};
+
 } // namespace Moho
 
 VALIDATE_SIZE(Moho::EntitySetData, 0x10);
 VALIDATE_SIZE(Moho::EntitySet, 0x20);
 VALIDATE_SIZE(Moho::SSTICommandIssueData, 0x98);
+
+bool __thiscall Unit__CanBuild(void *unit, void *blueprint) asm("0x006A9E50");
 
 Moho::EntitySet *__cdecl CheckUnitList(
     Moho::EntitySet *units, LuaStackObject *stackobject, LuaState *luaState,
