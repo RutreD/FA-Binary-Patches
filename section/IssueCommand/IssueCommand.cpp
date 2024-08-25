@@ -4,7 +4,7 @@
 #include "utility.h"
 #include <cmath>
 
-#define NON_GENERAL_REG(var_) [var_] "g"(var_)
+#define VAR(var_) [var_] "g"(var_)
 
 SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
                               Moho::SSTICommandIssueData *command, int a5) {
@@ -14,8 +14,7 @@ SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
       "call 0x006F12C0;"
       "add esp, 0xC;"
       :
-      : "d"(units), NON_GENERAL_REG(a5), NON_GENERAL_REG(command),
-        NON_GENERAL_REG(moho)
+      : "d"(units), VAR(a5), VAR(command), VAR(moho)
       : "eax");
 }
 
@@ -28,7 +27,7 @@ SHARED void *GetBlueprintByName(LuaState *ls, int index, const char *funcName) {
       "call 0x006EF1B9;"
       "add esp, 0xC;"
       : "=a"(bp)
-      : [ls] "D"(ls), NON_GENERAL_REG(index), NON_GENERAL_REG(funcName)
+      : [ls] "D"(ls), VAR(index), VAR(funcName)
       :);
 
   return bp;
@@ -42,7 +41,7 @@ SHARED Moho::AddResult *EntitySetAddItem(Moho::EntitySet *set,
   asm("push %[unit];"
       "call 0x0057DDD0;"
       : "=a"(result)
-      : "a"(set), "b"(insert_res), NON_GENERAL_REG(unit)
+      : "a"(set), "b"(insert_res), VAR(unit)
       :);
 
   return result;
