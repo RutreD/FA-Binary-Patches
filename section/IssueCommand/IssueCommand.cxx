@@ -31,7 +31,7 @@ int IssueStop(lua_State *L) {
                        top);
 
   {
-    Moho::SSTICommandIssueData command{1};
+    Moho::SSTICommandIssueData command{Moho::UNITCOMMAND_Stop};
     Moho::EntitySet units;
     LuaStackObject obj{L->LuaState, 1};
     CheckUnitList(&units, &obj, L->LuaState, "IssueStop");
@@ -48,7 +48,7 @@ int IssueKillSelf(lua_State *L) {
                        top);
 
   {
-    Moho::SSTICommandIssueData command{30};
+    Moho::SSTICommandIssueData command{Moho::UNITCOMMAND_KillSelf};
     Moho::EntitySet units;
     LuaStackObject obj{L->LuaState, 1};
     CheckUnitList(&units, &obj, L->LuaState, __FUNCTION__);
@@ -84,7 +84,7 @@ int IssueBuildMobile(lua_State *L) {
     Moho::CellData cells;
     CreateCellsFromTable(&cells, L->LuaState, L->LuaState, 4);
 
-    Moho::SSTICommandIssueData command{8};
+    Moho::SSTICommandIssueData command{Moho::UNITCOMMAND_BuildMobile};
     command.target_data = Moho::TargetData::Ground(pos);
     command.blueprint = blueprint;
     CopySetData(&command.cells, &cells);

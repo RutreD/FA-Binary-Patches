@@ -77,6 +77,50 @@ enum TargetType {
   AITARGET_Ground = 2,
 };
 
+enum EUnitCommandType
+{
+   UNITCOMMAND_None                 = 0x0,
+   UNITCOMMAND_Stop                 = 0x1,
+   UNITCOMMAND_Move                 = 0x2,
+   UNITCOMMAND_Dive                 = 0x3,
+   UNITCOMMAND_FormMove             = 0x4,
+   UNITCOMMAND_BuildSiloTactical    = 0x5,
+   UNITCOMMAND_BuildSiloNuke        = 0x6,
+   UNITCOMMAND_BuildFactory         = 0x7,
+   UNITCOMMAND_BuildMobile          = 0x8,
+   UNITCOMMAND_BuildAssist          = 0x9,
+   UNITCOMMAND_Attack               = 0xA,
+   UNITCOMMAND_FormAttack           = 0xB,
+   UNITCOMMAND_Nuke                 = 0xC,
+   UNITCOMMAND_Tactical             = 0xD,
+   UNITCOMMAND_Teleport             = 0xE,
+   UNITCOMMAND_Guard                = 0xF,
+   UNITCOMMAND_Patrol               = 0x10,
+   UNITCOMMAND_Ferry                = 0x11,
+   UNITCOMMAND_FormPatrol           = 0x12,
+   UNITCOMMAND_Reclaim              = 0x13,
+   UNITCOMMAND_Repair               = 0x14,
+   UNITCOMMAND_Capture              = 0x15,
+   UNITCOMMAND_TransportLoadUnits   = 0x16,
+   UNITCOMMAND_TransportReverseLoadUnits = 0x17,
+   UNITCOMMAND_TransportUnloadUnits = 0x18,
+   UNITCOMMAND_TransportUnloadSpecificUnits = 0x19,
+   UNITCOMMAND_DetachFromTransport  = 0x1A,
+   UNITCOMMAND_Upgrade              = 0x1B,
+   UNITCOMMAND_Script               = 0x1C,
+   UNITCOMMAND_AssistCommander      = 0x1D,
+   UNITCOMMAND_KillSelf             = 0x1E,
+   UNITCOMMAND_DestroySelf          = 0x1F,
+   UNITCOMMAND_Sacrifice            = 0x20,
+   UNITCOMMAND_Pause                = 0x21,
+   UNITCOMMAND_OverCharge           = 0x22,
+   UNITCOMMAND_AggressiveMove       = 0x23,
+   UNITCOMMAND_FormAggressiveMove   = 0x24,
+   UNITCOMMAND_AssistMove           = 0x25,
+   UNITCOMMAND_SpecialAction        = 0x26,
+   UNITCOMMAND_Dock                 = 0x27,
+};
+
 struct TargetData {
   TargetType type;
   uint32_t entity_id;
@@ -94,7 +138,7 @@ public:
   int v0;
   int v1;
   int index;
-  int commandType;
+  EUnitCommandType commandType;
   TargetData target_data;
   int v9;
   int v10;
@@ -116,7 +160,7 @@ public:
 
 private:
   static SSTICommandIssueData *__thiscall __SSTICommandIssueData(
-      int commadType, SSTICommandIssueData *_this) asm("0x00552550");
+      EUnitCommandType commadType, SSTICommandIssueData *_this) asm("0x00552550");
 
   static void *__stdcall Dtor__SSTICommandIssueData(
       SSTICommandIssueData *_this) asm("0x0057ABB0");
