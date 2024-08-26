@@ -85,7 +85,7 @@ SHARED Vector3f *GetTargetPos(Vector3f *res, Moho::CAiTarget *target, bool flag)
   Vector3f *result;
   asm("call 0x005E2A90;"
       : "=a"(result)
-      : "a"(res), "c"(target), "bl"(flag)
+      : "a"(res), "c"(target), "b"(flag)
       :);
   return result;
 }

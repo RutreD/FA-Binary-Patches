@@ -94,7 +94,6 @@ int IssueBuildMobile(lua_State *L) {
   }
 
   return 0;
-  ;
 }
 
 static SimRegFunc IssueStopReg{"IssueStop2", "", IssueStop};
