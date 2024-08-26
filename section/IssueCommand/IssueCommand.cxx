@@ -8,10 +8,21 @@ SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
                               Moho::SSTICommandIssueData *command, bool a5);
 
 SHARED void *GetBlueprintByName(LuaState *ls, int index,
-                                const char *name) noexcept(false);
+                                const char *funcName) noexcept(false);
 
 SHARED Moho::AddResult *
 EntitySetAddItem(Moho::EntitySet *set, Moho::AddResult *insert_res, void *unit);
+
+SHARED Vector3f *LuaTableToVector(Vector3f *out, LuaObject *table);
+
+SHARED Moho::CellData *CopySetData(Moho::CellData *to, Moho::CellData *from);
+
+SHARED Moho::CAiTarget *CAiTargetFromArg(Moho::CAiTarget *target,
+                                         LuaState *state, const char *funcName,
+                                         LuaState *ls, int index);
+
+SHARED Vector3f *GetTargetPos(Vector3f *res, Moho::CAiTarget *target,
+                              bool flag);
 
 int IssueStop(lua_State *L) {
   int top = lua_gettop(L);
@@ -40,12 +51,63 @@ int IssueKillSelf(lua_State *L) {
     Moho::SSTICommandIssueData command{30};
     Moho::EntitySet units;
     LuaStackObject obj{L->LuaState, 1};
-    CheckUnitList(&units, &obj, L->LuaState, "IssueKillSelf");
+    CheckUnitList(&units, &obj, L->LuaState, __FUNCTION__);
     void *sim = lua_getglobaluserdata(L);
     UNIT_IssueCommand(&units, sim, &command, 0);
   }
   return 0;
 }
 
+int IssueBuildMobile(lua_State *L) {
+  int top = lua_gettop(L);
+  if (top != 4)
+    L->LuaState->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 1,
+                       top);
+
+  {
+    // WarningF("before units");
+    Moho::EntitySet units;
+    LuaStackObject obj{L->LuaState, 1};
+    CheckUnitList(&units, &obj, L->LuaState, __FUNCTION__);
+
+    // WarningF("before target");
+    // Moho::CAiTarget target;
+    // CAiTargetFromArg(&target, L->LuaState, __FUNCTION__, L->LuaState, 2);
+
+    // WarningF("before target pos");
+    // GetTargetPos(&pos, &target, 0);
+    Vector3f pos;
+    LuaObject vecObj{L->LuaState, 2};
+    LuaTableToVector(&pos, &vecObj);
+
+    // WarningF("Before bp");
+    void *blueprint = GetBlueprintByName(L->LuaState, 3, __FUNCTION__);
+    if (!blueprint)
+      return 0;
+
+    // WarningF("Before cells");
+    Moho::CellData cells;
+    CreateCellsFromTable(&cells, L->LuaState, L->LuaState, 4);
+
+    // WarningF("Before commad created");
+    Moho::SSTICommandIssueData command{8};
+    command.target_data.target_type = 2;
+    command.target_data.entity_id = 0xF0000000;
+    command.target_data.position = pos;
+    command.blueprint = blueprint;
+    CopySetData(&command.cells, &cells);
+
+    // WarningF("Before issue");
+    void *sim = lua_getglobaluserdata(L);
+    UNIT_IssueCommand(&units, sim, &command, 0);
+    // WarningF("After issue");
+  }
+
+  return 0;
+  ;
+}
+
 static SimRegFunc IssueStopReg{"IssueStop2", "", IssueStop};
 static SimRegFunc IssueKillSelfReg{"IssueKillSelf2", "", IssueKillSelf};
+static SimRegFunc IssueBuildMobileReg{"IssueBuildMobile2", "",
+                                      IssueBuildMobile};

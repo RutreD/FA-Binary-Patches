@@ -17,6 +17,28 @@ struct EntitySetData {
   uint32_t *inlined;
 };
 
+struct CellData {
+  EntitySetData data;
+  uint32_t inlined_set_items[2];
+
+  CellData() {
+    data.begin = inlined_set_items;
+    data.end = inlined_set_items;
+    data.capacity_end = (uint32_t *)(inlined_set_items + 2);
+    data.inlined = inlined_set_items;
+  }
+
+  ~CellData() {
+    if (data.begin != data.inlined) {
+      free(data.begin);
+      uint32_t *inlined = data.inlined;
+      data.begin = inlined;
+      data.capacity_end = (uint32_t *)*inlined;
+    }
+    data.end = data.begin;
+  }
+};
+
 struct EntitySet {
   EntitySet *next;
   EntitySet *prev;
@@ -49,17 +71,19 @@ struct EntitySet {
   }
 };
 
+struct TargetData {
+  int target_type;
+  uint32_t entity_id;
+  Vector3f position;
+};
+
 class SSTICommandIssueData {
 public:
   int v0;
   int v1;
   int index;
   int commandType;
-  int v4;
-  int entityId;
-  int v6;
-  int v7;
-  int v8;
+  TargetData target_data;
   int v9;
   int v10;
   int v11;
@@ -68,10 +92,9 @@ public:
   int v14;
   Quaternion v15;
   float v19;
-  int v20;
+  void *blueprint;
   int v21;
-  Moho::EntitySetData set;
-  void *data[2];
+  Moho::CellData cells;
   int v28;
   int v29;
   LuaObject lobj;
@@ -99,6 +122,17 @@ struct AddResult {
   bool resized;
 };
 
+struct CAiTarget {
+  int targetType;
+  void *next;
+  void *prev;
+  Vector3f position;
+  int targetPoint;
+  bool targetIsMobile;
+};
+
+
+
 } // namespace Moho
 
 VALIDATE_SIZE(Moho::EntitySetData, 0x10);
@@ -110,3 +144,8 @@ bool __thiscall Unit__CanBuild(void *unit, void *blueprint) asm("0x006A9E50");
 Moho::EntitySet *__cdecl CheckUnitList(
     Moho::EntitySet *units, LuaStackObject *stackobject, LuaState *luaState,
     const char *funcName) noexcept(false) asm("0x006EEE40");
+
+Moho::CellData *__cdecl CreateCellsFromTable(Moho::CellData *a1,
+                                             LuaState *luaState,
+                                             LuaState *luaState2,
+                                             int index) asm("0x006EF270");
