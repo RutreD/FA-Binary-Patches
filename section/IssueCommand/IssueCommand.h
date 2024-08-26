@@ -81,6 +81,12 @@ struct TargetData {
   TargetType type;
   uint32_t entity_id;
   Vector3f position;
+
+  inline static TargetData Ground(Vector3f pos) {
+    return {AITARGET_Ground, 0xF0000000, pos};
+  }
+
+  ~TargetData() = default;
 };
 
 class SSTICommandIssueData {
