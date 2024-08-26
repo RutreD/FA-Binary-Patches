@@ -122,6 +122,7 @@ struct AddResult {
   bool resized;
 };
 
+// requires dtor!!!
 struct CAiTarget {
   int targetType;
   void *next;

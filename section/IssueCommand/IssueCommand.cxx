@@ -65,31 +65,25 @@ int IssueBuildMobile(lua_State *L) {
                        top);
 
   {
-    // WarningF("before units");
     Moho::EntitySet units;
     LuaStackObject obj{L->LuaState, 1};
     CheckUnitList(&units, &obj, L->LuaState, __FUNCTION__);
 
-    // WarningF("before target");
+    Vector3f pos;
     // Moho::CAiTarget target;
     // CAiTargetFromArg(&target, L->LuaState, __FUNCTION__, L->LuaState, 2);
-
-    // WarningF("before target pos");
     // GetTargetPos(&pos, &target, 0);
-    Vector3f pos;
+
     LuaObject vecObj{L->LuaState, 2};
     LuaTableToVector(&pos, &vecObj);
 
-    // WarningF("Before bp");
     void *blueprint = GetBlueprintByName(L->LuaState, 3, __FUNCTION__);
     if (!blueprint)
       return 0;
 
-    // WarningF("Before cells");
     Moho::CellData cells;
     CreateCellsFromTable(&cells, L->LuaState, L->LuaState, 4);
 
-    // WarningF("Before commad created");
     Moho::SSTICommandIssueData command{8};
     command.target_data.target_type = 2;
     command.target_data.entity_id = 0xF0000000;
@@ -97,10 +91,8 @@ int IssueBuildMobile(lua_State *L) {
     command.blueprint = blueprint;
     CopySetData(&command.cells, &cells);
 
-    // WarningF("Before issue");
     void *sim = lua_getglobaluserdata(L);
     UNIT_IssueCommand(&units, sim, &command, 0);
-    // WarningF("After issue");
   }
 
   return 0;
