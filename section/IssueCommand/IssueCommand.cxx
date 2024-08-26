@@ -85,9 +85,7 @@ int IssueBuildMobile(lua_State *L) {
     CreateCellsFromTable(&cells, L->LuaState, L->LuaState, 4);
 
     Moho::SSTICommandIssueData command{8};
-    command.target_data.target_type = 2;
-    command.target_data.entity_id = 0xF0000000;
-    command.target_data.position = pos;
+    command.target_data = {Moho::AITARGET_Ground, 0xF0000000, pos};
     command.blueprint = blueprint;
     CopySetData(&command.cells, &cells);
 

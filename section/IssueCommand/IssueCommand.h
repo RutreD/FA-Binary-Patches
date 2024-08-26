@@ -71,8 +71,14 @@ struct EntitySet {
   }
 };
 
+enum TargetType {
+  AITARGET_None = 0,
+  AITARGET_Entity = 2,
+  AITARGET_Ground = 2,
+};
+
 struct TargetData {
-  int target_type;
+  TargetType type;
   uint32_t entity_id;
   Vector3f position;
 };
@@ -131,8 +137,6 @@ struct CAiTarget {
   int targetPoint;
   bool targetIsMobile;
 };
-
-
 
 } // namespace Moho
 
