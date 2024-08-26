@@ -166,7 +166,7 @@ private:
       SSTICommandIssueData *_this) asm("0x0057ABB0");
 
 public:
-  SSTICommandIssueData(int commandType) {
+  SSTICommandIssueData(EUnitCommandType commandType) {
     __SSTICommandIssueData(commandType, this);
   }
 
