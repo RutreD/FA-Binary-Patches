@@ -60,29 +60,29 @@ int IssueKillSelf(lua_State *L) {
 
 int IssueBuildMobile(lua_State *L) {
   int top = lua_gettop(L);
+  LuaState *ls = L->LuaState;
   if (top != 4)
-    L->LuaState->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 1,
-                       top);
+    ls->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 1, top);
 
   {
     Moho::EntitySet units;
-    LuaStackObject obj{L->LuaState, 1};
-    CheckUnitList(&units, &obj, L->LuaState, __FUNCTION__);
+    LuaStackObject obj{ls, 1};
+    CheckUnitList(&units, &obj, ls, __FUNCTION__);
 
     Vector3f pos;
     // Moho::CAiTarget target;
     // CAiTargetFromArg(&target, L->LuaState, __FUNCTION__, L->LuaState, 2);
     // GetTargetPos(&pos, &target, 0);
 
-    LuaObject vecObj{L->LuaState, 2};
+    LuaObject vecObj{ls, 2};
     LuaTableToVector(&pos, &vecObj);
 
-    void *blueprint = GetBlueprintByName(L->LuaState, 3, __FUNCTION__);
+    void *blueprint = GetBlueprintByName(ls, 3, __FUNCTION__);
     if (!blueprint)
       return 0;
 
     Moho::CellData cells;
-    CreateCellsFromTable(&cells, L->LuaState, L->LuaState, 4);
+    CreateCellsFromTable(&cells, ls, ls, 4);
 
     Moho::SSTICommandIssueData command{Moho::UNITCOMMAND_BuildMobile};
     command.target_data = Moho::TargetData::Ground(pos);
