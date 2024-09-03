@@ -111,13 +111,13 @@ template <typename T> struct basic_string {
   uint32_t ptr;    // ?
   T str[sso_size]; // pointer to data
   uint32_t strLen;
-  uint32_t size; // capacity?
+  uint32_t capacity; // capacity?
 
   basic_string() {
     ptr = 0;
     str[0] = T(0);
     strLen = 0;
-    size = 0;
+    capacity = sso_size - 1;
   }
 
   basic_string(const char *s) {
@@ -129,17 +129,24 @@ template <typename T> struct basic_string {
       static_assert(false, "Unknown type T.");
   }
 
-  const T *data() {
-    return size < sso_size ? (const T *)&str : *(const T **)str;
+  inline const T *data() {
+    return capacity < sso_size ? (const T *)&str : *(const T **)str;
+  }
+
+  inline void clear()
+  {
+    if(capacity >= sso_size)
+    {
+      free(data());
+    }
+    ptr = 0;
+    str[0] = T(0);
+    strLen = 0;
+    capacity = sso_size - 1;
   }
 
   ~basic_string() {
-    if constexpr (IsSame<char, T>)
-      string_dtor(this);
-    else if constexpr (IsSame<wchar_t, T>)
-      wstring_dtor(this);
-    else
-      static_assert(false, "Unknown type T.");
+    clear();
   }
 };
 
