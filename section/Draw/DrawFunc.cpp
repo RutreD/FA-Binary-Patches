@@ -1,6 +1,7 @@
 #include "CObject.h"
 #include "magic_classes.h"
 #include "moho.h"
+#include "DrawFunc.h"
 #include "utility.h"
 #include <cmath>
 
