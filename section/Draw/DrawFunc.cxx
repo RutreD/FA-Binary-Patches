@@ -2,6 +2,7 @@
 #include "magic_classes.h"
 #include "moho.h"
 #include "utility.h"
+#include "DrawFunc.h"
 #include <cmath>
 
  SHARED void _DrawRect(
@@ -48,8 +49,6 @@ namespace Moho
     }
     namespace CPrimBatcher
     {
-       SHARED void FlushBatcher(void *batcher);
-        
         void ResetBatcher(void *batcher)
         {
             *(char *)((int *)batcher + 285) = 0;

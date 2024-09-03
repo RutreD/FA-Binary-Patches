@@ -60,16 +60,6 @@ namespace Moho
 {
     namespace CPrimBatcher
     {
-       SHARED void FlushBatcher(void *batcher)
-        {
-            asm(
-                "push %[batcher];"
-                "call 0x0043A140;"
-                :
-                : NON_GENERAL_REG(batcher)
-                : "eax");
-        }
-
        SHARED void __stdcall SetTexture(void *batcher, Texture *texture)
         {
             asm(
