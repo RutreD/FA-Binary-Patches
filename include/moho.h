@@ -76,14 +76,15 @@ struct linked_list
 	T *prev;
 };
 
-struct moho_set
+struct BitSet
 {	// 0x20 bytes
 	int baseI;
 	int unk1;
-	uint32_t *begin, *end, *capacity_end;
-	void *unk2;
-	uint32_t value; // Memory for 'Short Set Optimization'
-	void *unk3;
+	uint32_t *begin;
+	uint32_t *end;
+	uint32_t *capacity_end;
+	uint32_t *inlined;
+	uint32_t inlined_values[2];
 
 	void set(uint32_t item, bool set) {
 		auto *itemPtr = &begin[item >> 5 - baseI];
@@ -99,7 +100,7 @@ struct moho_set
 		return *itemPtr & (1 << (item & 0x1F));
 	}
 };
-VALIDATE_SIZE(moho_set, 0x20)
+VALIDATE_SIZE(BitSet, 0x20)
 
 typedef int SOCKET;
 // GPGCore
@@ -522,13 +523,13 @@ struct BaseArmy
 	bool isResourceSharing;
 	uint8_t pad2[7];
 	// at 0xC0
-	moho_set neutrals;
-	moho_set allies;
-	moho_set enemies;
+	BitSet neutrals;
+	BitSet allies;
+	BitSet enemies;
 	// at 0x120
 	bool IsAlly;
 	uint8_t pad3[7];
-	moho_set mValidCommandSources;
+	BitSet mValidCommandSources;
 	uint32_t color;
 	uint32_t iconColor;
 	string mArmyType; // 'human' for players
@@ -600,14 +601,14 @@ struct SimArmy // : IArmy, BaseArmy
 	bool isResourceSharing;
 	uint8_t pad2[4];
 	// at 0xC8
-	moho_set neutrals;
-	moho_set allies;
-	moho_set enemies;
+	BitSet neutrals;
+	BitSet allies;
+	BitSet enemies;
 	// at 0x128
 	bool IsAlly;
 	uint8_t pad3[4];
 	// at 0x130
-	moho_set mValidCommandSources;
+	BitSet mValidCommandSources;
 	// at 0x150
 	uint32_t color;
 	uint32_t iconColor;
@@ -1312,7 +1313,7 @@ struct CClientBase : IClient
 	IClientManager* clientManager;
 
 	// at 0x30
-	moho_set unk1;
+	BitSet unk1;
 	// at 0x50
 	int mCommandSource;
 	bool mReady;
