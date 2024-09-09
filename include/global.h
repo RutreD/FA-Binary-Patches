@@ -108,8 +108,11 @@ void __thiscall string_dtor(string *ws) asm("0x00402370");
 #define SSO_bytes 0x10ul
 template <typename T> struct basic_string {
   static constexpr uint32_t sso_size = SSO_bytes / sizeof(T);
-  uint32_t ptr;    // ?
-  T str[sso_size]; // pointer to data
+  uint32_t ptr; // ?
+  union {
+    T str[sso_size]; // data
+    T *_data;        // pointer to data
+  };
   uint32_t strLen;
   uint32_t capacity; // capacity?
 
@@ -129,14 +132,10 @@ template <typename T> struct basic_string {
       static_assert(false, "Unknown type T.");
   }
 
-  inline const T *data() {
-    return capacity < sso_size ? (const T *)&str : *(const T **)str;
-  }
+  inline const T *data() { return capacity < sso_size ? &str : _data; }
 
-  inline void clear()
-  {
-    if(capacity >= sso_size)
-    {
+  inline void clear() {
+    if (capacity >= sso_size) {
       free(data());
     }
     ptr = 0;
@@ -145,9 +144,7 @@ template <typename T> struct basic_string {
     capacity = sso_size - 1;
   }
 
-  ~basic_string() {
-    clear();
-  }
+  ~basic_string() { clear(); }
 };
 
 VALIDATE_SIZE(string, 0x1C)
