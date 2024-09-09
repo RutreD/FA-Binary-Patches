@@ -40,22 +40,22 @@ void _DrawCircle(void *batcher, Vector3f *pos, float radius, float thickness,
       : "eax");
 }
 
-namespace Moho {
-namespace CPrimBatcher {
-void __stdcall SetTexture(void *batcher, Texture *texture) {
-  asm("call 0x4386A0;" : : "D"(batcher), "b"(texture) : "edx", "ecx", "eax");
+void __stdcall Moho::CPrimBatcher::SetTexture(void *batcher, Texture *texture) {
+  asm("call 0x4386A0;"
+      :
+      : "D"(batcher), "b"(texture)
+      : "edx", "ecx", "eax"
+      );
 }
 
-void __stdcall SetViewProjMatrix(void *batcher, void *matrix) {
+void __stdcall Moho::CPrimBatcher::SetViewProjMatrix(void *batcher,
+                                                     void *matrix) {
   asm("push %[matrix];"
       "call 0x438640;"
       :
       : "b"(batcher), NON_GENERAL_REG(matrix)
       : "edx", "eax");
 }
-} // namespace CPrimBatcher
-
-} // namespace Moho
 
 void CustomDrawEnter() {
   asm("push edi;"
