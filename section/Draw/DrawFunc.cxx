@@ -5,16 +5,6 @@
 #include "DrawFunc.h"
 #include <cmath>
 
- SHARED void _DrawRect(
-    Vector3f *v1,
-    Vector3f *v2,
-    unsigned int color,
-    float thickness,
-    void *batcher,
-    Vector3f *v3,
-    void *heightmap,
-    float f2);
-
 void DrawRect(
     Vector3f v1,
     Vector3f v2,
@@ -30,7 +20,6 @@ void DrawRect(
 
 float THICKNESS = 0.1;
 extern unsigned int CIRCLE_COLOR;
-SHARED void _DrawCircle(void *batcher, Vector3f *pos, float radius, float thickness, uint32_t color, Vector3f *orientation);
 
 namespace Moho
 {
@@ -61,9 +50,6 @@ namespace Moho
             return t;
         }
 
-       SHARED void __stdcall SetTexture(void *batcher, Texture *texture);
-
-      SHARED  void __stdcall SetViewProjMatrix(void *batcher, void *matrix);
     } // namespace CPrimBatcher
 
     void SetupDevice(int *device, const char *target, const char *mode)
@@ -167,10 +153,10 @@ int LuaDrawCircle(lua_State *l)
 
 UIRegFunc DrawCircleReg{"UI_DrawCircle", "UI_DrawCircle(pos:vector, radius:float, color:string, thickness?=0.15:float)", LuaDrawCircle};
 
-SHARED float delta_frame = 0;
 
+SHARED float delta_frame = 0.1;
 // offset +284 from CUIWorldView
-SHARED void __thiscall CustomDraw(void *_this, void *batcher)
+void __thiscall CustomDraw(void *_this, void *batcher)
 {
     // void *wldmap = IWldTerrainRes::GetWldMap();
     // void *terrain = IWldTerrainRes::GetTerrainRes(wldmap);
