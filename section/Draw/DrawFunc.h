@@ -22,4 +22,5 @@ SHARED {
   void _DrawRect(Vector3f * v1, Vector3f * v2, unsigned int color,
                  float thickness, void *batcher, Vector3f *v3, void *heightmap,
                  float f2);
+  char *DRAW_WireBox(VMatrix4 * a1, /*CD3DPrimBatcher*/ void *batcher);
 }

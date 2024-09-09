@@ -1475,3 +1475,9 @@ namespace Moho
 	int *D3D_GetDevice() asm("0x00430590");
 	bool __cdecl TryConvertToColor(const char *s, uint32_t &color) asm("0x4B2B90");
 }
+
+struct VMatrix4
+{
+float data[16];
+};
+VALIDATE_SIZE(VMatrix4, 0x40);

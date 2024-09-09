@@ -41,11 +41,7 @@ void _DrawCircle(void *batcher, Vector3f *pos, float radius, float thickness,
 }
 
 void __stdcall Moho::CPrimBatcher::SetTexture(void *batcher, Texture *texture) {
-  asm("call 0x4386A0;"
-      :
-      : "D"(batcher), "b"(texture)
-      : "edx", "ecx", "eax"
-      );
+  asm("call 0x4386A0;" : : "D"(batcher), "b"(texture) : "edx", "ecx", "eax");
 }
 
 void __stdcall Moho::CPrimBatcher::SetViewProjMatrix(void *batcher,
@@ -79,4 +75,13 @@ void StoreFPS() {
       :
       : [delta_frame] "i"(&delta_frame)
       :);
+}
+
+char *DRAW_WireBox(VMatrix4 *a1, /*CD3DPrimBatcher*/ void *batcher) {
+  char *__result;
+  asm("call 0x00454680;"
+      : "=a"(__result)
+      : [a1] "a"(a1), [batcher] "S"(batcher)
+      :);
+  return __result;
 }
