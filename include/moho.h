@@ -91,7 +91,8 @@ struct BitSet
 		if (itemPtr >= end) end = itemPtr + 1;
 		item = 1 << (item & 0x1F);
 		if (set)
-			*itemPtr |= item; else
+			*itemPtr |= item;
+		else
 			*itemPtr &= ~item;
 	}
 	bool operator[](int item) {
