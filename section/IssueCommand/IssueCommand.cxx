@@ -4,26 +4,6 @@
 #include "utility.h"
 #include <cmath>
 
-SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
-                              Moho::SSTICommandIssueData *command, bool a5);
-
-SHARED void *GetBlueprintByName(LuaState *ls, int index,
-                                const char *funcName) noexcept(false);
-
-SHARED Moho::AddResult *
-EntitySetAddItem(Moho::EntitySet *set, Moho::AddResult *insert_res, void *unit);
-
-SHARED Vector3f *LuaTableToVector(Vector3f *out, LuaObject *table);
-
-SHARED Moho::CellData *CopySetData(Moho::CellData *to, Moho::CellData *from);
-
-SHARED Moho::CAiTarget *CAiTargetFromArg(Moho::CAiTarget *target,
-                                         LuaState *state, const char *funcName,
-                                         LuaState *ls, int index);
-
-SHARED Vector3f *GetTargetPos(Vector3f *res, Moho::CAiTarget *target,
-                              bool flag);
-
 int IssueStop(lua_State *L) {
   int top = lua_gettop(L);
   if (top != 1)

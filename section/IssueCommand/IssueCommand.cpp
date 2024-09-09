@@ -6,8 +6,8 @@
 
 #define VAR(var_) [var_] "g"(var_)
 
-SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
-                              Moho::SSTICommandIssueData *command, int a5) {
+void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
+                       Moho::SSTICommandIssueData *command, int a5) {
   asm("push %[a5];"
       "push %[command];"
       "push %[moho];"
@@ -18,7 +18,7 @@ SHARED void UNIT_IssueCommand(Moho::EntitySet *units, void *moho,
       : "eax");
 }
 
-SHARED void *GetBlueprintByName(LuaState *ls, int index, const char *funcName) {
+void *GetBlueprintByName(LuaState *ls, int index, const char *funcName) {
   void *bp;
 
   asm("push %[funcName];"
@@ -33,9 +33,8 @@ SHARED void *GetBlueprintByName(LuaState *ls, int index, const char *funcName) {
   return bp;
 }
 
-SHARED Moho::AddResult *EntitySetAddItem(Moho::EntitySet *set,
-                                         Moho::AddResult *insert_res,
-                                         void *unit) {
+Moho::AddResult *EntitySetAddItem(Moho::EntitySet *set,
+                                  Moho::AddResult *insert_res, void *unit) {
   Moho::AddResult *result;
 
   asm("push %[unit];"
@@ -47,13 +46,13 @@ SHARED Moho::AddResult *EntitySetAddItem(Moho::EntitySet *set,
   return result;
 }
 
-SHARED Vector3f *LuaTableToVector(Vector3f *out, LuaObject *table) {
+Vector3f *LuaTableToVector(Vector3f *out, LuaObject *table) {
   Vector3f *result;
   asm("call 0x004D0080;" : "=a"(result) : "S"(out), "D"(table) :);
   return result;
 }
 
-SHARED Moho::CellData *CopySetData(Moho::CellData *to, Moho::CellData *from) {
+Moho::CellData *CopySetData(Moho::CellData *to, Moho::CellData *from) {
   Moho::CellData *result;
 
   asm("push %[from];"
@@ -65,7 +64,7 @@ SHARED Moho::CellData *CopySetData(Moho::CellData *to, Moho::CellData *from) {
   return result;
 }
 
-SHARED Moho::CAiTarget *CAiTargetFromArg(Moho::CAiTarget *target, LuaState *state,
+Moho::CAiTarget *CAiTargetFromArg(Moho::CAiTarget *target, LuaState *state,
                                   const char *funcName, LuaState *ls,
                                   int index) {
   Moho::CAiTarget *result;
@@ -81,11 +80,8 @@ SHARED Moho::CAiTarget *CAiTargetFromArg(Moho::CAiTarget *target, LuaState *stat
   return result;
 }
 
-SHARED Vector3f *GetTargetPos(Vector3f *res, Moho::CAiTarget *target, bool flag) {
+Vector3f *GetTargetPos(Vector3f *res, Moho::CAiTarget *target, bool flag) {
   Vector3f *result;
-  asm("call 0x005E2A90;"
-      : "=a"(result)
-      : "a"(res), "c"(target), "b"(flag)
-      :);
+  asm("call 0x005E2A90;" : "=a"(result) : "a"(res), "c"(target), "b"(flag) :);
   return result;
 }
