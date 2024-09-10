@@ -118,7 +118,7 @@ int LuaDrawRect(lua_State *l)
     Moho::CPrimBatcher::FlushBatcher(batcher);
     return 0;
 }
-UIRegFunc DrawRectReg{"UI_DrawRect", "UI_DrawRect(pos:vector, size:float, color:string, thickness?=0.15:float)", LuaDrawRect};
+static UIRegFunc DrawRectReg{"UI_DrawRect", "UI_DrawRect(pos:vector, size:float, color:string, thickness?=0.15:float)", LuaDrawRect};
 
 int LuaDrawCircle(lua_State *l)
 {
@@ -151,7 +151,7 @@ int LuaDrawCircle(lua_State *l)
     return 0;
 }
 
-UIRegFunc DrawCircleReg{"UI_DrawCircle", "UI_DrawCircle(pos:vector, radius:float, color:string, thickness?=0.15:float)", LuaDrawCircle};
+static UIRegFunc DrawCircleReg{"UI_DrawCircle", "UI_DrawCircle(pos:vector, radius:float, color:string, thickness?=0.15:float)", LuaDrawCircle};
 
 
 int LuaDrawBox(lua_State *l)
@@ -168,10 +168,10 @@ int LuaDrawBox(lua_State *l)
     }
 
     VMatrix4 matrix = {
-        128, 128, 128, 1.0, //
+        128, 128, 128, 1.0, // x,y,z
           0,   0,   0, 1.0, //
           0,   0,   0, 1.0, //
-          10, 10,  10,   0
+         10,  10,  10,   0  // sizex, sizey, sizez
         
     };
 
@@ -180,7 +180,7 @@ int LuaDrawBox(lua_State *l)
     return 0;
 }
 
-UIRegFunc DrawBoxReg{"UI_DrawBox", "", LuaDrawBox};
+static UIRegFunc DrawBoxReg{"UI_DrawBox", "", LuaDrawBox};
 
 SHARED float delta_frame = 0.1;
 // offset +284 from CUIWorldView
