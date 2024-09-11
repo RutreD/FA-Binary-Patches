@@ -195,8 +195,11 @@ int LuaDrawLine(lua_State *l)
     }
 
     Vertex v1{Vector3f{256, 128,256}, 0xFFFF00FF, 0,0};
-    Vertex v2{Vector3f{0, 128,256}, 0xFFFF0000, 1,0};
-    DrawLine(&v1, batcher, &v2);
+    Vertex v2{Vector3f{0, 128,256}, 0xFFFF0000, 0,1};
+    Vertex v3{Vector3f{0, 128,0}, 0xFF0000FF, 1,1};
+    Vertex v4{Vector3f{256, 128,0}, 0xFF00FF00, 1,0};
+    // DrawLine(&v1, batcher, &v2);
+    DrawQuad(&v1, batcher, &v2,&v3,&v4);
     Moho::CPrimBatcher::FlushBatcher(batcher);
     return 0;
 }

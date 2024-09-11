@@ -95,3 +95,16 @@ char *DrawLine(Vertex *v1, void *batcher, Vertex *v2) {
       :);
   return __result;
 }
+
+char *DrawQuad(Vertex *a1, void *batcher, Vertex *a3, Vertex *a4, Vertex *a5) {
+  char *__result;
+  asm("push %[a5];"
+      "push %[a4];"
+      "push %[a3];"
+      "call 0x004389A0;"
+      : "=a"(__result)
+      : [a1] "a"(a1), [batcher] "c"(batcher), [a3] "g"(a3), [a4] "g"(a4),
+        [a5] "g"(a5)
+      :);
+  return __result;
+}

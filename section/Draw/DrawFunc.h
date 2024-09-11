@@ -32,4 +32,5 @@ SHARED {
                  float f2);
   char *DRAW_WireBox(VMatrix4 * a1, /*CD3DPrimBatcher*/ void *batcher);
   char *DrawLine(Vertex *v1, void *batcher, Vertex *v2);
+  char *DrawQuad(Vertex *a1, void *batcher, Vertex *a3, Vertex *a4, Vertex *a5);
 }
