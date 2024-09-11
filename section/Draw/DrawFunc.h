@@ -14,6 +14,14 @@ SHARED {
 }
 } // namespace Moho::CPrimBatcher
 
+struct Vertex
+{
+  Vector3f v;
+  unsigned int color;
+  float scaleX;
+  float scaleY;
+};
+
 SHARED {
 
   void _DrawCircle(void *batcher, Vector3f *pos, float radius, float thickness,
@@ -23,4 +31,5 @@ SHARED {
                  float thickness, void *batcher, Vector3f *v3, void *heightmap,
                  float f2);
   char *DRAW_WireBox(VMatrix4 * a1, /*CD3DPrimBatcher*/ void *batcher);
+  char *DrawLine(Vertex *v1, void *batcher, Vertex *v2);
 }

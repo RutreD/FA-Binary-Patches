@@ -163,7 +163,7 @@ int LuaDrawBox(lua_State *l)
     }
     if (!is_in_render_world)
     {
-        luaL_error(l, "Attempt to call DrawCircle outside of OnRenderWorld");
+        luaL_error(l, "Attempt to call DrawBox outside of OnRenderWorld");
         return 0;
     }
 
@@ -172,7 +172,6 @@ int LuaDrawBox(lua_State *l)
           0,   0,   0, 1.0, //
           0,   0,   0, 1.0, //
          10,  10,  10,   0  // sizex, sizey, sizez
-        
     };
 
     DRAW_WireBox(&matrix, batcher);
@@ -181,6 +180,29 @@ int LuaDrawBox(lua_State *l)
 }
 
 static UIRegFunc DrawBoxReg{"UI_DrawBox", "", LuaDrawBox};
+
+int LuaDrawLine(lua_State *l)
+{
+    int *batcher = *(int **)(((int *)g_WRenViewport) + 2135);
+    if (batcher == nullptr || _worldview == nullptr)
+    {
+        return 0;
+    }
+    if (!is_in_render_world)
+    {
+        luaL_error(l, "Attempt to call DrawLine outside of OnRenderWorld");
+        return 0;
+    }
+
+    Vertex v1{Vector3f{256, 128,256}, 0xFFFF00FF, 0,0};
+    Vertex v2{Vector3f{0, 128,256}, 0xFFFF0000, 1,0};
+    DrawLine(&v1, batcher, &v2);
+    Moho::CPrimBatcher::FlushBatcher(batcher);
+    return 0;
+}
+
+static UIRegFunc DrawLineReg{"UI_DrawLine", "", LuaDrawLine};
+
 
 SHARED float delta_frame = 0.1;
 // offset +284 from CUIWorldView

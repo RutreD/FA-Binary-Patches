@@ -85,3 +85,13 @@ char *DRAW_WireBox(VMatrix4 *a1, /*CD3DPrimBatcher*/ void *batcher) {
       :);
   return __result;
 }
+
+char *DrawLine(Vertex *v1, void *batcher, Vertex *v2) {
+  char *__result;
+  asm("push %[v2];"
+      "call 0x004392C0;"
+      : "=a"(__result)
+      : [v1] "a"(v1), [batcher] "c"(batcher), [v2] "g"(v2)
+      :);
+  return __result;
+}
