@@ -2,11 +2,12 @@
 #include "moho.h"
 
 void* GetCScriptType() asm("0x4C8530");
+RRef* __cdecl REF_UpcastPtr(RRef*out, RRef *ref, void *sctype) asm("0x8D9590");
 
 RRef REF_UpcastPtr(RRef *ref, void *sctype)
 {
     RRef p;
-    reinterpret_cast<void *(__cdecl *)(RRef *, RRef *, void *)>(0x8D9590)(&p, ref, sctype);
+    REF_UpcastPtr(&p, ref, sctype);
     return p;
 }
 
@@ -31,10 +32,13 @@ void *GetCObject(lua_State *l, int index)
     return nullptr;
 }
 
+
+RRef* __cdecl  __CastObj(RRef* rref, void *obj) asm("0x4C9030");
+
 RRef CastObj(void *obj)
 {
     RRef res;
-    reinterpret_cast<void *(__cdecl *)(RRef *, void *)>(0x4C9030)(&res, obj);
+    __CastObj(&res, obj);
     return res;
 }
 

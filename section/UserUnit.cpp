@@ -37,10 +37,7 @@ namespace Moho
 
     namespace MeshInstance
     {
-        inline void UpdateInterpolatedTransform(void *mesh)
-        {
-            reinterpret_cast<void(__stdcall *)(void *)>(0x007DEC80)(mesh);
-        }
+        void __stdcall UpdateInterpolatedTransform(void *mesh) asm("0x007DEC80");
     } // namespace MeshInstance
 
 }
