@@ -115,7 +115,6 @@ int LuaDrawRect(lua_State *l)
     Vector3f a{0, 0, size};
     Vector3f b{size, 0, 0};
     DrawRect(a, b, color, thick * lod, batcher, pos, nullptr, -10000);
-    Moho::CPrimBatcher::FlushBatcher(batcher);
     return 0;
 }
 static UIRegFunc DrawRectReg{"UI_DrawRect", "UI_DrawRect(pos:vector, size:float, color:string, thickness?=0.15:float)", LuaDrawRect};
@@ -147,7 +146,6 @@ int LuaDrawCircle(lua_State *l)
     float a = std::max(thickness / lod, 2.f);
     _DrawCircle(batcher, &pos, r, lod * a, color, &orientation);
 
-    Moho::CPrimBatcher::FlushBatcher(batcher);
     return 0;
 }
 
@@ -175,7 +173,6 @@ int LuaDrawBox(lua_State *l)
     };
 
     DRAW_WireBox(&matrix, batcher);
-    Moho::CPrimBatcher::FlushBatcher(batcher);
     return 0;
 }
 
@@ -200,7 +197,6 @@ int LuaDrawLine(lua_State *l)
     Vertex v4{Vector3f{256, 128,0}, 0xFF00FF00, 1,0};
     // DrawLine(&v1, batcher, &v2);
     DrawQuad(&v1, batcher, &v2,&v3,&v4);
-    Moho::CPrimBatcher::FlushBatcher(batcher);
     return 0;
 }
 
