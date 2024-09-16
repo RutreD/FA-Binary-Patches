@@ -10,7 +10,9 @@ int GetFocusArmyUnits(lua_State *L) {
     return 0;
 
   InlinedVector<UserUnit *, 2> units;
-  int size = get_focus_army_units(&units, 256, &session->v20);
+  int size = get_session_units(&units, 256, &session->v20);
+
+
 
   lua_pushnumber(L, size);
 

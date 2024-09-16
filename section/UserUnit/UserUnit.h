@@ -234,6 +234,6 @@ VALIDATE_SIZE(Moho::CWldSession, 0x508);
 VALIDATE_SIZE(Moho::struct_session_res3, 0x84);
 
 SHARED {
-  int get_focus_army_units(Moho::BaseVector<UserUnit *> * output, int a2,
+  int get_session_units(Moho::BaseVector<UserUnit *> * output, int a2,
                            void *a3);
 }

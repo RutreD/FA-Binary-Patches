@@ -1,7 +1,7 @@
 
 #include "UserUnit.h"
 
-int get_focus_army_units(Moho::BaseVector<UserUnit*> *output, int a2,
+int get_session_units(Moho::BaseVector<UserUnit*> *output, int a2,
                          void *a3) {
   int __result;
   asm("push %[a3];"
