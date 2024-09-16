@@ -6,15 +6,16 @@
 
 int IssueStop(lua_State *L) {
   int top = lua_gettop(L);
+  LuaState *ls = L->LuaState;
   if (top != 1)
-    L->LuaState->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 1,
+    ls->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 1,
                        top);
 
   {
     Moho::SSTICommandIssueData command{Moho::UNITCOMMAND_Stop};
     Moho::EntitySet units;
-    LuaStackObject obj{L->LuaState, 1};
-    CheckUnitList(&units, &obj, L->LuaState, "IssueStop");
+    LuaStackObject obj{ls, 1};
+    CheckUnitList(&units, &obj, ls, __FUNCTION__);
     void *sim = lua_getglobaluserdata(L);
     UNIT_IssueCommand(&units, sim, &command, 0);
   }
@@ -42,7 +43,7 @@ int IssueBuildMobile(lua_State *L) {
   int top = lua_gettop(L);
   LuaState *ls = L->LuaState;
   if (top != 4)
-    ls->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 1, top);
+    ls->Error("%s\n  expected %d args, but got %d", __FUNCTION__, 4, top);
 
   {
     Moho::EntitySet units;

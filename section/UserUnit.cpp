@@ -57,9 +57,11 @@ int GetInterpolatedPosition(lua_State *l)
     void *unit = r.object;
     if (unit == nullptr)
         return 0;
+
     float *mesh = (float *)Moho::UserUnit::GetMeshInstance(unit);
     if (mesh == nullptr)
         return 0;
+
     Moho::MeshInstance::UpdateInterpolatedTransform(mesh);
     PushVector3f(l, {mesh[34], mesh[35], mesh[36]});
     return 1;
