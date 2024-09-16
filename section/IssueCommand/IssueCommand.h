@@ -24,7 +24,7 @@ struct CellData {
   CellData() {
     data.begin = inlined_set_items;
     data.end = inlined_set_items;
-    data.capacity_end = (uint32_t *)(inlined_set_items + 2);
+    data.capacity_end = inlined_set_items + 2;
     data.inlined = inlined_set_items;
   }
 
