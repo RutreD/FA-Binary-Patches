@@ -5,17 +5,16 @@ int GetFocusArmyUnits(lua_State *L) {
 
   using namespace Moho;
 
-  Moho::CWldSession *session = *(Moho::CWldSession **)0x010A6470;
-  if (session == nullptr)
+  if (cwldsession == nullptr)
     return 0;
 
   InlinedVector<UserUnit *, 2> units;
-  int size = get_session_units(&units, 256, &session->v20);
+  int size = get_session_units(&units, 256, &cwldsession->v20);
 
-  const int focus_army_index = session->focusArmy;
+  const int focus_army_index = cwldsession->focusArmy;
   void *focus_army = focus_army_index < 0
                          ? nullptr
-                         : session->userArmies.data.begin[focus_army_index];
+                         : cwldsession->userArmies.data.begin[focus_army_index];
 
   LuaObject list;
   list.AssignNewTable(L->LuaState, size, 0);

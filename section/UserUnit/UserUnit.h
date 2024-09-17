@@ -302,5 +302,7 @@ VALIDATE_SIZE(Moho::struct_session_res3, 0x84);
 
 SHARED {
   int get_session_units(Moho::BaseVector<UserUnit *> * output, int a2,
-                        void *a3);
+                        Moho::struct_session_res3 *a3);
 }
+
+extern Moho::CWldSession* cwldsession asm("0x010A6470");
