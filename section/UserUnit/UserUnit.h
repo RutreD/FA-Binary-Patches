@@ -231,7 +231,7 @@ struct CWldSession // sizeof=0x508
 
 using ::UserEntity;
 using ::UserUnit;
-struct UserUnitVTable {
+struct UserEntityVTable {
   void *(__thiscall *dtr)(void *_this, char);
   void(__stdcall *Tick)(int);
   void *IsUserUnit1;
@@ -291,7 +291,7 @@ struct IUnitVTable {
   //  void (__thiscall *SetCustomName)(Moho::Unit_ *, std::string);
   //  std::string *(__thiscall *GetCustomName)(Moho::Unit_ *, std::string *);
 };
-UserUnitVTable *GetVTable(UserUnit *unit) { return (*(UserUnitVTable **)unit); }
+UserEntityVTable *GetVTable(UserEntity *unit) { return (*(UserEntityVTable **)unit); }
 IUnitVTable *GetIUnitVTable(UserUnit *unit) {
   return *(IUnitVTable **)((char *)unit + 0x148);
 }
@@ -301,7 +301,7 @@ VALIDATE_SIZE(Moho::CWldSession, 0x508);
 VALIDATE_SIZE(Moho::struct_session_res3, 0x84);
 
 SHARED {
-  int get_session_units(Moho::BaseVector<UserUnit *> * output, int a2,
+  int get_session_user_entities(Moho::BaseVector<UserEntity *> * output, int a2,
                         Moho::struct_session_res3 *a3);
 }
 
