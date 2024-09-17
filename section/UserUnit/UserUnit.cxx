@@ -1,6 +1,14 @@
 #include "UserUnit.h"
 #include "magic_classes.h"
 
+template <typename T> T Offset(void *ptr, size_t offset) {
+  return (T)(((char *)ptr) + offset);
+}
+
+template <typename T> T GetField(void *ptr, size_t offset) {
+  return *Offset<T *>(ptr, offset);
+}
+
 int GetFocusArmyUnits(lua_State *L) {
 
   using namespace Moho;
@@ -32,12 +40,12 @@ int GetFocusArmyUnits(lua_State *L) {
     if (!is_selectable)
       continue;
 
-    int id = *((int *)uunit + 0x11);
-    void *army = *((void **)uunit + 72);
+    int id = GetField<int>(uunit, 0x44);
+    void *army = GetField<void *>(uunit, 0x120);
     if (army == focus_army) {
       auto iunit_vtable = GetIUnitVTable(uunit);
       LuaObject obj;
-      iunit_vtable->GetLuaObject((Moho::Unit_ *)((char *)uunit + 0x148), &obj);
+      iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
       list.SetObject(j, &obj);
       j++;
     }
