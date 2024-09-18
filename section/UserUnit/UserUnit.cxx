@@ -29,8 +29,8 @@ int GetFocusArmyUnits(lua_State *L) {
 
   int j = 1;
   for (UserEntity *entity : entities) {
-    UserEntityVTable *const vtable = GetVTable(entity);
-
+    const UserEntityVTable * vtable = GetVTable(entity);
+    
     UserUnit *uunit = vtable->IsUserUnit2(entity);
     if (!uunit)
       continue;
