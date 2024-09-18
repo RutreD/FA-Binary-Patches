@@ -1,12 +1,36 @@
 #include "moho.h"
 
 namespace Moho {
-template <typename T> struct BaseVector {
-  T *begin;
-  T *end;
-  T *capacity_end;
 
-  T &operator[](int index) { return this->begin[index]; }
+template <typename T> struct BaseVector {
+
+  struct _Iterator {
+    _Iterator(T *it) : it(it) {}
+
+    bool operator==(const _Iterator &other) { return other.it == it; };
+    bool operator!=(const _Iterator &other) { return !(*this == other); };
+
+    _Iterator &operator++() {
+      ++it;
+      return *this;
+    }
+
+    T &operator*() { return *it; }
+
+  private:
+    T *it;
+  };
+
+  using Iterator = _Iterator;
+
+  T *_begin;
+  T *_end;
+  T *_capacity_end;
+
+  T &operator[](int index) { return this->_begin[index]; }
+
+  Iterator begin() { return Iterator(this->_begin); }
+  Iterator end() { return Iterator(this->_end); }
 };
 
 template <typename T> struct BaseSelf {
@@ -18,18 +42,18 @@ template <typename T, size_t N> struct InlinedVector : BaseVector<T> {
   T inlined_items[N];
 
   InlinedVector() {
-    this->begin = inlined_items;
-    this->end = inlined_items;
-    this->capacity_end = inlined_items + N;
+    this->_begin = inlined_items;
+    this->_end = inlined_items;
+    this->_capacity_end = inlined_items + N;
     inlined = inlined_items;
   }
 
   ~InlinedVector() {
-    if (this->begin != inlined) {
-      free(this->begin);
-      this->begin = inlined_items;
-      this->end = this->begin;
-      this->capacity_end = inlined_items + N;
+    if (this->_begin != inlined) {
+      free(this->_begin);
+      this->_begin = inlined_items;
+      this->_end = inlined_items;
+      this->_capacity_end = inlined_items + N;
     }
   }
 };

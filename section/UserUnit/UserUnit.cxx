@@ -28,11 +28,10 @@ int GetFocusArmyUnits(lua_State *L) {
   list.AssignNewTable(L->LuaState, size, 0);
 
   int j = 1;
-  for (int i = 0; i < size; i++) {
-    UserEntity *unit = units.begin[i];
-    UserEntityVTable *vtable = GetVTable(unit);
+  for (UserEntity* entity: units) {
+    UserEntityVTable *vtable = GetVTable(entity);
 
-    UserUnit *uunit = vtable->IsUserUnit2(unit);
+    UserUnit *uunit = vtable->IsUserUnit2(entity);
     if (!uunit)
       continue;
 
