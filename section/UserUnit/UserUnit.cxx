@@ -42,7 +42,7 @@ int GetFocusArmyUnits(lua_State *L) {
 
     int id = GetField<int>(uunit, 0x44);
     void *army = GetField<void *>(uunit, 0x120);
-    if (army == focus_army) {
+    if (army == focus_army || focus_army_index < 0) {
       auto iunit_vtable = GetIUnitVTable(uunit);
       LuaObject obj;
       iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
