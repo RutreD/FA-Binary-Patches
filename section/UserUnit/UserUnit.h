@@ -59,9 +59,9 @@ template <typename T, size_t N> struct InlinedVector : BaseVector<T> {
   }
 };
 
-enum map_node_color : char { // XREF: map_node/r
-  BLACK = 0x0,
-  RED = 0x1,
+enum map_node_color : char {
+  RED = 0x0,
+  BLACK = 0x1,
 };
 
 template <typename K, typename V>
