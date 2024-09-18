@@ -5,6 +5,12 @@ template <typename T> struct BaseVector {
   T *begin;
   T *end;
   T *capacity_end;
+
+  T &operator[](int index) { return this->begin[index]; }
+};
+
+template <typename T> struct BaseSelf {
+  T *self;
 };
 
 template <typename T, size_t N> struct InlinedVector : BaseVector<T> {
@@ -52,10 +58,8 @@ template <typename K, typename V> struct map {
   int field_8;
 };
 
-template <typename T> struct FastVector {
-  FastVector<T> *self;
-  BaseVector<T> data;
-};
+template <typename T>
+struct FastVector : BaseSelf<FastVector<T>>, BaseVector<T> {};
 
 // by Hdt80bro
 
@@ -291,7 +295,9 @@ struct IUnitVTable {
   //  void (__thiscall *SetCustomName)(Moho::Unit_ *, std::string);
   //  std::string *(__thiscall *GetCustomName)(Moho::Unit_ *, std::string *);
 };
-UserEntityVTable *GetVTable(UserEntity *unit) { return (*(UserEntityVTable **)unit); }
+UserEntityVTable *GetVTable(UserEntity *unit) {
+  return (*(UserEntityVTable **)unit);
+}
 IUnitVTable *GetIUnitVTable(UserUnit *unit) {
   return *(IUnitVTable **)((char *)unit + 0x148);
 }
@@ -302,7 +308,7 @@ VALIDATE_SIZE(Moho::struct_session_res3, 0x84);
 
 SHARED {
   int get_session_user_entities(Moho::BaseVector<UserEntity *> * output, int a2,
-                        Moho::struct_session_res3 *a3);
+                                Moho::struct_session_res3 *a3);
 }
 
-extern Moho::CWldSession* cwldsession asm("0x010A6470");
+extern Moho::CWldSession *cwldsession asm("0x010A6470");

@@ -22,7 +22,7 @@ int GetFocusArmyUnits(lua_State *L) {
   const int focus_army_index = cwldsession->focusArmy;
   void *focus_army = focus_army_index < 0
                          ? nullptr
-                         : cwldsession->userArmies.data.begin[focus_army_index];
+                         : cwldsession->userArmies[focus_army_index];
 
   LuaObject list;
   list.AssignNewTable(L->LuaState, size, 0);
