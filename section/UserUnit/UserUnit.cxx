@@ -28,8 +28,8 @@ int GetFocusArmyUnits(lua_State *L) {
   list.AssignNewTable(L->LuaState, size, 0);
 
   int j = 1;
-  for (UserEntity* entity: entities) {
-    UserEntityVTable *vtable = GetVTable(entity);
+  for (UserEntity *entity : entities) {
+    UserEntityVTable *const vtable = GetVTable(entity);
 
     UserUnit *uunit = vtable->IsUserUnit2(entity);
     if (!uunit)
@@ -42,7 +42,8 @@ int GetFocusArmyUnits(lua_State *L) {
     void *army = GetField<void *>(uunit, 0x120);
     if (army == focus_army || focus_army_index < 0) {
       LuaObject obj;
-      GetIUnitVTable(uunit)->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
+      GetIUnitVTable(uunit)->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148),
+                                          &obj);
       list.SetObject(j, &obj);
       j++;
     }

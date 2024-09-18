@@ -320,11 +320,11 @@ struct IUnitVTable {
   //  void (__thiscall *SetCustomName)(Moho::Unit_ *, std::string);
   //  std::string *(__thiscall *GetCustomName)(Moho::Unit_ *, std::string *);
 };
-UserEntityVTable *GetVTable(UserEntity *unit) {
-  return (*(UserEntityVTable **)unit);
+UserEntityVTable *const GetVTable(UserEntity *unit) {
+  return (*(UserEntityVTable *const *)unit);
 }
-IUnitVTable *GetIUnitVTable(UserUnit *unit) {
-  return *(IUnitVTable **)((char *)unit + 0x148);
+IUnitVTable *const GetIUnitVTable(UserUnit *unit) {
+  return *(IUnitVTable *const *)((char *)unit + 0x148);
 }
 
 } // namespace Moho
