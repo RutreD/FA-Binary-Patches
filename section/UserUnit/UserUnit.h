@@ -23,14 +23,15 @@ template <typename T> struct BaseVector {
 
   using Iterator = _Iterator;
 
-  T *_begin;
-  T *_end;
-  T *_capacity_end;
-
   T &operator[](int index) { return this->_begin[index]; }
 
   Iterator begin() { return Iterator(this->_begin); }
   Iterator end() { return Iterator(this->_end); }
+
+protected:
+  T *_begin;
+  T *_end;
+  T *_capacity_end;
 };
 
 template <typename T> struct BaseSelf {
