@@ -11,3 +11,12 @@ int get_session_user_entities(Moho::BaseVector<UserEntity *> *output, int a2,
       : "edx");
   return __result;
 }
+
+BitSetGetResult *BitSetGet_(BitSetGetResult *result, BitSet *a2, unsigned int a3) {
+  BitSetGetResult *__result;
+  asm("call 0x006D3090;"
+      : "=a"(__result)
+      : [result] "a"(result), [a2] "d"(a2), [a3] "D"(a3)
+      :);
+  return __result;
+}

@@ -16,6 +16,14 @@ int GetFocusArmyUnits(lua_State *L) {
   if (cwldsession == nullptr)
     return 0;
 
+  auto ls = L->LuaState;
+
+  LuaObject category_obj{ls, 1};
+  EntityCategory *category = nullptr;
+  if (!category_obj.IsNil()) {
+    category = CastEntityCategory(category_obj);
+  }
+
   InlinedVector<UserEntity *, 2> entities;
   int size = get_session_user_entities(&entities, 256, &cwldsession->v20);
 
@@ -25,12 +33,12 @@ int GetFocusArmyUnits(lua_State *L) {
                          : cwldsession->userArmies[focus_army_index];
 
   LuaObject list;
-  list.AssignNewTable(L->LuaState, size, 0);
+  list.AssignNewTable(ls, size, 0);
 
   int j = 1;
   for (UserEntity *entity : entities) {
-    const UserEntityVTable * vtable = GetVTable(entity);
-    
+    const UserEntityVTable *vtable = GetVTable(entity);
+
     UserUnit *uunit = vtable->IsUserUnit2(entity);
     if (!uunit)
       continue;
@@ -41,9 +49,28 @@ int GetFocusArmyUnits(lua_State *L) {
 
     void *army = GetField<void *>(uunit, 0x120);
     if (army == focus_army || focus_army_index < 0) {
+
+      auto iunit_vtable = GetIUnitVTable(uunit);
+      if (category) {
+        void *bp =
+            iunit_vtable->GetBlueprint(Offset<Moho::Unit_ *>(uunit, 0x148));
+        if (bp) {
+
+          unsigned int bp_ordinal = GetField<unsigned int>(bp, 0x5c);
+
+          int cat_index = 32 * (category->data.ordinal + category->data.end -
+                                category->data.begin);
+
+          BitSetGetResult r;
+          BitSetGet_(&r, &category->data, bp_ordinal);
+          if (r.bit_index == cat_index) {
+            continue;
+          }
+        }
+      }
+
       LuaObject obj;
-      GetIUnitVTable(uunit)->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148),
-                                          &obj);
+      iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
       list.SetObject(j, &obj);
       j++;
     }
@@ -56,6 +83,7 @@ int GetFocusArmyUnits(lua_State *L) {
 
 // UI_Lua LOG(GetFocusArmyUnits())
 // UI_Lua reprsl(GetFocusArmyUnits())
+// UI_Lua reprsl(GetFocusArmyUnits(categories.COMMAND))
 // UI_Lua for i=1,1000000 do GetFocusArmyUnits() end
 static UIRegFunc GetFocusArmyUnitsReg{"GetFocusArmyUnits", "",
                                       GetFocusArmyUnits};

@@ -327,13 +327,31 @@ const IUnitVTable *GetIUnitVTable(UserUnit *unit) {
   return *(const IUnitVTable **)((char *)unit + 0x148);
 }
 
+struct EntityCategory // sizeof=0x28
+{                     // XREF: Moho::UnitAttributes/r
+  int v0;
+  int v1;
+  BitSet data;
+};
+
 } // namespace Moho
+
+struct BitSetGetResult {
+  BitSet *set;
+  int bit_index;
+};
+
 VALIDATE_SIZE(Moho::CWldSession, 0x508);
 VALIDATE_SIZE(Moho::struct_session_res3, 0x84);
+VALIDATE_SIZE(Moho::EntityCategory, 0x28);
 
 SHARED {
   int get_session_user_entities(Moho::BaseVector<UserEntity *> * output, int a2,
                                 Moho::struct_session_res3 *a3);
+  BitSetGetResult *BitSetGet_(BitSetGetResult * result, BitSet * a2,
+                              unsigned int a3);
 }
+
+Moho::EntityCategory *__cdecl CastEntityCategory(LuaObject obj) asm("0x005575E0");
 
 extern Moho::CWldSession *cwldsession asm("0x010A6470");
