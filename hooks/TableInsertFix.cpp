@@ -5,6 +5,8 @@ asm(
     "call 0x009087A0;" // Call LuaObject::SetObject(int index, LuaObject& obj)
    ".section h1; .set h1,0x008BA177;" // at EntityCategoryFilterDown
     "call 0x009087A0;"// Call LuaObject::SetObject(int index, LuaObject& obj)
+    ".section h2; .set h2,0x008BDB60;" // at SelectUnits
+    "call 0x009087A0;"// Call LuaObject::SetObject(int index, LuaObject& obj)
 );
 
 
