@@ -1,13 +1,14 @@
+#include "../asm.h"
 
 //Replaces Insert with set table
 asm(
-    ".section h0; .set h0,0x008BA4A9;" // at EntityCategoryFilterOut UI
+    SECTION(0, 0x008BA4A9) // at EntityCategoryFilterOut UI
     "call 0x009087A0;" // Call LuaObject::SetObject(int index, LuaObject& obj)
-    ".section h1; .set h1,0x008BA177;" // at EntityCategoryFilterDown UI
+    SECTION(1, 0x008BA177) // at EntityCategoryFilterDown UI
     "call 0x009087A0;"// Call LuaObject::SetObject(int index, LuaObject& obj)
-    ".section h2; .set h2,0x008BDB60;" // at SelectUnits
+    SECTION(2, 0x008BDB60) // at SelectUnits
     "call 0x009087A0;"// Call LuaObject::SetObject(int index, LuaObject& obj)
-    ".section h3; .set h3,0x00759E53;" // at EntityCategoryFilterDown Sim
+    SECTION(3, 0x00759E53) // at EntityCategoryFilterDown Sim
     "call 0x009087A0;"// Call LuaObject::SetObject(int index, LuaObject& obj)
 );
 
