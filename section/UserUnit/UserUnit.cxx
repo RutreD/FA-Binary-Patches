@@ -18,10 +18,12 @@ int GetFocusArmyUnits(lua_State *L) {
 
   auto ls = L->LuaState;
 
-  LuaObject category_obj{ls, 1};
   EntityCategory *category = nullptr;
-  if (!category_obj.IsNil()) {
-    category = CastEntityCategory(category_obj);
+  {
+    LuaObject category_obj{ls, 1};
+    if (!category_obj.IsNil()) {
+      category = CastEntityCategory(category_obj);
+    }
   }
 
   InlinedVector<UserEntity *, 2> entities;
