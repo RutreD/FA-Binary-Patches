@@ -27,7 +27,7 @@ int GetFocusArmyUnits(lua_State *L) {
   }
 
   InlinedVector<UserEntity *, 2> entities;
-  int size = get_session_user_entities(&entities, 256, &cwldsession->v20);
+  get_session_user_entities(&entities, 256, &cwldsession->v20);
 
   const int focus_army_index = cwldsession->focusArmy;
   void *focus_army = focus_army_index < 0
@@ -35,7 +35,7 @@ int GetFocusArmyUnits(lua_State *L) {
                          : cwldsession->userArmies[focus_army_index];
 
   LuaObject list;
-  list.AssignNewTable(ls, size, 0);
+  list.AssignNewTable(ls, 0, 0);
 
   int j = 1;
   for (UserEntity *entity : entities) {
