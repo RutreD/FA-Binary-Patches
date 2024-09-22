@@ -201,6 +201,11 @@ struct CMauiControl : CScriptObject
 	using Type = ObjectType<0x10C7700, 0xF83314>;
 };
 
+struct CMauiText : CMauiControl
+{
+	using Type = ObjectType<0x010C7740, 0x00F85E58>;
+};
+
 struct CWldSession;
 
 struct CUIWorldView : CMauiControl
