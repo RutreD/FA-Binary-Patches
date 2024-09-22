@@ -50,32 +50,32 @@ int GetFocusArmyUnits(lua_State *L) {
       continue;
 
     void *army = GetField<void *>(uunit, 0x120);
-    if (army == focus_army || focus_army_index < 0) {
+    if (!(army == focus_army || focus_army_index < 0))
+      continue;
 
-      auto iunit_vtable = GetIUnitVTable(uunit);
-      if (category) {
-        void *bp =
-            iunit_vtable->GetBlueprint(Offset<Moho::Unit_ *>(uunit, 0x148));
-        if (bp) {
+    auto iunit_vtable = GetIUnitVTable(uunit);
+    if (category) {
+      void *bp =
+          iunit_vtable->GetBlueprint(Offset<Moho::Unit_ *>(uunit, 0x148));
+      if (bp) {
 
-          unsigned int bp_ordinal = GetField<unsigned int>(bp, 0x5c);
+        unsigned int bp_ordinal = GetField<unsigned int>(bp, 0x5c);
 
-          int cat_index = 32 * (category->data.ordinal + category->data.end -
-                                category->data.begin);
+        int cat_index = 32 * (category->data.ordinal + category->data.end -
+                              category->data.begin);
 
-          BitSetGetResult r;
-          BitSetGet_(&r, &category->data, bp_ordinal);
-          if (r.bit_index == cat_index) {
-            continue;
-          }
+        BitSetGetResult r;
+        BitSetGet_(&r, &category->data, bp_ordinal);
+        if (r.bit_index == cat_index) {
+          continue;
         }
       }
-
-      LuaObject obj;
-      iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
-      list.SetObject(j, &obj);
-      j++;
     }
+
+    LuaObject obj;
+    iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
+    list.SetObject(j, &obj);
+    j++;
   }
 
   list.PushStack(L);
