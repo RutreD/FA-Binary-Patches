@@ -37,6 +37,14 @@ These don't matter except for other assembly patches
     - hooks/CameraPerf.cpp
 - Optimised some AI actions
     - hooks/aiinitattack.cpp
+- Reduce overhead of population of Lua tables in C code. Affected functions:
+    * UI
+      * EntityCategoryFilterOut
+      * EntityCategoryFilterDown
+      * SelectUnits
+    * Sim
+      * EntityCategoryFilterDown
+    - hooks/TableInsertFix.cpp
 
 ## Bugs
 - Remove lingering transport load factor calcuation at aircraft initialization
@@ -120,7 +128,7 @@ These don't matter except for other assembly patches
     - hooks/OnMotionTurnEvent.cpp
 
 ## Additions
-These new features have been added in a backwards compatibile manner
+These new features have been added in a backwards compatible manner
 
 - Enable unused console commands: ren_Steering, dbg_Ballistics, dbg_EfxBeams, dbg_Trail, dbg_CollisionBeam, dbg_Projectile
     - hooks/EnableConsoleCommands.cpp
