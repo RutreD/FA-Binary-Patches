@@ -30,7 +30,8 @@ int GetFocusArmyUnits(lua_State *L) {
   get_session_user_entities(&entities, 256, &cwldsession->v20);
 
   const int focus_army_index = cwldsession->focusArmy;
-  void *focus_army = focus_army_index < 0
+  const bool is_observer = focus_army_index < 0;
+  void *focus_army = is_observer
                          ? nullptr
                          : cwldsession->userArmies[focus_army_index];
 
@@ -50,7 +51,7 @@ int GetFocusArmyUnits(lua_State *L) {
       continue;
 
     void *army = GetField<void *>(uunit, 0x120);
-    if (!(army == focus_army || focus_army_index < 0))
+    if (!(army == focus_army || is_observer))
       continue;
 
     auto iunit_vtable = GetIUnitVTable(uunit);
