@@ -1,3 +1,5 @@
+#pragma once
+
 #include "moho.h"
 
 namespace Moho {
@@ -59,7 +61,7 @@ template <typename T, size_t N> struct InlinedVector : BaseVector<T> {
   }
 };
 
-enum map_node_color : char {
+enum class map_node_color : char {
   RED = 0x0,
   BLACK = 0x1,
 };
@@ -340,6 +342,15 @@ struct BitSetGetResult {
   BitSet *set;
   int bit_index;
 };
+
+template <typename T> T Offset(void *ptr, size_t offset) {
+  return (T)(((char *)ptr) + offset);
+}
+
+template <typename T> T GetField(void *ptr, size_t offset) {
+  return *Offset<T *>(ptr, offset);
+}
+
 
 VALIDATE_SIZE(Moho::CWldSession, 0x508);
 VALIDATE_SIZE(Moho::struct_session_res3, 0x84);

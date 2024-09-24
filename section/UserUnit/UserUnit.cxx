@@ -1,14 +1,6 @@
 #include "UserUnit.h"
 #include "magic_classes.h"
 
-template <typename T> T Offset(void *ptr, size_t offset) {
-  return (T)(((char *)ptr) + offset);
-}
-
-template <typename T> T GetField(void *ptr, size_t offset) {
-  return *Offset<T *>(ptr, offset);
-}
-
 int GetFocusArmyUnits(lua_State *L) {
 
   using namespace Moho;
