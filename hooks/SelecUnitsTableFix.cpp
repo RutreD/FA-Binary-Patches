@@ -35,6 +35,7 @@ asm(
     "nop;"
     "nop;"
     "nop;"
+    // return 0 value on stack
     SECTION(3, 0x008BDC18)
     "mov eax, 0;"
 );
