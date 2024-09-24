@@ -1,3 +1,4 @@
+#pragma once
 #include "LuaAPI.h"
 #include <utility>
 #ifdef __GNUC__
