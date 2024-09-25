@@ -80,15 +80,29 @@ UserUnit *UserUnitFromObj(const LuaObject *obj, LuaState *ls)
 } // namespace Moho
 
 
-void HookSelection()
+void HookSelection1()
 {
-    asm("push    eax;"
-        "push    edx;"
+    asm("push    ecx;"
+        "push    eax;"
         "call %[HandleNewSelection];"
         "call 0x00896140;" //  Moho::CWldSession::SetSelection(Moho::CWldSession *a1, map *a2)
-        "jmp 0x00863D43;"
+        "jmp 0x00863A60;"
     :
     : [HandleNewSelection] "i"(HandleNewSelection)
     :
     );
 }
+
+void HookSelection2()
+{
+    asm("push    ecx;"
+        "push    eax;"
+        "call %[HandleNewSelection];"
+        "call 0x00896140;" //  Moho::CWldSession::SetSelection(Moho::CWldSession *a1, map *a2)
+        "jmp 0x00863994;"
+    :
+    : [HandleNewSelection] "i"(HandleNewSelection)
+    :
+    );
+}
+

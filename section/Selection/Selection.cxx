@@ -6,6 +6,10 @@ void __stdcall HandleNewSelection(Moho::CWldSession *session,
                                   Moho::UserUnitMap *new_selection) {
   using namespace Moho;
 
+  if (MAUI_KeyIsDown(0x132)) {
+    return;
+  }
+
   int size = MapGetSize(new_selection);
   if (!size) {
     return;
@@ -13,7 +17,6 @@ void __stdcall HandleNewSelection(Moho::CWldSession *session,
 
   auto ls = session->state;
   {
-
     LuaObject units_list;
     units_list.AssignNewTable(ls, size, 0);
 
@@ -53,9 +56,9 @@ void __stdcall HandleNewSelection(Moho::CWldSession *session,
       new_selection->~UserUnitMap();
       new_selection->root = CreateMapNode();
       new_selection->root->is_leaf = 1;
-      new_selection->root->parent =  new_selection->root;
-      new_selection->root->left =  new_selection->root;
-      new_selection->root->right =  new_selection->root;
+      new_selection->root->parent = new_selection->root;
+      new_selection->root->left = new_selection->root;
+      new_selection->root->right = new_selection->root;
       new_selection->size = 0;
 
       for (const auto &[key, value] : IPairs(result)) {

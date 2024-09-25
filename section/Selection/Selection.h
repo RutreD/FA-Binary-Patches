@@ -69,6 +69,7 @@ struct UserUnitMap {
 };
 
 LuaObject *__cdecl SCR_Import(LuaObject *a1, LuaState *a2, char *s) asm("0x004D3250");
+bool __cdecl MAUI_KeyIsDown(int) asm("0x0079CB70");
 } // namespace Moho
 
 SHARED
