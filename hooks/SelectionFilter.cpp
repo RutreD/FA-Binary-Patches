@@ -11,12 +11,7 @@ asm(
   "jmp "QU(HookSelection1)";"
   SECTION(1,0x0086398F)
   "jmp "QU(HookSelection2)";"
-  SECTION(2,0x00863914)
-    "NOP;"
-    "NOP;"
-    "NOP;"
-    "NOP;"
-    "NOP;"
-    "NOP;"
+  SECTION(2,0x0086390B)
+  "jmp "QU(HookSelectionCondition)";"
 
 );
