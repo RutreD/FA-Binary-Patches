@@ -28,9 +28,8 @@ void __stdcall HandleNewSelection(Moho::CWldSession *session,
       if (value) {
         Moho::UserUnit *uunit = (Moho::UserUnit *)((char *)value - 8);
         if (uunit) {
-          auto iunit_vtable = GetIUnitVTable(uunit);
           LuaObject obj;
-          iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
+          GetIUnitVTable(uunit)->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
           units_list.SetObject(j, &obj);
           j++;
         }
