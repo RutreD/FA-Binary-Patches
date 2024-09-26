@@ -125,6 +125,11 @@ typedef union {
   int b;
 } Value;
 
+void GetTableArrAndHash(const Value *t, int &narr, int &nhash) {
+  narr = *(int *)(t->b + 32);
+  nhash = *(char *)(t->b + 9);
+}
+
 // lua.org/source/5.0/lobject.h.html#TObject
 typedef struct {
   int tt;
@@ -174,7 +179,7 @@ public:
   LuaObject &operator=(const LuaObject &obj);
   LuaObject &operator=(const LuaStackObject &stack) asm("0x908b00");
 
-  LuaObject operator[](int key) const ;
+  LuaObject operator[](int key) const;
   LuaObject operator[](const char *key) const;
 
   bool GetBoolean() asm("0x907c90");
@@ -260,8 +265,7 @@ public:
   TObject m_object;
 
 private:
-  LuaObject __Clone(LuaObject& backref) const;
-
+  LuaObject __Clone(LuaObject &backref) const;
 };
 VALIDATE_SIZE(LuaObject, 0x14)
 

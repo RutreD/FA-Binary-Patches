@@ -59,7 +59,10 @@ LuaObject LuaObject::CloneNonRecursive() const {
 
 LuaObject LuaObject::__Clone(LuaObject &backref) const {
   LuaObject result;
-  result.AssignNewTable(m_state, 0, 0);
+  int narr, nhash;
+  GetTableArrAndHash(&m_object.value, narr, nhash);
+
+  result.AssignNewTable(m_state, narr, nhash);
   backref.SetObject(this, &result);
 
   for (const auto &[key, value] : Pairs(*this)) {
