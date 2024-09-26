@@ -163,28 +163,19 @@ class LuaObject { // 0x14 bytes
   void __Clone(LuaObject *out) const asm("0x90a180");
 
 public:
-  LuaObject()
-      : m_next{nullptr}, m_prev{nullptr}, m_state{nullptr}, m_object{0} {}
+  LuaObject();
   LuaObject(LuaState *state) { __LuaObject(state); }
   LuaObject(LuaState *state, int index) { __LuaObject(state, index); }
   LuaObject(const LuaObject &obj) { __LuaObject(obj); }
   LuaObject(const LuaStackObject &stack) { __LuaObject(stack); }
   LuaObject(LuaState *state, const TObject *obj) { __LuaObject(state, obj); }
-  ~LuaObject() { __DLuaObject(); }
+  ~LuaObject();
 
-  LuaObject &operator=(const LuaObject &obj) asm("0x908ab0");
+  LuaObject &operator=(const LuaObject &obj);
   LuaObject &operator=(const LuaStackObject &stack) asm("0x908b00");
 
-  LuaObject operator[](int key) const {
-    LuaObject out;
-    __Index(&out, key);
-    return out;
-  }
-  LuaObject operator[](const char *key) const {
-    LuaObject out;
-    __Index(&out, key);
-    return out;
-  }
+  LuaObject operator[](int key) const ;
+  LuaObject operator[](const char *key) const;
 
   bool GetBoolean() asm("0x907c90");
   bool IsBoolean() asm("0x9078d0");
@@ -196,11 +187,8 @@ public:
   bool IsString() const asm("0x907370");
   bool IsTable() asm("0x907310");
   bool IsUserData() asm("0x907320");
-  LuaObject Clone() const {
-    LuaObject obj;
-    __Clone(&obj);
-    return obj;
-  }
+  LuaObject Clone() const;
+
   void CreateTable(LuaObject *out, const char *key, int narray,
                    int lnhash) asm("0x908c10");
   void CreateTable(LuaObject *out, int key, int narray,
