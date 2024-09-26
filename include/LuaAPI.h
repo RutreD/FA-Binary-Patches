@@ -239,7 +239,7 @@ public:
   void Insert(int key, LuaObject *value) asm("0x909ce0");
   void Register(const char *name, lua_CFunction func,
                 int nupvalues) asm("0x907630");
-  void Reset() asm("0x9075f0");
+  void Reset();
   void SetBoolean(const char *key, bool value) asm("0x9080c0");
   void SetInteger(const char *key, int value) asm("0x9081f0");
   void SetInteger(int key, int value) asm("0x908240");
