@@ -81,8 +81,8 @@ UserUnit *UserUnitFromObj(const LuaObject *obj, LuaState *ls)
 } // namespace Moho
 
 
-SHARED int use_selector=false;
-ConDescReg<bool> use_selector_concom("ui_use_selector", "", (bool*)&use_selector);
+SHARED bool use_selector=false;
+ConDescReg<bool> use_selector_concom("ui_use_selector", "", &use_selector);
 
 
 void HookSelectionCondition()
@@ -90,8 +90,8 @@ void HookSelectionCondition()
     asm(
         "call  0x863F10;"
         "mov eax, %[use_selector];"
-        "mov eax, [eax];"
-        "cmp eax, 0;"
+        "mov al, byte ptr [eax];"
+        "test al, al;"
         "jnz    0x0086391A;"
         "test   byte ptr [edi+0x1C], 1;"
         "jz     0x00863AA3;"

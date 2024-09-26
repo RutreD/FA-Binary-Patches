@@ -3,12 +3,12 @@
 #include <exception>
 
 
-SHARED int use_selector;
+SHARED bool use_selector;
 void __stdcall HandleNewSelection(Moho::CWldSession *session,
                                   Moho::UserUnitMap *new_selection) {
   using namespace Moho;
 
-  if (MAUI_KeyIsDown(0x132) || use_selector == 0) {
+  if (MAUI_KeyIsDown(0x132) || !use_selector) {
     return;
   }
 
