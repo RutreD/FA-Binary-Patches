@@ -193,7 +193,7 @@ public:
   bool IsTable() const asm("0x907310");
   bool IsUserData() asm("0x907320");
   LuaObject Clone() const;
-  LuaObject CloneNonRecursive() const;
+  LuaObject DeepCopy() const;
 
   void CreateTable(LuaObject *out, const char *key, int narray,
                    int lnhash) asm("0x908c10");

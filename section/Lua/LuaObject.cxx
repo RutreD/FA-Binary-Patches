@@ -49,7 +49,7 @@ LuaObject::~LuaObject() {
   }
 }
 
-LuaObject LuaObject::CloneNonRecursive() const {
+LuaObject LuaObject::DeepCopy() const {
   if (!IsTable())
     return *this;
   LuaObject backref;
@@ -69,12 +69,13 @@ LuaObject LuaObject::__Clone(LuaObject &backref) const {
     LuaObject self_ref;
     backref.GetByObject(&self_ref, &value);
 
-    if (!self_ref.IsNil()) {
-      m_state->Error("Table is recursive");
+    if (self_ref.IsNil()) {
+      LuaObject clonedValue = value.IsTable() ? value.__Clone(backref) : value;
+      result.SetObject(&key, &clonedValue);
+    } else {
+      result.SetObject(&key, &self_ref);
     }
-    LuaObject clonedValue = value.IsTable() ? value.__Clone(backref) : value;
 
-    result.SetObject(&key, &clonedValue);
   }
   return result;
 }

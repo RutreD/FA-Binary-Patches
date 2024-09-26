@@ -98,7 +98,7 @@ void IsTableEmpty() {
 // UI_Lua local a = {} a[1] = a  reprsl(table.clone(a))
 // UI_Lua local a = {} a.a = a reprsl(table.clone(a))
 int TableClone(lua_State *L) noexcept(false) {
-  LuaObject(L->LuaState, 1).CloneNonRecursive().PushStack(L);
+  LuaObject(L->LuaState, 1).DeepCopy().PushStack(L);
   return 1;
 }
 
