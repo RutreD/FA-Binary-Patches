@@ -183,15 +183,17 @@ public:
   LuaObject operator[](const char *key) const;
 
   bool GetBoolean() asm("0x907c90");
-  bool IsBoolean() asm("0x9078d0");
   bool IsConvertibleToString() asm("0x9077c0");
   bool IsFunction() asm("0x907810");
-  bool IsInteger() const asm("0x907350");
-  bool IsNil() asm("0x9072f0");
-  bool IsNumber() asm("0x907360");
-  bool IsString() const asm("0x907370");
-  bool IsTable() const asm("0x907310");
-  bool IsUserData() asm("0x907320");
+
+  inline bool IsNil() const;
+  inline bool IsBoolean() const;
+  inline bool IsInteger() const;
+  inline bool IsNumber() const;
+  inline bool IsString() const;
+  inline bool IsTable() const;
+  inline bool IsUserData() const;
+
   LuaObject Clone() const;
   LuaObject DeepCopy() const;
 

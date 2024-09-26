@@ -75,7 +75,18 @@ LuaObject LuaObject::__Clone(LuaObject &backref) const {
     } else {
       result.SetObject(&key, &self_ref);
     }
-
   }
   return result;
+}
+
+inline bool LuaObject::IsBoolean() const { return m_object.tt == LUA_TBOOLEAN; }
+inline bool LuaObject::IsInteger() const { return m_object.tt == LUA_TNUMBER; }
+inline bool LuaObject::IsNumber() const { return m_object.tt == LUA_TNUMBER; }
+inline bool LuaObject::IsString() const { return m_object.tt == LUA_TSTRING; }
+inline bool LuaObject::IsTable() const { return m_object.tt == LUA_TTABLE; }
+inline bool LuaObject::IsNil() const {
+  return m_state && m_object.tt == LUA_TNIL;
+}
+inline bool LuaObject::IsUserData() const {
+  return m_object.tt == LUA_TUSERDATA || m_object.tt == LUA_TLIGHTUSERDATA;
 }
