@@ -93,6 +93,7 @@ void IsTableEmpty() {
 
 // UI_Lua local a = {} reprsl(table.clone(a))
 // UI_Lua local a = {1,2,3} reprsl(table.clone(a))
+// UI_Lua local a = (function() local t = {} for i=1,1000 do t[i]={1,2,3} end return t end)() reprsl(table.clone(a))
 // UI_Lua local a = {a=1,b=3,c=4,1,3,4} reprsl(table.clone(a))
 // UI_Lua local a = {} a[1] = a  reprsl(table.clone(a))
 // UI_Lua local a = {} a.a = a reprsl(table.clone(a))
