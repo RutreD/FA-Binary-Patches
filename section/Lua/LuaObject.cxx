@@ -50,6 +50,7 @@ LuaObject LuaObject::DeepCopy() const {
 }
 
 LuaObject LuaObject::__Clone(LuaObject &backref) const {
+  luaplus_assert(IsTable());
   LuaObject result;
   int narr, nhash;
   GetTableArrAndHash(&m_object.value, narr, nhash);
