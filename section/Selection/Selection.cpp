@@ -104,29 +104,17 @@ void HookSelectionCondition()
 
 
 
-void HookSelection1()
+void HookSelection()
 {
     asm("push    ecx;"
         "push    eax;"
+        "push    ecx;"
+        "push    eax;"
         "call %[HandleNewSelection];"
         "call 0x00896140;" //  Moho::CWldSession::SetSelection(Moho::CWldSession *a1, map *a2)
-        "jmp 0x00863A60;"
+        "ret;"
     :
     : [HandleNewSelection] "i"(HandleNewSelection)
     :
     );
 }
-
-void HookSelection2()
-{
-    asm("push    ecx;"
-        "push    eax;"
-        "call %[HandleNewSelection];"
-        "call 0x00896140;" //  Moho::CWldSession::SetSelection(Moho::CWldSession *a1, map *a2)
-        "jmp 0x00863994;"
-    :
-    : [HandleNewSelection] "i"(HandleNewSelection)
-    :
-    );
-}
-
