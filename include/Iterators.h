@@ -79,7 +79,7 @@ private:
 class EndIterator {};
 class PairsIterator {
 public:
-  PairsIterator(LuaObject &table)
+  PairsIterator(const LuaObject &table)
       : table{table}, key{table.m_state}, value{table.m_state}, done{false} {}
 
   PairsIterator &operator++() {
@@ -99,7 +99,7 @@ public:
   bool operator!=(const EndIterator &) const { return !done; }
 
 private:
-  LuaObject &table;
+  const LuaObject &table;
   LuaObject key;
   LuaObject value;
   bool done;
@@ -107,13 +107,15 @@ private:
 
 class Pairs {
 public:
-  Pairs(LuaObject &table) : table{table} {}
+  Pairs(const LuaObject &table) : table{table} {
+    luaplus_assert(table.IsTable());
+  }
 
   PairsIterator begin() { return ++PairsIterator(table); }
   EndIterator end() { return EndIterator{}; }
 
 private:
-  LuaObject &table;
+  const LuaObject &table;
 };
 
 class IPairsEndIterator {
@@ -128,7 +130,7 @@ private:
 
 class IPairsIterator {
 public:
-  IPairsIterator(LuaObject &table)
+  IPairsIterator(const LuaObject &table)
       : table{table}, index{0}, value{table.m_state} {}
 
   IPairsIterator &operator++() {
@@ -147,14 +149,14 @@ public:
   }
 
 private:
-  LuaObject &table;
+  const LuaObject &table;
   int index;
   LuaObject value;
 };
 
 class IPairs {
 public:
-  IPairs(LuaObject &table) : table{table} {}
+  IPairs(LuaObject &table) : table{table} { luaplus_assert(table.IsTable()); }
 
   IPairsIterator begin() { return ++IPairsIterator(table); }
   IPairsEndIterator end() { return IPairsEndIterator{table}; }

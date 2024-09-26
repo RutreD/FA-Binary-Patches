@@ -1,3 +1,4 @@
+#include "Iterators.h"
 #include "LuaAPI.h"
 
 LuaObject::LuaObject()
@@ -46,4 +47,31 @@ LuaObject::~LuaObject() {
     this->m_next->m_prev = this->m_prev;
     this->m_object.tt = LUA_TNIL;
   }
+}
+
+LuaObject LuaObject::CloneNonRecursive() const {
+  if (!IsTable())
+    return *this;
+  LuaObject backref;
+  backref.AssignNewTable(m_state, 0, 0);
+  return __Clone(backref);
+}
+
+LuaObject LuaObject::__Clone(LuaObject &backref) const {
+  LuaObject result;
+  result.AssignNewTable(m_state, 0, 0);
+  backref.SetObject(this, &result);
+
+  for (const auto &[key, value] : Pairs(*this)) {
+    LuaObject self_ref;
+    backref.GetByObject(&self_ref, &value);
+
+    if (!self_ref.IsNil()) {
+      m_state->Error("Table is recursive");
+    }
+    LuaObject clonedValue = value.IsTable() ? value.__Clone(backref) : value;
+
+    result.SetObject(&key, &clonedValue);
+  }
+  return result;
 }

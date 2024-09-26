@@ -185,9 +185,10 @@ public:
   bool IsNil() asm("0x9072f0");
   bool IsNumber() asm("0x907360");
   bool IsString() const asm("0x907370");
-  bool IsTable() asm("0x907310");
+  bool IsTable() const asm("0x907310");
   bool IsUserData() asm("0x907320");
   LuaObject Clone() const;
+  LuaObject CloneNonRecursive() const;
 
   void CreateTable(LuaObject *out, const char *key, int narray,
                    int lnhash) asm("0x908c10");
@@ -257,6 +258,10 @@ public:
   LuaObject *m_prev;
   LuaState *m_state;
   TObject m_object;
+
+private:
+  LuaObject __Clone(LuaObject& backref) const;
+
 };
 VALIDATE_SIZE(LuaObject, 0x14)
 

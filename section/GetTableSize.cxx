@@ -90,8 +90,14 @@ void IsTableEmpty() {
 
 #include "Iterators.h"
 
+
+// UI_Lua local a = {} reprsl(table.clone(a))
+// UI_Lua local a = {1,2,3} reprsl(table.clone(a))
+// UI_Lua local a = {a=1,b=3,c=4,1,3,4} reprsl(table.clone(a))
+// UI_Lua local a = {} a[1] = a  reprsl(table.clone(a))
+// UI_Lua local a = {} a.a = a reprsl(table.clone(a))
 int TableClone(lua_State *L) noexcept(false) {
-  LuaObject(L->LuaState, 1).Clone().PushStack(L);
+  LuaObject(L->LuaState, 1).CloneNonRecursive().PushStack(L);
   return 1;
 }
 
