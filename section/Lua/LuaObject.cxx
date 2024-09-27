@@ -4,6 +4,11 @@
 LuaObject::LuaObject()
     : m_next{nullptr}, m_prev{nullptr}, m_state{nullptr}, m_object{LUA_TNIL} {}
 
+LuaObject::LuaObject(LuaState *state, int index) {
+  this->m_object.tt = LUA_TNIL;
+  AddToUsedList(state, luaA_index(state->m_state, index));
+}
+
 LuaObject LuaObject::operator[](int key) const {
   LuaObject out;
   __Index(&out, key);

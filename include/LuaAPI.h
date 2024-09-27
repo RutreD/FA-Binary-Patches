@@ -172,7 +172,7 @@ class LuaObject { // 0x14 bytes
 public:
   LuaObject();
   LuaObject(LuaState *state) { __LuaObject(state); }
-  LuaObject(LuaState *state, int index) { __LuaObject(state, index); }
+  LuaObject(LuaState *state, int index);
   LuaObject(const LuaObject &obj) { __LuaObject(obj); }
   LuaObject(const LuaStackObject &stack) { __LuaObject(stack); }
   LuaObject(LuaState *state, const TObject *obj) { __LuaObject(state, obj); }
@@ -426,6 +426,7 @@ void const *lua_topointer(lua_State *, int) asm("0x90cc90");
 void *lua_getglobaluserdata(lua_State *) asm("0x924050");
 void *lua_getstateuserdata(lua_State *) asm("0x9240a0");
 void *lua_tolightuserdata(lua_State *, int) asm("0x90cc10");
+TObject *luaA_index(lua_State *L, int index) asm("0x90C3D0");
 extern "C" {
 void lua_createtable(lua_State *l, int narr, int nhash);
 }
