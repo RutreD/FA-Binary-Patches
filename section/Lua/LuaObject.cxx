@@ -127,7 +127,7 @@ void LuaObject::Reset() {
 }
 
 const char *LuaObject::TypeName() const {
-  int tt = m_object.tt;
+  int tt = Type();
   if (tt == LUA_TNONE) {
     return "no value";
   }

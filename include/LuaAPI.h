@@ -262,7 +262,6 @@ public:
   // private
   void AddToUsedList(LuaState *state) asm("0x908890");
   void AddToUsedList(LuaState *state, const TObject *obj) asm("0x9088e0");
-  void SetTableHelper(const char *key, const TObject *value) asm("0x9074b0");
 
   LuaObject *m_next;
   LuaObject *m_prev;
