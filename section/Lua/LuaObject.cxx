@@ -9,6 +9,11 @@ LuaObject::LuaObject(LuaState *state, int index) {
   AddToUsedList(state, luaA_index(state->m_state, index));
 }
 
+LuaObject::LuaObject(LuaState *state) {
+  this->m_object.tt = LUA_TNIL;
+  AddToUsedList(state);
+}
+
 LuaObject LuaObject::operator[](int key) const {
   LuaObject out;
   __Index(&out, key);

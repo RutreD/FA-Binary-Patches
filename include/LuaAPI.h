@@ -158,9 +158,6 @@ VALIDATE_SIZE(LuaStackObject, 8)
 extern const char *luaT_typenames[] asm("0x00D474D8");
 
 class LuaObject { // 0x14 bytes
-  void __LuaObject() asm("0x9072a0");
-  void __LuaObject(LuaState *state) asm("0x908970");
-  void __LuaObject(LuaState *state, int index) asm("0x9089c0");
   void __LuaObject(const LuaObject &obj) asm("0x908a40");
   void __LuaObject(const LuaStackObject &stack) asm("0x908a70");
   void __LuaObject(LuaState *state, const TObject *obj) asm("0x9089f0");
@@ -171,7 +168,7 @@ class LuaObject { // 0x14 bytes
 
 public:
   LuaObject();
-  LuaObject(LuaState *state) { __LuaObject(state); }
+  LuaObject(LuaState *state);
   LuaObject(LuaState *state, int index);
   LuaObject(const LuaObject &obj) { __LuaObject(obj); }
   LuaObject(const LuaStackObject &stack) { __LuaObject(stack); }
