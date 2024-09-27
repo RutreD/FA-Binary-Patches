@@ -82,7 +82,7 @@ LuaObject LuaObject::__Clone(LuaObject &backref) const {
   GetTableArrAndHash(&m_object.value, narr, nhash);
 
   result.AssignNewTable(m_state, narr, nhash);
-  backref.SetObject(this, &result);
+  backref.SetObject(*this, result);
 
   for (const auto &[key, value] : Pairs(*this)) {
     LuaObject self_ref;
@@ -90,9 +90,9 @@ LuaObject LuaObject::__Clone(LuaObject &backref) const {
 
     if (self_ref.IsNil()) {
       LuaObject clonedValue = value.IsTable() ? value.__Clone(backref) : value;
-      result.SetObject(&key, &clonedValue);
+      result.SetObject(key, clonedValue);
     } else {
-      result.SetObject(&key, &self_ref);
+      result.SetObject(key, self_ref);
     }
   }
   return result;
@@ -128,4 +128,27 @@ const char *LuaObject::TypeName() const {
     return "no value";
   }
   return luaT_typenames[tt];
+}
+
+void LuaObject::SetTableHelper(const TObject *key, const TObject *value) const {
+  luaV_settable(GetActiveCState(), &m_object, key, value);
+}
+
+void LuaObject::SetObject(const LuaObject &key, const LuaObject &value) const {
+  luaplus_assert(m_state == key.m_state);
+  luaplus_assert(m_state == value.m_state);
+  SetTableHelper(&key.m_object, &value.m_object);
+}
+
+// void LuaObject::SetObject(const char *key, const LuaObject &value) const {
+//   TObject key_obj{};
+//   key_obj.tt = LUA_TSTRING;
+// }
+
+void LuaObject::SetObject(int key, const LuaObject &value) const {
+
+  TObject key_obj{};
+  key_obj.tt = LUA_TNUMBER;
+  key_obj.value.n = key;
+  SetTableHelper(&key_obj, &value.m_object);
 }

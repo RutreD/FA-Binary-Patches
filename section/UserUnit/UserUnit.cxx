@@ -67,7 +67,7 @@ int GetFocusArmyUnits(lua_State *L) {
 
     LuaObject obj;
     iunit_vtable->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
-    list.SetObject(j, &obj);
+    list.SetObject(j, obj);
     j++;
   }
 

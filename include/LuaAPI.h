@@ -194,6 +194,11 @@ public:
   LuaObject Clone() const;
   LuaObject DeepCopy() const;
 
+  void SetObject(const LuaObject &key, const LuaObject &value) const;
+  // void SetObject(const char *key, const const LuaObject &value) const;
+  void SetObject(int key, const LuaObject &value) const;
+  void SetTableHelper(const TObject *key, const TObject *value) const;
+
   void CreateTable(LuaObject *out, const char *key, int narray,
                    int lnhash) asm("0x908c10");
   void CreateTable(LuaObject *out, int key, int narray,
@@ -222,7 +227,7 @@ public:
   int GetN() const asm("0x907e50");
   int GetTableCount() asm("0x90a410");
   int IsPassed() asm("0x907440");
-  lua_State *GetActiveCState() asm("0x9072c0");
+  lua_State *GetActiveCState() const asm("0x9072c0");
   void AssignBoolean(LuaState *state, bool value) asm("0x909600");
   void AssignInteger(LuaState *state, int value) asm("0x909650");
   void AssignNewTable(LuaState *state, int narray, int lnhash) asm("0x909940");
@@ -302,6 +307,10 @@ public:
   } m_headObject, m_tailObject;
 };
 VALIDATE_SIZE(LuaState, 0x34)
+
+lua_State *__cdecl luaV_settable(lua_State *L, const TObject *t,
+                                 const TObject *key,
+                                 const TObject *value) asm("0x00929450");
 bool LuaPlusH_next(LuaState *, const LuaObject *, LuaObject *,
                    LuaObject *) asm("0x90a6b0");
 bool lua_toboolean(lua_State *, int) asm("0x90ca40");

@@ -32,7 +32,7 @@ void __stdcall HandleNewSelection(Moho::CWldSession *session,
         if (uunit) {
           LuaObject obj;
           GetIUnitVTable(uunit)->GetLuaObject(Offset<Moho::Unit_ *>(uunit, 0x148), &obj);
-          units_list.SetObject(j, &obj);
+          units_list.SetObject(j, obj);
           j++;
         }
       }
