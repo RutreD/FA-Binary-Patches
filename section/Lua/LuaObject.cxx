@@ -48,7 +48,7 @@ LuaObject LuaObject::Clone() const {
 
 LuaObject &LuaObject::operator=(const LuaObject &obj) {
   if (this != &obj) {
-    Reset();
+    RemoveFromUsedList();
 
     LuaState *m_state = obj.m_state;
     if (m_state) {
@@ -64,13 +64,13 @@ LuaObject &LuaObject::operator=(const LuaObject &obj) {
 }
 
 LuaObject &LuaObject::operator=(const LuaStackObject &stack) {
-  Reset();
+  RemoveFromUsedList();
   AddToUsedList(stack.m_state,
                 luaA_index(stack.m_state->m_state, stack.m_stackIndex));
   return *this;
 }
 
-LuaObject::~LuaObject() { Reset(); }
+LuaObject::~LuaObject() { RemoveFromUsedList(); }
 
 LuaObject LuaObject::DeepCopy() const {
   if (!IsTable())
@@ -117,13 +117,17 @@ inline bool LuaObject::IsUserData() const {
   return Type() == LUA_TUSERDATA || Type() == LUA_TLIGHTUSERDATA;
 }
 
-void LuaObject::Reset() {
-  if (this->m_state) {
-    this->m_prev->m_next = this->m_next;
-    this->m_next->m_prev = this->m_prev;
-    this->m_object.tt = LUA_TNIL;
+void LuaObject::RemoveFromUsedList() {
+  if (m_state) {
+    m_prev->m_next = m_next;
+    m_next->m_prev = m_prev;
+    m_object.tt = LUA_TNIL;
   }
-  this->m_state = nullptr;
+}
+
+void LuaObject::Reset() {
+  RemoveFromUsedList();
+  m_state = nullptr;
 }
 
 const char *LuaObject::TypeName() const {

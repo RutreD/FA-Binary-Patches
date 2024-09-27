@@ -270,6 +270,7 @@ public:
 
 private:
   LuaObject __Clone(LuaObject &backref) const;
+  void RemoveFromUsedList();
 };
 VALIDATE_SIZE(LuaObject, 0x14)
 
