@@ -14,6 +14,12 @@ LuaObject::LuaObject(LuaState *state) {
   AddToUsedList(state);
 }
 
+LuaObject::LuaObject(const LuaObject &obj) : LuaObject{} {
+  if (obj.m_state) {
+    AddToUsedList(obj.m_state, &obj.m_object);
+  }
+}
+
 LuaObject LuaObject::operator[](int key) const {
   LuaObject out;
   __Index(&out, key);
