@@ -55,6 +55,13 @@ LuaObject &LuaObject::operator=(const LuaObject &obj) {
   return *this;
 }
 
+LuaObject &LuaObject::operator=(const LuaStackObject &stack) {
+  Reset();
+  AddToUsedList(stack.m_state,
+                luaA_index(stack.m_state->m_state, stack.m_stackIndex));
+  return *this;
+}
+
 LuaObject::~LuaObject() { Reset(); }
 
 LuaObject LuaObject::DeepCopy() const {
