@@ -14,6 +14,11 @@ LuaObject::LuaObject(LuaState *state) {
   AddToUsedList(state);
 }
 
+LuaObject::LuaObject(LuaState *state, const TObject *obj) {
+  this->m_object.tt = LUA_TNIL;
+  AddToUsedList(state, obj);
+}
+
 LuaObject::LuaObject(const LuaObject &obj) : LuaObject{} {
   if (obj.m_state) {
     AddToUsedList(obj.m_state, &obj.m_object);
@@ -145,7 +150,6 @@ void LuaObject::SetObject(const LuaObject &key, const LuaObject &value) const {
 // }
 
 void LuaObject::SetObject(int key, const LuaObject &value) const {
-
   TObject key_obj{};
   key_obj.tt = LUA_TNUMBER;
   key_obj.value.n = key;
