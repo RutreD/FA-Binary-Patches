@@ -155,6 +155,8 @@ public:
 };
 VALIDATE_SIZE(LuaStackObject, 8)
 
+extern const char *luaT_typenames[] asm("0x00D474D8");
+
 class LuaObject { // 0x14 bytes
   void __LuaObject() asm("0x9072a0");
   void __LuaObject(LuaState *state) asm("0x908970");
@@ -211,7 +213,7 @@ public:
   LuaState *GetActiveState() asm("0x9072b0");
   const char *GetString() asm("0x907a90");
   const char *ToString() const asm("0x9073e0");
-  const char *TypeName() const asm("0x908b50");
+  const char *TypeName() const;
   lua_Number GetNumber() asm("0x907970");
   lua_Number GetDouble() asm("0x907a30");
   lua_Number ToNumber() asm("0x9073b0");

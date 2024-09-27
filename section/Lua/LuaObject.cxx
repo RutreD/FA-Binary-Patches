@@ -92,3 +92,11 @@ void LuaObject::Reset() {
   }
   this->m_state = nullptr;
 }
+
+const char *LuaObject::TypeName() const {
+  int tt = m_object.tt;
+  if (tt == LUA_TNONE) {
+    return "no value";
+  }
+  return luaT_typenames[tt];
+}
