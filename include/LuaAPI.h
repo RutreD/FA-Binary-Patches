@@ -131,10 +131,16 @@ void GetTableArrAndHash(const Value *t, int &narr, int &nhash) {
 }
 
 // lua.org/source/5.0/lobject.h.html#TObject
-typedef struct {
+struct TObject {
   int tt;
   Value value;
-} TObject;
+
+  inline TObject(int value) : tt{LUA_TNUMBER} { this->value.n = value; }
+  inline TObject(float value) : tt{LUA_TNUMBER} { this->value.n = value; }
+  inline TObject(bool value) : tt{LUA_TBOOLEAN} { this->value.b = value; }
+  inline TObject() : tt{LUA_TNIL} {}
+};
+
 VALIDATE_SIZE(TObject, 8)
 
 // namespace gpg

@@ -5,17 +5,17 @@ LuaObject::LuaObject()
     : m_next{nullptr}, m_prev{nullptr}, m_state{nullptr}, m_object{LUA_TNIL} {}
 
 LuaObject::LuaObject(LuaState *state, int index) {
-  this->m_object.tt = LUA_TNIL;
+  m_object.tt = LUA_TNIL;
   AddToUsedList(state, luaA_index(state->m_state, index));
 }
 
 LuaObject::LuaObject(LuaState *state) {
-  this->m_object.tt = LUA_TNIL;
+  m_object.tt = LUA_TNIL;
   AddToUsedList(state);
 }
 
 LuaObject::LuaObject(LuaState *state, const TObject *obj) {
-  this->m_object.tt = LUA_TNIL;
+  m_object.tt = LUA_TNIL;
   AddToUsedList(state, obj);
 }
 
@@ -56,9 +56,9 @@ LuaObject &LuaObject::operator=(const LuaObject &obj) {
       return *this;
     }
 
-    this->m_state = nullptr;
-    this->m_next = nullptr;
-    this->m_prev = nullptr;
+    m_state = nullptr;
+    m_next = nullptr;
+    m_prev = nullptr;
   }
   return *this;
 }
@@ -154,9 +154,7 @@ void LuaObject::SetObject(const LuaObject &key, const LuaObject &value) const {
 // }
 
 void LuaObject::SetObject(int key, const LuaObject &value) const {
-  TObject key_obj{};
-  key_obj.tt = LUA_TNUMBER;
-  key_obj.value.n = key;
+  TObject key_obj{key};
   SetTableHelper(&key_obj, &value.m_object);
 }
 
@@ -170,8 +168,6 @@ LuaObject LuaObject::GetObject(const LuaObject &key) const {
 }
 
 LuaObject LuaObject::GetObject(int key) const {
-  TObject key_obj{};
-  key_obj.tt = LUA_TNUMBER;
-  key_obj.value.n = key;
+  TObject key_obj{key};
   return LuaObject{m_state, GetTableHelper(&key_obj)};
 }
