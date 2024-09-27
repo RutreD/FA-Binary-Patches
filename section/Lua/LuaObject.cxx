@@ -20,6 +20,9 @@ LuaObject::LuaObject(const LuaObject &obj) : LuaObject{} {
   }
 }
 
+LuaObject::LuaObject(const LuaStackObject &stack)
+    : LuaObject{stack.m_state, stack.m_stackIndex} {}
+
 LuaObject LuaObject::operator[](int key) const {
   LuaObject out;
   __Index(&out, key);
