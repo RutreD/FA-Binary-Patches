@@ -194,6 +194,11 @@ public:
   LuaObject Clone() const;
   LuaObject DeepCopy() const;
 
+  LuaObject GetObject(const LuaObject &key) const;
+  LuaObject GetObject(int key) const;
+  //LuaObject GetObject(const char* key) const;
+  inline const TObject *GetTableHelper(const TObject *key) const;
+
   void SetObject(const LuaObject &key, const LuaObject &value) const;
   // void SetObject(const char *key, const const LuaObject &value) const;
   void SetObject(int key, const LuaObject &value) const;
@@ -203,9 +208,7 @@ public:
                    int lnhash) asm("0x908c10");
   void CreateTable(LuaObject *out, int key, int narray,
                    int lnhash) asm("0x908ca0");
-  void GetByIndex(LuaObject *out, int index) asm("0x908df0");
   void GetByName(LuaObject *out, const char *name) asm("0x90a160");
-  void GetByObject(LuaObject *out, const LuaObject *obj) asm("0x908e70");
   void GetMetaTable(LuaObject *out) asm("0x908ba0");
   void Lookup(LuaObject *out, const char *key) asm("0x9093b0");
   void PushStack(LuaStackObject *out, LuaState *state) asm("0x907d80");
@@ -311,6 +314,9 @@ VALIDATE_SIZE(LuaState, 0x34)
 lua_State *__cdecl luaV_settable(lua_State *L, const TObject *t,
                                  const TObject *key,
                                  const TObject *value) asm("0x00929450");
+const TObject *__cdecl luaV_gettable(lua_State *L, const TObject *t,
+                                     const TObject *key,
+                                     int loop) asm("0x009293E0");
 bool LuaPlusH_next(LuaState *, const LuaObject *, LuaObject *,
                    LuaObject *) asm("0x90a6b0");
 bool lua_toboolean(lua_State *, int) asm("0x90ca40");

@@ -85,8 +85,7 @@ LuaObject LuaObject::__Clone(LuaObject &backref) const {
   backref.SetObject(*this, result);
 
   for (const auto &[key, value] : Pairs(*this)) {
-    LuaObject self_ref;
-    backref.GetByObject(&self_ref, &value);
+    LuaObject self_ref = backref.GetObject(value);
 
     if (self_ref.IsNil()) {
       LuaObject clonedValue = value.IsTable() ? value.__Clone(backref) : value;
@@ -151,4 +150,20 @@ void LuaObject::SetObject(int key, const LuaObject &value) const {
   key_obj.tt = LUA_TNUMBER;
   key_obj.value.n = key;
   SetTableHelper(&key_obj, &value.m_object);
+}
+
+inline const TObject *LuaObject::GetTableHelper(const TObject *key) const {
+  return luaV_gettable(GetActiveCState(), &m_object, key, 0);
+}
+
+LuaObject LuaObject::GetObject(const LuaObject &key) const {
+  luaplus_assert(m_state == key.m_state);
+  return LuaObject{m_state, GetTableHelper(&key.m_object)};
+}
+
+LuaObject LuaObject::GetObject(int key) const {
+  TObject key_obj{};
+  key_obj.tt = LUA_TNUMBER;
+  key_obj.value.n = key;
+  return LuaObject{m_state, GetTableHelper(&key_obj)};
 }
