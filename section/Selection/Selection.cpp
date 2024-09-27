@@ -102,6 +102,24 @@ void HookSelectionCondition()
     );
 }
 
+void HookSelectionCondition2()
+{
+    asm(
+        "call    0x822210;"
+        "mov eax, %[use_selector];"
+        "mov al, byte ptr [eax];"
+        "test al, al;"
+        "jz    0x0086392C;"
+        "mov     edi, [ebp+8];"
+        "test    byte ptr [edi+0x1C], 1;"
+        "jnz    0x0086392C;"
+        "jmp     0x00863952;"
+        :
+        : [use_selector] "i"(&use_selector)
+        :
+    );
+}
+
 
 
 void HookSelection()
