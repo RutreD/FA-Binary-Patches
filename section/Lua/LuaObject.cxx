@@ -98,16 +98,19 @@ LuaObject LuaObject::__Clone(LuaObject &backref) const {
   return result;
 }
 
-inline bool LuaObject::IsBoolean() const { return m_object.tt == LUA_TBOOLEAN; }
-inline bool LuaObject::IsInteger() const { return m_object.tt == LUA_TNUMBER; }
-inline bool LuaObject::IsNumber() const { return m_object.tt == LUA_TNUMBER; }
-inline bool LuaObject::IsString() const { return m_object.tt == LUA_TSTRING; }
-inline bool LuaObject::IsTable() const { return m_object.tt == LUA_TTABLE; }
-inline bool LuaObject::IsNil() const {
-  return m_state && m_object.tt == LUA_TNIL;
+inline int LuaObject::Type() const {
+  luaplus_assert(m_state);
+  return m_object.tt;
 }
+
+inline bool LuaObject::IsBoolean() const { return Type() == LUA_TBOOLEAN; }
+inline bool LuaObject::IsInteger() const { return Type() == LUA_TNUMBER; }
+inline bool LuaObject::IsNumber() const { return Type() == LUA_TNUMBER; }
+inline bool LuaObject::IsString() const { return Type() == LUA_TSTRING; }
+inline bool LuaObject::IsTable() const { return Type() == LUA_TTABLE; }
+inline bool LuaObject::IsNil() const { return m_state && Type() == LUA_TNIL; }
 inline bool LuaObject::IsUserData() const {
-  return m_object.tt == LUA_TUSERDATA || m_object.tt == LUA_TLIGHTUSERDATA;
+  return Type() == LUA_TUSERDATA || Type() == LUA_TLIGHTUSERDATA;
 }
 
 void LuaObject::Reset() {

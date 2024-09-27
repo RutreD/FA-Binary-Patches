@@ -182,6 +182,7 @@ public:
   bool IsConvertibleToString() asm("0x9077c0");
   bool IsFunction() asm("0x907810");
 
+  inline int Type() const;
   inline bool IsNil() const;
   inline bool IsBoolean() const;
   inline bool IsInteger() const;
@@ -221,7 +222,6 @@ public:
   int GetN() const asm("0x907e50");
   int GetTableCount() asm("0x90a410");
   int IsPassed() asm("0x907440");
-  int Type() asm("0x9076d0");
   lua_State *GetActiveCState() asm("0x9072c0");
   void AssignBoolean(LuaState *state, bool value) asm("0x909600");
   void AssignInteger(LuaState *state, int value) asm("0x909650");
