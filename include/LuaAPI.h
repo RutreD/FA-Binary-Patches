@@ -220,7 +220,7 @@ public:
   void GetByName(LuaObject *out, const char *name) asm("0x90a160");
   void GetMetaTable(LuaObject *out) asm("0x908ba0");
   void Lookup(LuaObject *out, const char *key) asm("0x9093b0");
-  void PushStack(LuaStackObject *out, LuaState *state) asm("0x907d80");
+  void PushStack(LuaStackObject *out, LuaState *state) const asm("0x907d80");
   void PushStack(lua_State *L) const asm("0x907d10");
   LuaState *GetActiveState() asm("0x9072b0");
   const char *GetString() asm("0x907a90");

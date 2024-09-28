@@ -177,8 +177,9 @@ void LuaObject::Insert(const LuaObject &obj) const {
   luaplus_assert(m_state == obj.m_state);
   auto L = GetActiveCState();
 
-  PushStack(L);
-  int tbl_index = abs_index(L, -1);
+  LuaStackObject tbl_stack_obj;
+  PushStack(&tbl_stack_obj, m_state);
+  int tbl_index = tbl_stack_obj.m_stackIndex;
 
   obj.PushStack(L);
   // low level insert
@@ -193,8 +194,9 @@ void LuaObject::Insert(int index, const LuaObject &obj) const {
   luaplus_assert(m_state == obj.m_state);
   auto L = GetActiveCState();
 
-  PushStack(L);
-  int tbl_index = abs_index(L, -1);
+  LuaStackObject tbl_stack_obj;
+  PushStack(&tbl_stack_obj, m_state);
+  int tbl_index = tbl_stack_obj.m_stackIndex;
 
   obj.PushStack(L);
   // low level insert
