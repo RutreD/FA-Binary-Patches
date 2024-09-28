@@ -83,10 +83,11 @@ LuaObject LuaObject::DeepCopy() const {
 LuaObject LuaObject::__Clone(LuaObject &backref) const {
   luaplus_assert(IsTable());
   LuaObject result;
-  int narr, nhash;
+  int narr;
+  unsigned nhash;
   GetTableArrAndHash(&m_object.value, narr, nhash);
 
-  result.AssignNewTable(m_state, narr, nhash);
+  result.AssignNewTable(m_state, narr, 1 << nhash);
   backref.SetObject(*this, result);
 
   for (const auto &[key, value] : Pairs(*this)) {
