@@ -156,11 +156,11 @@ private:
 
 class IPairs {
 public:
-  IPairs(LuaObject &table) : table{table} { luaplus_assert(table.IsTable()); }
+  IPairs(const LuaObject &table) : table{table} { luaplus_assert(table.IsTable()); }
 
   IPairsIterator begin() { return ++IPairsIterator(table); }
   IPairsEndIterator end() { return IPairsEndIterator{table}; }
 
 private:
-  LuaObject &table;
+  const LuaObject &table;
 };
