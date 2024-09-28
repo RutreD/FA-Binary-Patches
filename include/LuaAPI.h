@@ -118,6 +118,8 @@ typedef struct luaL_reg {
              lua_error(L), 0))
 #define lua_unref(L, ref) luaL_unref(L, LUA_REGISTRYINDEX, (ref))
 #define lua_getref(L, ref) lua_rawgeti(L, LUA_REGISTRYINDEX, ref)
+#define abs_index(L, i)                                                        \
+  ((i) > 0 || (i) <= LUA_REGISTRYINDEX ? (i) : lua_gettop(L) + (i) + 1)
 
 typedef union {
   void *p;
@@ -198,6 +200,7 @@ public:
 
   LuaObject Clone() const;
   LuaObject DeepCopy() const;
+  void Insert(const LuaObject &obj) const;
 
   LuaObject GetObject(const LuaObject &key) const;
   LuaObject GetObject(int key) const;
@@ -217,7 +220,7 @@ public:
   void GetMetaTable(LuaObject *out) asm("0x908ba0");
   void Lookup(LuaObject *out, const char *key) asm("0x9093b0");
   void PushStack(LuaStackObject *out, LuaState *state) asm("0x907d80");
-  void PushStack(lua_State *L) asm("0x907d10");
+  void PushStack(lua_State *L) const asm("0x907d10");
   LuaState *GetActiveState() asm("0x9072b0");
   const char *GetString() asm("0x907a90");
   const char *ToString() const asm("0x9073e0");

@@ -171,3 +171,21 @@ LuaObject LuaObject::GetObject(int key) const {
   TObject key_obj{key};
   return LuaObject{m_state, GetTableHelper(&key_obj)};
 }
+
+void LuaObject::Insert(const LuaObject &obj) const {
+  luaplus_assert(m_state == obj.m_state);
+  auto L = GetActiveCState();
+
+  PushStack(L);
+  int tbl_index = abs_index(L, -1);
+
+  obj.PushStack(L);
+  int obj_index = abs_index(L, -1);
+
+  // low level insert
+  int cur_n = luaL_getn(L, tbl_index);
+  int n = cur_n + 1;
+  luaL_setn(L, tbl_index, n);
+  lua_pushvalue(L, obj_index);
+  lua_rawseti(L, tbl_index, n);
+}
