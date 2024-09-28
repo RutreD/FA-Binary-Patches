@@ -180,12 +180,11 @@ void LuaObject::Insert(const LuaObject &obj) const {
   int tbl_index = abs_index(L, -1);
 
   obj.PushStack(L);
-  int obj_index = abs_index(L, -1);
-
   // low level insert
   int cur_n = luaL_getn(L, tbl_index);
   int n = cur_n + 1;
   luaL_setn(L, tbl_index, n);
-  lua_pushvalue(L, obj_index);
+  lua_pushvalue(L, -1);
   lua_rawseti(L, tbl_index, n);
+  lua_pop(L, 1);
 }
