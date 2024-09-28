@@ -188,3 +188,27 @@ void LuaObject::Insert(const LuaObject &obj) const {
   lua_rawseti(L, tbl_index, n);
   lua_pop(L, 1);
 }
+
+void LuaObject::Insert(int index, const LuaObject &obj) const {
+  luaplus_assert(m_state == obj.m_state);
+  auto L = GetActiveCState();
+
+  PushStack(L);
+  int tbl_index = abs_index(L, -1);
+
+  obj.PushStack(L);
+  // low level insert
+  int v2 = luaL_getn(L, tbl_index);
+  int n = v2 + 1;
+  int pos = index;
+  if (pos > n)
+    n = pos;
+  luaL_setn(L, tbl_index, n);
+  for (int i = n - 1; i >= pos; --i) {
+    lua_rawgeti(L, tbl_index, i);
+    lua_rawseti(L, tbl_index, i + 1);
+  }
+  lua_pushvalue(L, -1);
+  lua_rawseti(L, tbl_index, pos);
+  lua_pop(L, 1);
+}

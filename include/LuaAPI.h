@@ -201,6 +201,7 @@ public:
   LuaObject Clone() const;
   LuaObject DeepCopy() const;
   void Insert(const LuaObject &obj) const;
+  void Insert(int index, const LuaObject &obj) const;
 
   LuaObject GetObject(const LuaObject &key) const;
   LuaObject GetObject(int key) const;
