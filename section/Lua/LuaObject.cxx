@@ -185,7 +185,6 @@ void LuaObject::Insert(const LuaObject &obj) const {
   int cur_n = luaL_getn(L, tbl_index);
   int n = cur_n + 1;
   luaL_setn(L, tbl_index, n);
-  lua_pushvalue(L, -1);
   lua_rawseti(L, tbl_index, n);
   lua_pop(L, 1);
 }
