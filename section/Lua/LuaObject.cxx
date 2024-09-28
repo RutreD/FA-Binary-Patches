@@ -208,7 +208,6 @@ void LuaObject::Insert(int index, const LuaObject &obj) const {
     lua_rawgeti(L, tbl_index, i);
     lua_rawseti(L, tbl_index, i + 1);
   }
-  lua_pushvalue(L, -1);
   lua_rawseti(L, tbl_index, pos);
   lua_pop(L, 1);
 }
