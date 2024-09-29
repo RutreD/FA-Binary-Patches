@@ -173,6 +173,19 @@ LuaObject LuaObject::GetObject(int key) const {
   return LuaObject{m_state, GetTableHelper(&key_obj)};
 }
 
+lua_Number LuaObject::GetNumber(int key) const {
+  TObject key_obj{key};
+  const TObject *obj = GetTableHelper(&key_obj);
+
+  if (obj->tt != LUA_TNUMBER) {
+    luaL_typerror(GetActiveCState(), key,
+                  "expected number"); //! needs proper error message
+  }
+  return obj->value.n;
+}
+
+int LuaObject::GetInteger(int key) const { return GetNumber(key); }
+
 void LuaObject::Insert(const LuaObject &obj) const {
   luaplus_assert(m_state == obj.m_state);
   auto L = m_state->m_state;

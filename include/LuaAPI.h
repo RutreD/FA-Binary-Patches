@@ -205,6 +205,9 @@ public:
 
   LuaObject GetObject(const LuaObject &key) const;
   LuaObject GetObject(int key) const;
+
+  lua_Number GetNumber(int key) const;
+  int GetInteger(int key) const;
   // LuaObject GetObject(const char* key) const;
   inline const TObject *GetTableHelper(const TObject *key) const;
 
