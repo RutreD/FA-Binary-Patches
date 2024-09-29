@@ -18,4 +18,14 @@ asm(
     "ret;"
     "nop;"
     "nop;"
+    SECTION(3, 0x004CFD70)
+    "push esi;"
+    "push edi;"
+    "call "QU(LuaObject_ToVector2f)";"
+    "pop edi;"
+    "pop esi;"
+    "ret;"
+    "nop;"
+    "nop;"
+    
 );
