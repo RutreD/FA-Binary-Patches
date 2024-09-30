@@ -58,8 +58,6 @@ inline LuaObject &LuaTableIterator::GetValue() {
   return m_valueObj;
 }
 
-inline LuaTableIterator::~LuaTableIterator() {}
-
 PairsIterator::PairsIterator(const LuaObject &table)
     : table{table}, key{table.m_state}, value{table.m_state}, done{false} {}
 

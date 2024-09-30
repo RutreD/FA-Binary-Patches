@@ -21,8 +21,6 @@ public:
 
   inline LuaObject &GetValue();
 
-  inline ~LuaTableIterator();
-
 private:
   LuaObject &m_tableObj;
   LuaObject m_keyObj;
