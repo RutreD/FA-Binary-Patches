@@ -49,6 +49,7 @@ void __stdcall HandleNewSelection(Moho::CWldSession *session,
       lua_call(ls->m_state, 1, 1);
 
       LuaObject result{ls, -1};
+      lua_pop(ls->m_state, 1);
 
       if (!result.IsTable()) {
         ls->Error("Expected table");
