@@ -1,73 +1,27 @@
 #pragma once
 #include "LuaAPI.h"
 #include <utility>
-#ifdef __GNUC__
-#ifndef __clang__
-#error Do not include iterators and use them with GCC
-#endif
-#endif
 
 class LuaTableIterator {
 public:
-  inline LuaTableIterator(LuaObject &tableObj, bool doReset = true)
-      : m_isDone(false), m_tableObj(tableObj), m_keyObj(tableObj.m_state),
-        m_valueObj(tableObj.m_state) {
-    luaplus_assert(tableObj.IsTable());
+  inline LuaTableIterator(LuaObject &tableObj, bool doReset = true);
 
-    if (doReset)
-      Reset();
-  }
+  inline void Reset();
 
-  inline void Reset() {
-    LuaState *state = m_tableObj.m_state;
+  inline void Invalidate();
+  inline bool Next();
 
-    m_keyObj.AssignNil(state);
+  inline LuaTableIterator &operator++();
 
-    if (!LuaPlusH_next(state, &m_tableObj, &m_keyObj, &m_valueObj))
-      m_isDone = true;
-  }
+  inline bool IsValid() const;
 
-  inline void Invalidate() {
-    LuaState *state = m_tableObj.m_state;
-    m_keyObj.AssignNil(state);
-    m_valueObj.AssignNil(state);
-  }
+  inline operator bool() const;
 
-  inline bool Next() {
-    luaplus_assert(IsValid());
+  inline LuaObject &GetKey();
 
-    LuaState *state = m_tableObj.m_state;
+  inline LuaObject &GetValue();
 
-    if (!LuaPlusH_next(state, &m_tableObj, &m_keyObj, &m_valueObj)) {
-      m_isDone = true;
-      return false;
-    }
-
-    return true;
-  }
-
-  inline LuaTableIterator &operator++() {
-    Next();
-    return *this;
-  }
-
-  inline bool IsValid() const { return !m_isDone; }
-
-  inline operator bool() const { return IsValid(); }
-
-  inline LuaObject &GetKey() {
-    luaplus_assert(IsValid());
-
-    return m_keyObj;
-  }
-
-  inline LuaObject &GetValue() {
-    luaplus_assert(IsValid());
-
-    return m_valueObj;
-  }
-
-  inline ~LuaTableIterator() {};
+  inline ~LuaTableIterator();
 
 private:
   LuaObject &m_tableObj;
@@ -79,24 +33,15 @@ private:
 class EndIterator {};
 class PairsIterator {
 public:
-  PairsIterator(const LuaObject &table)
-      : table{table}, key{table.m_state}, value{table.m_state}, done{false} {}
+  PairsIterator(const LuaObject &table);
 
-  PairsIterator &operator++() {
-    LuaState *state = table.m_state;
-    if (!done && !LuaPlusH_next(state, &table, &key, &value)) {
-      done = true;
-    }
-    return *this;
-  }
+  PairsIterator &operator++();
 
-  const std::pair<LuaObject, LuaObject> operator*() const {
-    return {key, value};
-  }
+  const std::pair<LuaObject, LuaObject> operator*() const;
 
-  std::pair<LuaObject, LuaObject> operator*() { return {key, value}; }
+  std::pair<LuaObject, LuaObject> operator*();
 
-  bool operator!=(const EndIterator &) const { return !done; }
+  bool operator!=(const EndIterator &) const;
 
 private:
   const LuaObject &table;
@@ -107,12 +52,9 @@ private:
 
 class Pairs {
 public:
-  Pairs(const LuaObject &table) : table{table} {
-    luaplus_assert(table.IsTable());
-  }
-
-  PairsIterator begin() { return ++PairsIterator(table); }
-  EndIterator end() { return EndIterator{}; }
+  Pairs(const LuaObject &table);
+  PairsIterator begin();
+  EndIterator end();
 
 private:
   const LuaObject &table;
@@ -120,9 +62,9 @@ private:
 
 class IPairsEndIterator {
 public:
-  IPairsEndIterator(const LuaObject &table) : n{table.GetN()} {}
+  IPairsEndIterator(const LuaObject &table);
 
-  int GetN() const { return n; }
+  int GetN() const;
 
 private:
   int n;
@@ -130,23 +72,15 @@ private:
 
 class IPairsIterator {
 public:
-  IPairsIterator(const LuaObject &table)
-      : table{table}, index{0}, value{table.m_state} {}
+  IPairsIterator(const LuaObject &table);
 
-  IPairsIterator &operator++() {
-    LuaState *state = table.m_state;
-    ++index;
-    value = table[index];
-    return *this;
-  }
+  IPairsIterator &operator++();
 
-  const std::pair<int, LuaObject> operator*() const { return {index, value}; }
+  const std::pair<int, LuaObject> operator*() const;
 
-  std::pair<int, LuaObject> operator*() { return {index, value}; }
+  std::pair<int, LuaObject> operator*();
 
-  bool operator!=(const IPairsEndIterator &end_it) const {
-    return index <= end_it.GetN();
-  }
+  bool operator!=(const IPairsEndIterator &end_it) const;
 
 private:
   const LuaObject &table;
@@ -156,10 +90,10 @@ private:
 
 class IPairs {
 public:
-  IPairs(const LuaObject &table) : table{table} { luaplus_assert(table.IsTable()); }
+  IPairs(const LuaObject &table);
 
-  IPairsIterator begin() { return ++IPairsIterator(table); }
-  IPairsEndIterator end() { return IPairsEndIterator{table}; }
+  IPairsIterator begin();
+  IPairsEndIterator end();
 
 private:
   const LuaObject &table;
