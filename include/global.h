@@ -1,7 +1,6 @@
 #pragma once
-
-#include "types.h"
 #include <cstdint>
+#include <type_traits>
 
 #define SHARED extern "C"
 
@@ -124,9 +123,9 @@ template <typename T> struct basic_string {
   }
 
   basic_string(const char *s) {
-    if constexpr (IsSame<char, T>)
+    if constexpr (std::is_same_v<char, T>)
       InitString(this, s);
-    else if constexpr (IsSame<wchar_t, T>)
+    else if constexpr (std::is_same_v<wchar_t, T>)
       wstring_copy_ctor(this, s);
     else
       static_assert(false, "Unknown type T.");
