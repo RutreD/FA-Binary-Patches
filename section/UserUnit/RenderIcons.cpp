@@ -37,7 +37,7 @@ void ExtendDtor() {
 
 void ExtendRenderIcon() {
 
-  asm("lea  edi, [ebp-0x84];"
+  asm("lea  edi, [esp+0xC0-0x80];"
       "push edi;"
       "push [ebp+0xC];"
       "push [ebp+0x8];"
@@ -77,7 +77,7 @@ int SetCustomIcon(lua_State *l) {
   DebugLog(path);
   Moho::CPrimBatcher::Texture *texture =
       Offset<Moho::CPrimBatcher::Texture *>(unit, 1000);
-  FromFile(texture, path, 1);
+  FromFile(texture, path, 0);
 
   return 0;
 }

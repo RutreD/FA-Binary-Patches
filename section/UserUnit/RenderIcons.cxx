@@ -22,8 +22,8 @@ void __stdcall ExtendRenderUserUnitIcon(UserUnitIconsTextures *unit_textures,
   Vector3f a6;
   Vector3f ecx0;
 
-  float half_width = 100;
-  float half_height = 100;
+  float half_width = texture->data->width / 2;
+  float half_height = texture->data->height / 2;
   v34.x = pos->x + half_width;
   v34.y = pos->z - half_height;
   v34.z = 0.0;
