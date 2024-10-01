@@ -8,6 +8,14 @@ void __fastcall InterlockedExchangeAdd(volatile unsigned *at, unsigned value) {
 // #include <windows.h>
 namespace Moho::CPrimBatcher {
 __stdcall void *FlushBatcher(void *batcher) asm("0x0043A140");
+struct Texture;
+
+void FromSolidColor(Texture *t, unsigned int color) asm("0x4478C0");
+SHARED {
+  void ReleaseTexture(Texture * t);
+  void __stdcall SetTexture(void *batcher, Texture *texture);
+  void __stdcall SetViewProjMatrix(void *batcher, void *matrix);
+}
 
 struct Texture {
 
@@ -34,14 +42,10 @@ struct Texture {
       InterlockedExchangeAdd(&lock->use_count_, 1);
     }
   }
+
+  void Release() { ReleaseTexture(this); }
 };
 
-void FromSolidColor(Texture *t, unsigned int color) asm("0x4478C0");
-SHARED {
-  void ReleaseTexture(Texture * t);
-  void __stdcall SetTexture(void *batcher, Texture *texture);
-  void __stdcall SetViewProjMatrix(void *batcher, void *matrix);
-}
 } // namespace Moho::CPrimBatcher
 
 struct Vertex {

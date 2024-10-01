@@ -8,8 +8,10 @@ void __stdcall ExtendUserUnitCtor(Moho::UserUnit *uunit) {
 }
 
 void __stdcall ExtendUserUnitDtor(Moho::UserUnit *uunit) {
-  Moho::CPrimBatcher::ReleaseTexture(
-      Offset<Moho::CPrimBatcher::Texture *>(uunit, 1000));
+  auto texture = Offset<Moho::CPrimBatcher::Texture *>(uunit, 1000);
+  texture->Release();
+  texture->data = nullptr;
+  texture->lock = nullptr;
 }
 
 void ExtendCtor() {
@@ -70,9 +72,8 @@ int SetCustomIcon(lua_State *l) {
   if (unit == nullptr)
     return 0;
 
-  Moho::CPrimBatcher::Texture *texture =
-      Offset<Moho::CPrimBatcher::Texture *>(unit, 1000);
-  Moho::CPrimBatcher::ReleaseTexture(texture);
+  auto *texture = Offset<Moho::CPrimBatcher::Texture *>(unit, 1000);
+  texture->Release();
   texture->data = nullptr;
   texture->lock = nullptr;
   if (lua_type(l, 2) == LUA_TNIL) {
