@@ -10,14 +10,14 @@ namespace Moho::CPrimBatcher {
 __stdcall void *FlushBatcher(void *batcher) asm("0x0043A140");
 
 struct Texture {
-  void *data;
+  void *data = nullptr;
   struct WeakLock {
     void *vtable;
     unsigned use_count_;
     unsigned weak_count_;
     void *px_;
 
-  } *lock;
+  } *lock = nullptr;
 
   VALIDATE_SIZE(WeakLock, 16);
 
@@ -55,4 +55,6 @@ SHARED {
   char *DrawLine(Vertex * v1, void *batcher, Vertex *v2);
   char *DrawQuad(Vertex * a1, void *batcher, Vertex *a3, Vertex *a4,
                  Vertex *a5);
+  void DrawQuad2(unsigned int color, Vector3f *a2, Vector3f *ecx0, Vector3f *esi0,
+                 void *batcher, Vector3f *a6);
 }

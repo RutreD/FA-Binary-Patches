@@ -1,7 +1,8 @@
 #pragma once
 
-#include "moho.h"
 #include "GenericStructures.h"
+#include "moho.h"
+
 
 namespace Moho {
 
@@ -28,7 +29,6 @@ template <typename K, typename V> struct map {
   map_node<K, V> *root;
   int field_8;
 };
-
 
 // by Hdt80bro
 
@@ -225,6 +225,7 @@ struct UserEntityVTable {
       int _this, char);
   /*Moho::MeshRenderer*/ void *(__thiscall *DestroyMeshInstance)(void *_this);
 };
+VALIDATE_SIZE(UserEntityVTable, 0x44);
 
 struct Unit_ {};
 struct VTransform {
@@ -264,9 +265,31 @@ struct IUnitVTable {
   //  void (__thiscall *SetCustomName)(Moho::Unit_ *, std::string);
   //  std::string *(__thiscall *GetCustomName)(Moho::Unit_ *, std::string *);
 };
-const UserEntityVTable *GetVTable(UserEntity *unit) {
+
+static const  UserEntityVTable *GetVTable(UserEntity *unit) {
   return (*(const UserEntityVTable **)unit);
 }
+
+struct UserUnitVTable : UserEntityVTable {
+  BOOL(__thiscall *field_44)
+  (Moho::UserUnit *_this, int a2, float *a3, float *a4);
+  bool(__thiscall *GetWaterIntel)(Moho::UserUnit *_this, float *sonarRange,
+                                  float *waterRange, float *radarRange);
+  bool(__thiscall *GetMaxCounterIntel)(Moho::UserUnit *_this, float *dest);
+  char(__thiscall *field_50)(Moho::UserUnit *_this);
+  bool(__thiscall *IsAutoSurfaceMode)(Moho::UserUnit *);
+  void *field_58;
+  BOOL(__thiscall *IsOverchargePaused)(Moho::UserUnit *);
+  string *(__thiscall *GetCustomName)(Moho::UserUnit *);
+  void *field_64;
+  void *field_68;
+};
+VALIDATE_SIZE(UserUnitVTable, 0x6C);
+
+static const UserUnitVTable *GetVTable(UserUnit *unit) {
+  return (*(const UserUnitVTable **)unit);
+}
+
 const IUnitVTable *GetIUnitVTable(UserUnit *unit) {
   return *(const IUnitVTable **)((char *)unit + 0x148);
 }
@@ -289,10 +312,9 @@ template <typename T> T Offset(void *ptr, size_t offset) {
   return (T)(((char *)ptr) + offset);
 }
 
-template <typename T> T& GetField(void *ptr, size_t offset) {
+template <typename T> T &GetField(void *ptr, size_t offset) {
   return *Offset<T *>(ptr, offset);
 }
-
 
 VALIDATE_SIZE(Moho::CWldSession, 0x508);
 VALIDATE_SIZE(Moho::struct_session_res3, 0x84);
@@ -308,3 +330,5 @@ SHARED {
 Moho::EntityCategory *__cdecl CastEntityCategory(LuaObject obj) asm("0x005575E0");
 
 extern Moho::CWldSession *cwldsession asm("0x010A6470");
+
+using UserUnitMethodReg = UIRegFuncT<0x00E4DA64, 0x00F8D89C>;

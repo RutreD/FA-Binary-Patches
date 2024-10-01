@@ -3,7 +3,7 @@
 #include "UserUnit.h"
 
 struct UserUnitIconsTextures {
-  Moho::UserUnit *unit;
+  Moho::UserEntity *entity;
   signed __int32 field_0;
   signed __int32 field_8;
   signed __int32 field_C;
@@ -40,3 +40,9 @@ struct struct_IconAux // sizeof=0xAC
 };
 
 VALIDATE_SIZE(struct_IconAux, 0xAC);
+
+SHARED {
+  void __stdcall ExtendRenderUserUnitIcon(UserUnitIconsTextures * unit_textures,
+                                          struct_IconAux * aux,
+                                          const Vector2f *pos);
+}

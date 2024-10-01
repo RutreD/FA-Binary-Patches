@@ -112,3 +112,14 @@ char *DrawQuad(Vertex *a1, void *batcher, Vertex *a3, Vertex *a4, Vertex *a5) {
 void Moho::CPrimBatcher::ReleaseTexture(Moho::CPrimBatcher::Texture *t) {
   asm("call 0x004260B0;" : : [t] "a"(t) : "edx", "ecx");
 }
+
+void DrawQuad2(unsigned int color, Vector3f *a2, Vector3f *ecx0, Vector3f *esi0,
+               void *batcher, Vector3f *a6) {
+  asm("push %[a6];"
+      "push %[a5];"
+      "call 0x00438DA0;"
+      :
+      : [color] "a"(color), [a2] "d"(a2), [ecx0] "c"(ecx0), [esi0] "S"(esi0),
+        [a5] "g"(batcher), [a6] "g"(a6)
+      :);
+}

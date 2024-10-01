@@ -1,5 +1,6 @@
 
 #include "RenderIcons.h"
+#include "CObject.h"
 
 void __stdcall ExtendUserUnitCtor(Moho::UserUnit *uunit) {
   GetField<void *>(uunit, 1000) = nullptr;
@@ -34,11 +35,6 @@ void ExtendDtor() {
       : [ExtendUserUnitDtor] "i"(ExtendUserUnitDtor));
 }
 
-void __stdcall ExtendRenderUserUnitIcon(UserUnitIconsTextures *unit_textures,
-                                        struct_IconAux *aux, const Vector2f *pos) {
-                                            
-}
-
 void ExtendRenderIcon() {
 
   asm("lea  edi, [ebp-0x84];"
@@ -52,3 +48,39 @@ void ExtendRenderIcon() {
       : [ExtendRenderUserUnitIcon] "i"(ExtendRenderUserUnitIcon)
       :);
 }
+
+Moho::CPrimBatcher::Texture *__cdecl FromFile(Moho::CPrimBatcher::Texture *a1,
+                                              const char *filename,
+                                              int border) asm("0x004486F0");
+
+int SetCustomIcon(lua_State *l) {
+
+  if (lua_gettop(l) != 2) {
+    l->LuaState->Error(s_ExpectedButGot, __FUNCTION__, 2, lua_gettop(l));
+  }
+
+  Result<UserUnit> r = GetCScriptObject<UserUnit>(l, 1);
+
+  if (r.IsFail()) {
+    lua_pushstring(l, r.reason);
+    lua_error(l);
+    return 0;
+  }
+  void *unit = r.object;
+  if (unit == nullptr)
+    return 0;
+
+  const char *path = lua_tostring(l, 2);
+  if (!path) {
+    luaL_typerror(l, 2, "string");
+  }
+  DebugLog(path);
+  Moho::CPrimBatcher::Texture *texture =
+      Offset<Moho::CPrimBatcher::Texture *>(unit, 1000);
+  FromFile(texture, path, 1);
+
+  return 0;
+}
+
+UserUnitMethodReg UserUnitSetCustomIcon{
+    "SetCustomIcon", "UserUnit:SetCustomIcon()", SetCustomIcon, s_UserUnit};
