@@ -9,6 +9,7 @@ struct Texture {
 
 void FromSolidColor(Texture *t, unsigned int color) asm("0x4478C0");
 SHARED {
+  void ReleaseTexture(Texture*t);
   void __stdcall SetTexture(void *batcher, Texture *texture);
   void __stdcall SetViewProjMatrix(void *batcher, void *matrix);
 }

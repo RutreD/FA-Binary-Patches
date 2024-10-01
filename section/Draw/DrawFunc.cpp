@@ -108,3 +108,7 @@ char *DrawQuad(Vertex *a1, void *batcher, Vertex *a3, Vertex *a4, Vertex *a5) {
       :);
   return __result;
 }
+
+void Moho::CPrimBatcher::ReleaseTexture(Moho::CPrimBatcher::Texture *t) {
+  asm("call 0x004260B0;" : : [t] "a"(t) :);
+}
