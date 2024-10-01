@@ -17,24 +17,24 @@ void __stdcall ExtendRenderUserUnitIcon(UserUnitIconsTextures *unit_textures,
   void *batcher = aux->batcher;
   CPrimBatcher::SetTexture(batcher, texture);
 
-  Vector3f v34;
-  Vector3f esi0;
-  Vector3f a6;
-  Vector3f ecx0;
+  Vector3f t_r;
+  Vector3f t_l;
+  Vector3f b_l;
+  Vector3f b_r;
 
   float half_width = texture->data->width / 2;
   float half_height = texture->data->height / 2;
-  v34.x = pos->x + half_width;
-  v34.y = pos->z - half_height;
-  v34.z = 0.0;
-  ecx0.x = pos->x + half_width;
-  ecx0.y = pos->z + half_height;
-  ecx0.z = 0.0;
-  a6.x = pos->x - half_width;
-  a6.y = pos->z + half_height;
-  a6.z = 0.0;
-  esi0.x = pos->x - half_width;
-  esi0.y = pos->z - half_height;
-  esi0.z = 0.0;
-  DrawQuad2(0xFFFFFFFF, &ecx0, &v34, &a6, batcher, &esi0);
+  t_r.x = pos->x + half_width;
+  t_r.y = pos->z - half_height;
+  t_r.z = 0.0;
+  b_r.x = pos->x + half_width;
+  b_r.y = pos->z + half_height;
+  b_r.z = 0.0;
+  b_l.x = pos->x - half_width;
+  b_l.y = pos->z + half_height;
+  b_l.z = 0.0;
+  t_l.x = pos->x - half_width;
+  t_l.y = pos->z - half_height;
+  t_l.z = 0.0;
+  DrawQuad2(0xFFFFFFFF, &b_r, &t_r, &b_l, batcher, &t_l);
 }
