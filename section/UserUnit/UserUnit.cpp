@@ -20,3 +20,26 @@ BitSetGetResult *BitSetGet_(BitSetGetResult *result, BitSet *a2, unsigned int a3
       :);
   return __result;
 }
+
+void __stdcall ExtendUserUnit(Moho::UserUnit* uunit)
+{
+  GetField<void*>(uunit, 1000) = nullptr;
+  GetField<void*>(uunit, 1004) = nullptr;
+}
+
+
+void ExtendCtor()
+{
+  asm(
+    "push ebp;"
+    "call %[ExtendUserUnit];"
+    "pop    edi;"
+    "pop    esi;"
+    "mov    eax, ebp;"
+    "pop    ebp;"
+    "jmp    0x008BF97E;"
+    :
+    : [ExtendUserUnit]"i" (ExtendUserUnit)
+    :
+  );
+}

@@ -347,7 +347,7 @@ template <typename T> T Offset(void *ptr, size_t offset) {
   return (T)(((char *)ptr) + offset);
 }
 
-template <typename T> T GetField(void *ptr, size_t offset) {
+template <typename T> T& GetField(void *ptr, size_t offset) {
   return *Offset<T *>(ptr, offset);
 }
 
