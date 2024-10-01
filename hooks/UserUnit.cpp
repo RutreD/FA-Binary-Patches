@@ -11,7 +11,9 @@ asm(
     SECTION(2, 0x008BF994)
     "call "QU(ExtendDtor)";"
 
-    SECTION(3, 0x0085E08C)
+    SECTION(3, 0x0085E07C)
     "jmp "QU(ExtendRenderIcon)";"
+    "nop;"
+    "nop;"
     
 );
