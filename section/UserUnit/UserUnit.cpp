@@ -27,6 +27,12 @@ void __stdcall ExtendUserUnit(Moho::UserUnit* uunit)
   GetField<void*>(uunit, 1004) = nullptr;
 }
 
+void __stdcall ExtendUserUnitDtor(Moho::UserUnit* uunit)
+{
+  GetField<void*>(uunit, 1000) = nullptr;
+  GetField<void*>(uunit, 1004) = nullptr;
+}
+
 
 void ExtendCtor()
 {
@@ -42,4 +48,17 @@ void ExtendCtor()
     : [ExtendUserUnit]"i" (ExtendUserUnit)
     :
   );
+}
+
+void ExtendDtor()
+{
+ asm(
+  "push esi;"
+  "push esi;"
+  "call 0x8BF9B0;"
+  "call %[ExtendUserUnitDtor];"
+  "ret 4;"
+  :
+  : [ExtendUserUnitDtor] "i"(ExtendUserUnitDtor)
+  ) ;
 }

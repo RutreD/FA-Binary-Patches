@@ -7,4 +7,7 @@ asm(
 
     SECTION(1, 0X008949FE)
     "push 1008;"
+
+    SECTION(2, 0x008BF994)
+    "call "QU(ExtendDtor)";"
 );
