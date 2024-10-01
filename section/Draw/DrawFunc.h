@@ -1,22 +1,42 @@
+#pragma once
 #include "moho.h"
+
+void __fastcall InterlockedExchangeAdd(volatile unsigned *at, unsigned value) {
+  asm("lock xadd [ecx], edx;" : : "c"(at), "d"(value) : "cc");
+}
+
+// #include <windows.h>
 namespace Moho::CPrimBatcher {
 __stdcall void *FlushBatcher(void *batcher) asm("0x0043A140");
 
 struct Texture {
-  int a;
-  int b;
+  void *data;
+  struct WeakLock {
+    void *vtable;
+    unsigned use_count_;
+    unsigned weak_count_;
+    void *px_;
+
+  } *lock;
+
+  VALIDATE_SIZE(WeakLock, 16);
+
+  void Lock() {
+    if (lock) {
+      InterlockedExchangeAdd(&lock->use_count_, 1);
+    }
+  }
 };
 
 void FromSolidColor(Texture *t, unsigned int color) asm("0x4478C0");
 SHARED {
-  void ReleaseTexture(Texture*t);
+  void ReleaseTexture(Texture * t);
   void __stdcall SetTexture(void *batcher, Texture *texture);
   void __stdcall SetViewProjMatrix(void *batcher, void *matrix);
 }
 } // namespace Moho::CPrimBatcher
 
-struct Vertex
-{
+struct Vertex {
   Vector3f v;
   unsigned int color;
   float scaleX;
@@ -32,6 +52,7 @@ SHARED {
                  float thickness, void *batcher, Vector3f *v3, void *heightmap,
                  float f2);
   char *DRAW_WireBox(VMatrix4 * a1, /*CD3DPrimBatcher*/ void *batcher);
-  char *DrawLine(Vertex *v1, void *batcher, Vertex *v2);
-  char *DrawQuad(Vertex *a1, void *batcher, Vertex *a3, Vertex *a4, Vertex *a5);
+  char *DrawLine(Vertex * v1, void *batcher, Vertex *v2);
+  char *DrawQuad(Vertex * a1, void *batcher, Vertex *a3, Vertex *a4,
+                 Vertex *a5);
 }
