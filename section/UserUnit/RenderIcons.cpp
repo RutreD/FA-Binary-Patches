@@ -70,13 +70,20 @@ int SetCustomIcon(lua_State *l) {
   if (unit == nullptr)
     return 0;
 
+  Moho::CPrimBatcher::Texture *texture =
+      Offset<Moho::CPrimBatcher::Texture *>(unit, 1000);
+  Moho::CPrimBatcher::ReleaseTexture(texture);
+  texture->data = nullptr;
+  texture->lock = nullptr;
+  if (lua_type(l, 2) == LUA_TNIL) {
+    return 0;
+  }
+
   const char *path = lua_tostring(l, 2);
   if (!path) {
     luaL_typerror(l, 2, "string");
   }
-  DebugLog(path);
-  Moho::CPrimBatcher::Texture *texture =
-      Offset<Moho::CPrimBatcher::Texture *>(unit, 1000);
+
   FromFile(texture, path, 0);
 
   return 0;
