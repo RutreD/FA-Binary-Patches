@@ -10,6 +10,7 @@ asm(
     "nop;"
     "nop;"
     "nop;"
+    "mov byte ptr [esp+0xD0-0xC], 2;"
     SECTION(1, 0x008BD9CE)
     "nop;"
     "nop;"
