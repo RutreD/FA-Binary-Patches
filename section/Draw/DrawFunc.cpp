@@ -109,8 +109,10 @@ char *DrawQuad(Vertex *a1, void *batcher, Vertex *a3, Vertex *a4, Vertex *a5) {
   return __result;
 }
 
-void Moho::CPrimBatcher::ReleaseTexture(Moho::CPrimBatcher::Texture *t) {
-  asm("call 0x004260B0;" : : [t] "a"(t) : "edx", "ecx");
+void *Moho::CPrimBatcher::ReleaseTexture(Moho::CPrimBatcher::Texture *t) {
+  void *__result;
+  asm("call 0x004260B0;" : "=a"(__result) : [t] "a"(t) : "edx", "ecx");
+  return __result;
 }
 
 void DrawQuad2(unsigned int color, Vector3f *a2, Vector3f *ecx0, Vector3f *esi0,
