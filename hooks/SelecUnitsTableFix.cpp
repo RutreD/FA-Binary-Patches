@@ -11,14 +11,13 @@ asm(
     "nop;"
     "nop;"
     "mov byte ptr [esp+0xD0-0xC], 2;"
-    SECTION(1, 0x008BD9CE)
     "nop;"
     "nop;"
     "nop;"
     "nop;"
     "nop;"
     // nop PushStack
-    SECTION(2, 0x008BDBA6)
+    SECTION(1, 0x008BDBA6)
     "nop;"
     "nop;"
     "nop;"
@@ -37,6 +36,6 @@ asm(
     "nop;"
     "nop;"
     // return 0 value on stack
-    SECTION(3, 0x008BDC18)
+    SECTION(2, 0x008BDC18)
     "mov eax, 0;"
 );
