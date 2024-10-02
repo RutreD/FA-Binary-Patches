@@ -3,8 +3,9 @@
 #include "CObject.h"
 
 void __stdcall ExtendUserUnitCtor(Moho::UserUnit *uunit) {
-  GetField<void *>(uunit, 1000) = nullptr;
-  GetField<void *>(uunit, 1004) = nullptr;
+  auto texture = Offset<Moho::CPrimBatcher::Texture *>(uunit, 1000);
+  texture->data = nullptr;
+  texture->lock = nullptr;
 }
 
 void __stdcall ExtendUserUnitDtor(Moho::UserUnit *uunit) {

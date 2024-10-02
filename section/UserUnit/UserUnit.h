@@ -2,6 +2,7 @@
 
 #include "GenericStructures.h"
 #include "moho.h"
+#include "magic_classes.h"
 
 
 namespace Moho {
