@@ -475,3 +475,5 @@ void ThrowLuaException(const char *message) {
 #define luaplus_assert(e)                                                      \
   if (!(e))                                                                    \
   ThrowLuaException(#e)
+
+LuaObject SCR_Import(LuaState *state, const char *name);
