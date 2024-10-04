@@ -1,5 +1,5 @@
-#include "include/moho.h"
-#include "include/magic_classes.h"
+#include "moho.h"
+#include "magic_classes.h"
 
 #define lua_push(L, name, val) \
     lua_pushstring(L, name); \
@@ -21,6 +21,7 @@ int UIGetHighlightCommand(lua_State *L) {
     lua_push(L, "x", command->pos.x);
     lua_push(L, "y", command->pos.y);
     lua_push(L, "z", command->pos.z);
+    lua_push(L, "commandId", commandId);
     auto targetId = command->targetId;
     if (targetId != 0xF0000000) {
         char buf[16];

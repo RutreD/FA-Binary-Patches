@@ -1,9 +1,6 @@
-#include "include/CObject.h"
-#include "include/LuaApi.h"
-#include "include/global.h"
-#include "include/magic_classes.h"
-
-bool __cdecl TryConvertToColor(const char *s, uint32_t &color) asm("0x4B2B90");
+#include "CObject.h"
+#include "moho.h"
+#include "magic_classes.h"
 
 int SetColorMask(lua_State *l)
 {
@@ -24,7 +21,7 @@ int SetColorMask(lua_State *l)
         return 0;
     const char *s = lua_tostring(l, 2);
     uint32_t color;
-    if (!TryConvertToColor(s, color))
+    if (!Moho::TryConvertToColor(s, color))
     {
         luaL_error(l, s_UnknownColor, s);
         return 0;
@@ -33,13 +30,12 @@ int SetColorMask(lua_State *l)
     *(uint32_t *)((int)bitmap + 244) = (*(uint32_t *)((int)bitmap + 244) & 0xFF000000u) | color;
     return 0;
 }
+using BitmapMethodReg = UIRegFuncT<0x00E37C14, 0x00F8D7DC>;
 
-// PatcherList_UIFuncRegs_BitmapSetColorMaskDesc
-luaFuncDescReg BitmapSetColorMaskDesc = {0x00E37C14,
-                                         "SetColorMask",
-                                         "CMauiBitmap",
-                                         "Bitmap:SetColorMask(color)",
-                                         nullptr,
-                                         SetColorMask,
-                                         0x00F8D7DC};
+
+BitmapMethodReg BitmapSetColorMaskDesc{
+    "SetColorMask",
+    "Bitmap:SetColorMask(color)",
+    SetColorMask,
+    "CMauiBitmap"};
 
