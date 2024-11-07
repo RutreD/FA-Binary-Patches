@@ -197,9 +197,6 @@ These new features have been added in a backwards compatible manner
     - section/LuaFuncRegs.cpp
 - Maximum sim rate up to 50
     - hooks/DelClampMaxSimRate.cpp
-- Adds an amphibious mode toggle to the Salem
-    - hooks/luaSimGetStat.cpp
-    - section/luaSimGetStat.cpp
 - Adds GetDepositsAroundPoint to Sim and UI
     - section/SimGetDepositsAroundPoint.cpp
     - section/LuaFuncRegs.cpp
@@ -225,3 +222,6 @@ These new features have been added in a backwards compatible manner
     - section/BuildUnit.cpp
     - section/SelectUnit.cpp
     - section/SimArmyCreate.cpp
+- Add `Unit:ForceAltFootPrint` that forces game to use AltFootprint for the unit (applied to Salem in particular)
+    - hooks/EntityGetFootprint.cpp
+    - section/EntityGetFootprint.cpp
